@@ -39,3 +39,12 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - + `tools/wiki.py`, a stdlib-only CLI with `search` (BM25 over wiki pages, titles and aliases weighted ×3), `lint` (broken links, orphans, index drift, frontmatter, raw files not yet ingested), `stats`, and `graph` (JSON export)
 - ~ `CLAUDE.md`: §2 layout, §6.2 query (search step), §6.3 lint (run the script first), §9 changelog, §10 checklist
 - → This is the "naive search script" from [[src-karpathy-llm-wiki]]; graduate to [[qmd]] per [[qmd-setup-for-this-wiki]]
+
+## [2026-10-02] query | How and when should we plug qmd into this wiki?
+- Read: [[index]], then `tools/wiki.py search` → [[src-qmd-readme]], [[llm-wiki]], [[model-context-protocol]], [[overview]], [[qmd]]; also [[hybrid-search]], [[document-chunking]]
+- + [[qmd-setup-for-this-wiki]] (filed back; resolves the red link from the qmd ingest)
+- ~ [[index]], [[hybrid-search]], [[document-chunking]] (linked to the analysis)
+- Answer: not yet (2/~100 sources). The setup is a project-local index, `raw/` excluded by default, and a context tree that mirrors CLAUDE.md §2
+- ⚠️ Cross-source finding: qmd can't filter on our plain frontmatter
+- → Proposed schema change (awaiting Stellan): add qmd to the ingest and query steps once a trigger is hit
+- Also: `tools/wiki.py search` now skips meta pages (index/log) by default, since they outranked real pages

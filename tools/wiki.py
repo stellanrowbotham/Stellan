@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Small helper CLI for the LLM Wiki (see CLAUDE.md §2, "tools/").
 
-    python3 tools/wiki.py search "query terms" [-n 5]   BM25 search over wiki pages
+    python3 tools/wiki.py search "query terms" [-n 5]   BM25 search over wiki pages (--all: include index/log)
     python3 tools/wiki.py lint                          mechanical health check
     python3 tools/wiki.py stats                         page counts, hubs, link totals
     python3 tools/wiki.py graph [-o file.json]          nodes/edges JSON for visualisation
@@ -78,6 +78,8 @@ def cmd_search(args):
     pages = load_pages()
     docs = {}
     for name, p in pages.items():
+        if p["fm"].get("type") == "meta" and not args.all:
+            continue  # index/log mention everything; they'd swamp real pages
         title = p["fm"].get("title", name)
         aliases = " ".join(p["fm"].get("aliases", []) or [])
         # title/aliases counted three times so they outweigh body mentions
@@ -209,6 +211,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("search"); s.add_argument("query"); s.add_argument("-n", type=int, default=5)
+    s.add_argument("--all", action="store_true", help="also search meta pages (index, log)")
     s.set_defaults(func=cmd_search)
     sub.add_parser("lint").set_defaults(func=cmd_lint)
     sub.add_parser("stats").set_defaults(func=cmd_stats)

@@ -33,3 +33,4 @@ Embedding models have limited context, and one vector for a long document blurs 
 - [[hybrid-search]]
 - [[retrieval-augmented-generation]]
 - [[qmd]]
+- [[qmd-setup-for-this-wiki]]

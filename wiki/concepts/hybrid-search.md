@@ -32,3 +32,4 @@ Karpathy names hybrid BM25/vector search with LLM re-ranking as the right search
 - [[document-chunking]]
 - [[retrieval-augmented-generation]]
 - [[qmd]]
+- [[qmd-setup-for-this-wiki]]: how this wiki will adopt it

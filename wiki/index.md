@@ -9,7 +9,7 @@ updated: 2026-10-02
 # Index
 Catalog of every page in the wiki. The agent reads this first on every query and updates it on every operation.
 
-**Totals:** 2 sources · 4 entities · 8 concepts · 0 analyses · last updated 2026-10-02
+**Totals:** 2 sources · 4 entities · 8 concepts · 1 analysis · last updated 2026-10-02
 
 ## Overview
 - [[overview]]: top-level synthesis, main themes, and open questions
@@ -37,4 +37,4 @@ Catalog of every page in the wiki. The agent reads this first on every query and
 - [[retrieval-augmented-generation]]: query-time chunk retrieval; the non-compounding contrast to an LLM wiki · 2 sources
 
 ## Analyses
-*(none yet. Answers worth keeping from queries get filed here.)*
+- [[qmd-setup-for-this-wiki]]: when to adopt qmd (not yet, ~100 sources) and the exact 3-step setup + gotchas · 2 sources
