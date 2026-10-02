@@ -153,6 +153,13 @@ def cmd_lint(args):
         if name not in index_links:
             problems["index drift"].append(f"[[{name}]] missing from index.md")
 
+    index_body = pages.get("index", {}).get("body", "")
+    for m in re.finditer(r"^- \[\[([^\]|]+)\]\].*· (\d+) sources?\s*$", index_body, re.M):
+        name, n = m.group(1), int(m.group(2))
+        actual = len(pages.get(name, {}).get("fm", {}).get("sources", []) or [])
+        if name in pages and actual != n:
+            problems["index drift"].append(f"[[{name}]] index says {n} sources, frontmatter has {actual}")
+
     raw_files = {p.relative_to(ROOT).as_posix() for p in RAW.rglob("*") if p.is_file() and p.name != ".gitkeep"}
     ingested = {p["fm"].get("raw") for p in pages.values() if p["fm"].get("type") == "source"}
     for r in sorted(raw_files - ingested):

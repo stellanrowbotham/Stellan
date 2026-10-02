@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Hybrid search
-aliases: ["hybrid retrieval", "BM25 + vector search", "BM25"]
+aliases: ["hybrid retrieval", "BM25 + vector search"]
 tags: [retrieval, search]
 created: 2026-10-02
 updated: 2026-10-02

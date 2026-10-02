@@ -48,3 +48,15 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - ⚠️ Cross-source finding: qmd can't filter on our plain frontmatter
 - → Proposed schema change (awaiting Stellan): add qmd to the ingest and query steps once a trigger is hit
 - Also: `tools/wiki.py search` now skips meta pages (index/log) by default, since they outranked real pages
+
+## [2026-10-02] lint | First health check (2 sources, 18 pages)
+- Ran `tools/wiki.py lint`: ✓ clean (0 broken links, 0 orphans, 0 index drift)
+- ~ `tools/wiki.py`: lint now also checks the "· N sources" counts in the index against frontmatter (tested by planting a wrong count, then reverted)
+- ~ [[hybrid-search]]: removed the "BM25" alias. BM25 is one *component* of hybrid search, not a synonym, so the alias would send searches for BM25 to the wrong page.
+- Findings for Stellan, in priority order:
+  1. ⚠️ **6 *(unverified)* general-knowledge claims** need a source: [[andrej-karpathy]] (Tesla/OpenAI roles), [[vannevar-bush]] (OSRD), [[memex]] ("As We May Think", *The Atlantic*), [[reciprocal-rank-fusion]] (Cormack et al. 2009), [[model-context-protocol]] (Anthropic, 2024), [[qmd]] (`tobi` = Tobi Lütke)
+  2. ⚠️ **3 open contradictions inside the qmd README** on [[qmd]]. Fix: read `src/llm.ts` in tobi/qmd (reachable from this container)
+  3. **Single-source pages:** [[memex]], [[vannevar-bush]], [[andrej-karpathy]], [[maintenance-burden]], [[reciprocal-rank-fusion]], [[document-chunking]]
+  4. **Concepts mentioned with no page:** HyDE, BM25, Obsidian Web Clipper, Marp, Dataview
+  5. **Self-reported benchmark:** the [[hybrid-search]] evidence is qmd's own fixture; an independent evaluation is needed
+- → Suggested next sources: "As We May Think" (Bush 1945); the RRF paper (Cormack, Clarke & Büttcher 2009); the MCP spec or announcement; the qmd source `src/llm.ts`
