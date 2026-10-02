@@ -5,8 +5,8 @@ title: Obsidian
 aliases: ["Obsidian.md"]
 tags: [tool, pkm, markdown]
 created: 2026-10-01
-updated: 2026-10-01
-sources: [src-karpathy-llm-wiki]
+updated: 2026-10-02
+sources: [src-karpathy-llm-wiki, src-qmd-readme]
 ---
 
 # Obsidian
@@ -25,4 +25,4 @@ In the LLM Wiki workflow, the agent writes the files and the human reads them in
 ## Connections
 - [[llm-wiki]]: the pattern it serves
 - [[andrej-karpathy]]: uses it this way
-- [[qmd]]: complementary search tool
+- [[qmd]]: complementary. Obsidian is for humans browsing; qmd is for agents searching. The qmd README never mentions Obsidian. Its clickable result links target code editors such as VS Code, Cursor, Zed, and Sublime ([[src-qmd-readme]]).

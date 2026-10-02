@@ -4,8 +4,8 @@ title: Retrieval-Augmented Generation (RAG)
 aliases: ["RAG"]
 tags: [llm, retrieval, knowledge-management]
 created: 2026-10-01
-updated: 2026-10-01
-sources: [src-karpathy-llm-wiki]
+updated: 2026-10-02
+sources: [src-karpathy-llm-wiki, src-qmd-readme]
 ---
 
 # Retrieval-Augmented Generation (RAG)
@@ -24,13 +24,18 @@ The [[llm-wiki]] pattern moves synthesis from query time to ingest time. The com
 | Infrastructure | Embeddings + vector store | Markdown + index file (search optional) |
 | Human-readable artifact | No | Yes: the wiki itself |
 
+### What a modern retrieval stack looks like
+[[qmd]] is a concrete example of the retrieval half of RAG today. It splits text into chunks ([[document-chunking]]), runs BM25 and vector search ([[hybrid-search]]), fuses the results with [[reciprocal-rank-fusion]], and re-ranks them with a small LLM ([[src-qmd-readme]]). *(synthesis)* The machinery is good. What the [[llm-wiki]] changes is **what gets retrieved**: compiled, cross-linked pages instead of raw fragments.
+
 ## Evidence & claims
 - NotebookLM, ChatGPT file uploads, and most RAG systems work in this re-derive-every-time way. ([[src-karpathy-llm-wiki]])
 - At moderate scale, an index file removes the need for embedding-based RAG infrastructure. ([[src-karpathy-llm-wiki]])
 
 ## Tensions & contradictions
-- *(synthesis)* The two approaches can be combined. Hybrid search over the *wiki* (for example [[qmd]]) is still retrieval, just over compiled pages rather than raw chunks.
+- *(synthesis)* The two approaches can be combined. Hybrid search over the *wiki* (for example [[qmd]]) is still retrieval, just over compiled pages rather than raw chunks. After [[src-qmd-readme]], this looks less like a contradiction and more like a layering: RAG-style retrieval *serves* the wiki rather than replacing it.
 
 ## Related
 - [[llm-wiki]]
 - [[qmd]]
+- [[hybrid-search]]
+- [[document-chunking]]

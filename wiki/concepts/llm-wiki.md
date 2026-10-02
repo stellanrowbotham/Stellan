@@ -4,8 +4,8 @@ title: LLM Wiki
 aliases: ["LLM Wiki pattern", "LLM-maintained wiki", "compiled knowledge base"]
 tags: [pkm, llm, knowledge-management]
 created: 2026-10-01
-updated: 2026-10-01
-sources: [src-karpathy-llm-wiki]
+updated: 2026-10-02
+sources: [src-karpathy-llm-wiki, src-qmd-readme]
 ---
 
 # LLM Wiki
@@ -26,7 +26,7 @@ It also has three operations: **ingest**, **query** (with good answers filed bac
 
 It works because the LLM takes on the part of knowledge work that people give up on, the bookkeeping. See [[maintenance-burden]]. In spirit it continues [[vannevar-bush]]'s [[memex]] ([[src-karpathy-llm-wiki]]).
 
-The suggested setup is the agent in one window and [[obsidian]] in the other, used for browsing, graph view, and Dataview. Once the wiki outgrows the index, add a search tool such as [[qmd]] ([[src-karpathy-llm-wiki]]).
+The suggested setup is the agent in one window and [[obsidian]] in the other, used for browsing, graph view, and Dataview. Once the wiki outgrows the index, add a search tool such as [[qmd]] ([[src-karpathy-llm-wiki]]). qmd provides local [[hybrid-search]], and the agent can call it from the CLI or as a native tool over [[model-context-protocol|MCP]] ([[src-qmd-readme]]).
 
 ## Evidence & claims
 - An index-first approach without embeddings "works surprisingly well at moderate scale (~100 sources, ~hundreds of pages)." ([[src-karpathy-llm-wiki]])
@@ -35,7 +35,7 @@ The suggested setup is the agent in one window and [[obsidian]] in the other, us
 - This repo (Stellan's second brain) is an instance of the pattern, set up 2026-10-01. *(Stellan, 2026-10-01)*
 
 ## Tensions & contradictions
-- *(synthesis)* The scale limit is an open question. Past a few hundred pages, an index-only approach probably needs search such as [[qmd]], and that brings back part of the retrieval machinery the pattern set out to avoid. No source has tested where that threshold is yet.
+- *(synthesis)* The scale limit is an open question. Past a few hundred pages, an index-only approach probably needs search such as [[qmd]], and that brings back part of the retrieval machinery the pattern set out to avoid. No source has tested where that threshold is yet. **Update 2026-10-02:** [[src-qmd-readme]] shows the retrieval layer can run entirely on-device on ~2 GB of models. So the cost of adding search is low, though the threshold itself is still untested. Plan: [[qmd-setup-for-this-wiki]].
 - *(synthesis)* Errors can compound as well. If the LLM writes a wrong synthesis, later ingests may build on it. Citations back to `raw/` and regular lint passes are the safeguard.
 
 ## Related
@@ -43,3 +43,4 @@ The suggested setup is the agent in one window and [[obsidian]] in the other, us
 - [[maintenance-burden]]: why it works
 - [[memex]]: historical precedent
 - [[andrej-karpathy]]: who described the pattern
+- [[qmd]], [[hybrid-search]]: the scale-up path
