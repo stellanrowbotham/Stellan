@@ -5,7 +5,7 @@ aliases: ["RRF"]
 tags: [retrieval, search, algorithm]
 created: 2026-10-02
 updated: 2026-10-02
-sources: [src-qmd-readme]
+sources: [src-qmd-readme, src-qmd-source-code]
 ---
 
 # Reciprocal Rank Fusion (RRF)
@@ -24,6 +24,7 @@ Different search backends produce scores on scales that can't be compared direct
 
 ## Evidence & claims
 - k=60 is qmd's chosen constant. ([[src-qmd-readme]])
+- In code, the weights are exactly 2.0 for lists from the original query and 1.0 for expansion lists (`getHybridRrfWeights`). ([[src-qmd-source-code]])
 - *(general knowledge, unverified here)* RRF was introduced by Cormack, Clarke & Büttcher (SIGIR 2009), where k=60 is the commonly cited default.
 
 ## Tensions & contradictions

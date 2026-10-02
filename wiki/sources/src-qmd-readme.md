@@ -42,7 +42,7 @@ raw: raw/2026-10-02-qmd-readme.md
 - **Confirms** every qmd claim in [[src-karpathy-llm-wiki]]: hybrid BM25/vector search, LLM re-ranking, on-device, CLI plus MCP server.
 - **Adds detail** to [[qmd]] (the full rewrite), [[retrieval-augmented-generation]] (qmd is a modern retrieval stack), and [[llm-wiki]] (a concrete answer to how the pattern scales).
 - **New concepts:** [[hybrid-search]], [[reciprocal-rank-fusion]], [[document-chunking]], [[model-context-protocol]].
-- ⚠️ **Inconsistencies within the README itself** (both noted on [[qmd]]):
+- ✅ **Inconsistencies within the README itself** (all 3 resolved by [[src-qmd-source-code]]; the README was stale each time):
   1. *Number of query expansions:* the architecture diagram says "2 alternative queries" and the Query Flow shows `[Original, Variant 1, Variant 2]`, but Fusion Strategy says "Original query (×2 for weighting) + 1 LLM variation."
   2. *Rerank candidate count:* the diagram and Fusion Strategy say "Top 30," while the `candidateLimit`/`-C` default is 40.
   3. *(minor)* `multi_get` `maxBytes` defaults to 10240 in the MCP tool table but to 64 KB in the CLI and SDK.

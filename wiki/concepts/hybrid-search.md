@@ -5,7 +5,7 @@ aliases: ["hybrid retrieval", "BM25 + vector search"]
 tags: [retrieval, search]
 created: 2026-10-02
 updated: 2026-10-02
-sources: [src-qmd-readme, src-karpathy-llm-wiki]
+sources: [src-qmd-readme, src-karpathy-llm-wiki, src-qmd-source-code]
 ---
 
 # Hybrid search
@@ -17,6 +17,10 @@ The two backends fail in different ways. **BM25** (full-text keyword scoring, e.
 Modern pipelines such as [[qmd]] add two LLM stages ([[src-qmd-readme]]):
 1. **Query expansion:** an LLM rewrites the query into variants. Keyword-style variants (`lex`) go to BM25. Dense sentences (`vec`) and hypothetical answer documents (`hyde`) go to vector search.
 2. **Re-ranking:** a small cross-encoder LLM scores the top candidates for relevance. qmd blends the reranker score with the retrieval score according to rank, so a strong exact match isn't overruled.
+
+**Practical refinements seen in qmd's code** ([[src-qmd-source-code]]):
+- *Skip the expensive part when it isn't needed.* If plain BM25 already has a clear winner (score ≥ 0.85 and a lead of ≥ 0.15), the LLM expansion is skipped.
+- *Rerank passages, not documents.* Only the best-matching chunk of each candidate goes to the reranker, which keeps the cost proportional to chunk size rather than document size. See [[document-chunking]].
 
 Karpathy names hybrid BM25/vector search with LLM re-ranking as the right search upgrade once an [[llm-wiki]] outgrows its index ([[src-karpathy-llm-wiki]]).
 

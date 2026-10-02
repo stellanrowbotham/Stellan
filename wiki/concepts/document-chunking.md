@@ -5,7 +5,7 @@ aliases: ["chunking", "smart chunking", "AST-aware chunking"]
 tags: [retrieval, embeddings]
 created: 2026-10-02
 updated: 2026-10-02
-sources: [src-qmd-readme]
+sources: [src-qmd-readme, src-qmd-source-code]
 ---
 
 # Document chunking
@@ -25,6 +25,7 @@ Embedding models have limited context, and one vector for a long document blurs 
 
 ## Evidence & claims
 - Chunk parameters as above. ([[src-qmd-readme]])
+- Chunks are also the unit of **reranking**. qmd reranks each candidate's best keyword-matching chunk rather than its whole body. ([[src-qmd-source-code]])
 
 ## Tensions & contradictions
 - None yet.

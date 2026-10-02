@@ -60,3 +60,13 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
   4. **Concepts mentioned with no page:** HyDE, BM25, Obsidian Web Clipper, Marp, Dataview
   5. **Self-reported benchmark:** the [[hybrid-search]] evidence is qmd's own fixture; an independent evaluation is needed
 - → Suggested next sources: "As We May Think" (Bush 1945); the RRF paper (Cormack, Clarke & Büttcher 2009); the MCP spec or announcement; the qmd source `src/llm.ts`
+
+## [2026-10-02] ingest | qmd source code excerpts (commit 04e4dbd)
+- Trigger: lint finding #2. GitHub is reachable from the container, so the contradictions could be checked against the primary source right away.
+- Read: `src/store.ts`, `src/llm.ts`, `src/mcp/server.ts` at commit `04e4dbd`; verbatim excerpts captured to `raw/2026-10-02-qmd-source-excerpts.md`
+- Mode: unsupervised (Stellan's "show me what it can do")
+- + [[src-qmd-source-code]]
+- ~ [[qmd]], [[src-qmd-readme]], [[hybrid-search]], [[reciprocal-rank-fusion]], [[document-chunking]], [[overview]], [[index]]
+- ✅ Resolved all 3 ⚠️ contradictions on [[qmd]]; the README was stale each time (expansions vary, rerank pool 40, MCP multi_get 64 KB)
+- New facts the README doesn't cover: the BM25 strong-signal shortcut (≥ 0.85, gap ≥ 0.15) and chunk-level reranking
+- → Open: 6 *(unverified)* general-knowledge claims still need sources (see the lint entry above)
