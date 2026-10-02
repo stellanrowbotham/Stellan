@@ -34,3 +34,8 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - ⚠️ Schema tension: qmd metadata filters need a `qmd: metadata:` block, but our frontmatter is plain YAML
 - → Red link [[qmd-setup-for-this-wiki]], to be filled by a query; read qmd `src/llm.ts` to settle the inconsistencies
 - Note: tried to fetch Wikipedia "Memex" first. The cloud network policy blocked it, so a GitHub-hosted source was used instead.
+
+## [2026-10-02] schema | v1.1: add tools/wiki.py
+- + `tools/wiki.py`, a stdlib-only CLI with `search` (BM25 over wiki pages, titles and aliases weighted ×3), `lint` (broken links, orphans, index drift, frontmatter, raw files not yet ingested), `stats`, and `graph` (JSON export)
+- ~ `CLAUDE.md`: §2 layout, §6.2 query (search step), §6.3 lint (run the script first), §9 changelog, §10 checklist
+- → This is the "naive search script" from [[src-karpathy-llm-wiki]]; graduate to [[qmd]] per [[qmd-setup-for-this-wiki]]

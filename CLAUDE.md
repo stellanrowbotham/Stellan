@@ -23,6 +23,8 @@ current. It is not re-derived from raw files on every question.
 ```
 /
 ├── CLAUDE.md              ← this schema
+├── tools/
+│   └── wiki.py            ← helper CLI: search · lint · stats · graph (stdlib Python)
 ├── raw/                   ← LAYER 1: immutable sources (human curates; agent only reads)
 │   ├── assets/            ← images/attachments downloaded locally (Obsidian attachment folder)
 │   └── YYYY-MM-DD-<slug>.<ext>
@@ -212,7 +214,8 @@ Synthesized answer with citations.
 11. **Report back.** Summarize which pages were created and updated, and suggest 1–3 follow-up questions or sources.
 
 ### 6.2 QUERY (any question about the wiki's subject matter)
-1. Read `wiki/index.md` first, then the relevant pages. Read `raw/` only to check a detail.
+1. Read `wiki/index.md` first, then the relevant pages. Use `python3 tools/wiki.py search "<terms>"`
+   when the index alone doesn't make it obvious which pages matter. Read `raw/` only to check a detail.
 2. Answer from the wiki with `[[citations]]`. Say clearly when the wiki doesn't cover something,
    and keep general knowledge separate from wiki knowledge (label it *(general knowledge)*).
 3. Choose the format that fits: prose, a table, a Marp slide deck, a matplotlib chart, or a canvas.
@@ -223,6 +226,8 @@ Synthesized answer with citations.
 6. Commit if any files changed.
 
 ### 6.3 LINT (the human says "lint" or "health check"; the agent may suggest one every ~10 ingests)
+Start with `python3 tools/wiki.py lint`, which mechanically checks broken links, orphans, index drift,
+frontmatter, and raw files that haven't been ingested. Then do the judgment checks it can't.
 Check for, and report as a prioritized list:
 - Contradictions between pages, and stale claims a newer source has superseded
 - Orphan pages (no inbound links other than the index)
@@ -265,6 +270,9 @@ Make the change, keep links, the index, and frontmatter consistent, log it as `e
   approves it, the agent edits this file, and logs it as `schema`.
 - Changelog:
   - 2026-10-01: v1. Initial schema based on Karpathy's "LLM Wiki" idea file.
+  - 2026-10-02: v1.1. Added `tools/wiki.py` (search/lint/stats/graph) and wired it into QUERY and LINT.
+    Before ending a turn that changed the wiki, `tools/wiki.py lint` should pass, except for red links
+    that are deliberately open.
 
 ---
 
@@ -276,4 +284,5 @@ chit-chat**. For anything other than chit-chat, follow that workflow, and make s
 - [ ] every new or changed page has correct frontmatter, citations, and links
 - [ ] `index.md` reflects the current set of pages
 - [ ] `log.md` has a new entry at the bottom
+- [ ] `python3 tools/wiki.py lint` is clean (or only shows deliberate red links)
 - [ ] changes are committed
