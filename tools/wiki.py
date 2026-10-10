@@ -141,7 +141,7 @@ def cmd_lint(args):
             if key not in fm:
                 problems["frontmatter"].append(f"[[{name}]] ({ptype}) missing `{key}`")
         for r in raw_list(fm):
-            if not (ROOT / r).exists():
+            if not r.startswith("app:") and not (ROOT / r).exists():  # app:<path> = kept in the private app database
                 problems["source"].append(f"[[{name}]] points at missing raw file {r}")
         listed = set(fm.get("sources", []) or [])
         for s in listed:

@@ -2,56 +2,63 @@
 type: hub
 section: flowpilot
 title: FlowPilot
-aliases: ["Flow Pilot", "FlowPilot AI automations"]
+aliases: ["FlowPilot Automation", "Flow Pilot"]
 tags: [business, ai, automation]
 created: 2026-10-10
 updated: 2026-10-10
-sources: []
+sources: [src-flowpilot-request-page, src-ace-outreach-log, src-command-centre]
 ---
 
 # FlowPilot
-Stellan's AI automations business *(Stellan, 2026-10-10)*.
+FlowPilot Automation, Stellan's AI automations business for local small businesses *(Stellan, 2026-10-10)* ([[src-flowpilot-request-page]]).
 
 ## Snapshot
-- **What it is:** an AI automations business run by Stellan *(Stellan, 2026-10-10)*.
-- **Assistant:** [[ace]], Stellan's business assistant in Claude chats *(Stellan, 2026-10-10)*.
-- **Clients, offers, numbers:** not captured yet. See Open questions.
-- **This week's focus:** not set yet. The first morning check-in will set it.
+- **Offer:** "Get a simple automation plan for your business." A business describes one repetitive process and gets a plan for a first automation workflow. ([[src-flowpilot-request-page]])
+- **Funnel:** [[ace]] cold-emails local businesses, which can request a plan on the request page, and an n8n workflow emails Stellan and confirms with the visitor. ([[src-ace-outreach-log]], [[src-flowpilot-request-page]])
+- **Pipeline:** 69 businesses emailed in 4 batches (2026-09-13 to 09-15). Replies aren't recorded in the brain yet. ([[src-ace-outreach-log]])
+- **Health:** the n8n workflow's last known run was 2026-09-30, and the n8n connector has been failing since about 2026-10-10, so the workflow can't be checked. ([[src-command-centre]])
 
 ## What FlowPilot sells
-*(Not captured yet.)*
+A first automation for a repetitive process. The page's examples are responding to inquiries, organizing leads, sending confirmations, and creating reminders. "People remain in control of important decisions. Nothing here guarantees business results." ([[src-flowpilot-request-page]])
 
 ## Offers & pricing
-| Offer | Price | Page |
+| Offer | Price | Source |
 |---|---|---|
-| *(none captured yet)* | | |
+| Free automation plan (request page) | Free *(synthesis: no price is shown)* | [[src-flowpilot-request-page]] |
+| First automation build | *(not captured)* | |
 
 ## Clients & pipeline
-| Client / lead | Stage | Next step | Page |
-|---|---|---|---|
-| *(none captured yet)* | | | |
+| Stage | Count | Notes |
+|---|---|---|
+| Emailed by ACE | 69 | Real estate, dental, salons, bakeries, fitness, landscaping, pet grooming, auto, accounting, cleaning, restaurants and more, across 16 SW Ontario towns ([[src-ace-outreach-log]]) |
+| Replied | *(not captured)* | Stellan handles replies personally |
+| Requested a plan | *(not captured)* | Arrives through the n8n workflow |
+| Clients | *(not captured)* | |
 
 ## Tool stack
-*(Not captured yet.)*
+- **n8n cloud:** inquiry workflow (webhook, then an email to Stellan and a confirmation to the visitor). ([[src-flowpilot-request-page]])
+- **WebsitePublisher:** hosts the request page (free plan). ([[src-flowpilot-request-page]])
+- **Manus:** hosts the FlowPilot website *(Stellan, 2026-10-10)*. The agents can't open it from the cloud environment yet.
+- **Claude:** [[ace]] for outreach, Gmail for sending.
 
 ## Processes
-*(Not captured yet. Examples: onboarding, discovery calls, delivery, support.)*
+1. **Outreach** ([[ace]]): find local businesses, check the no-repeat log, send one email each, then log the batch. ([[src-ace-outreach-log]])
+2. **Intake:** request page, then the n8n workflow emails Stellan and the visitor gets a confirmation email. ([[src-flowpilot-request-page]])
+3. **Follow-up:** Stellan answers replies personally. ([[src-ace-outreach-log]])
 
 ## Goals & numbers
 *(Not captured yet.)*
 
 ## ACE
-[[ace]] is the business assistant Stellan uses in Claude chats. See its page for its role and how it connects to this brain.
+[[ace]] is FlowPilot's outreach agent. Use **Talk to ACE** in the app to open a new Claude chat already talking to ACE.
 
 ## Open questions
-1. What kinds of automations does FlowPilot build, and for which businesses or industries?
-2. What are your current offers, and how do you price them (per project, retainer, per automation)?
-3. Do you have clients or leads right now? Name them and say where each one stands.
-4. Which tools do you build with? For example, n8n, Make, Zapier, Claude, ChatGPT, Lovable, Airtable, or GoHighLevel.
-5. What's the main goal for FlowPilot over the next 90 days? A revenue number, a client count, or a launch?
-6. Is there a website, social handle, or brand doc I should add as a source?
+1. Have any of the 69 businesses replied or booked a call?
+2. What do you charge for a first automation build?
+3. What's the 90-day goal (clients, revenue)?
+4. Should the n8n connector be reconnected in claude.ai Settings → Connectors so the agents can check the workflow again?
 
 ## Pages
-- [[ace]]: business assistant
-- *(Client, offer, tool, and process pages will be listed here.)*
-- Related: [[investing-apprentice]] · [[daily-run-through]] · [[overview]]
+- [[ace]]: outreach agent
+- Sources: [[src-flowpilot-request-page]] · [[src-ace-outreach-log]] · [[src-command-centre]]
+- Related: [[connected-apps]] · [[investing-apprentice]] · [[daily-run-through]] · [[overview]]

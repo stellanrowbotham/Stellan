@@ -14,13 +14,13 @@ Upcoming events the Schedule Agent has added from links Stellan sent. Each one i
 
 ## Snapshot
 - **Events added so far:** 0
-- **Already in Google Calendar (subscribed feeds):** U13 A (2014) – Cambridge Minor Hockey, and U16 BB B Blue (2011) – Kitchener Minor Hockey *(Google Calendar, 2026-10-10)*. The morning brief reads these directly.
+- **Already in Google Calendar:** subscribed hockey schedule feeds *(Google Calendar, 2026-10-10)*. The morning brief reads them directly. Team details are kept out of this public repo.
 
 ## Upcoming
 *(None yet. Send a schedule link in the app with "Add to my schedule".)*
 
 ## Open questions
-1. Who are the hockey schedules for (the U13 and U16 teams)? Knowing this lets the agent add only the right games.
+1. Who are the hockey schedules for? Knowing this lets the agent add only the right games.
 
 ## Pages
-- Related: [[daily-run-through]] · [[overview]]
+- Related: [[daily-run-through]] · [[connected-apps]] · [[overview]]

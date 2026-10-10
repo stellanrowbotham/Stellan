@@ -38,7 +38,10 @@ Stellan's daily routine with Claude: a **morning check-in** to plan the day and 
 5. **Tomorrow:** the first task, and your energy now (1–10).
 
 ## Open loops
-*(None yet.)*
+- Decide whether to keep both morning briefings (6:30 AM email here, 7:45 AM Morning Rundown in the Command Centre). See [[connected-apps]].
+- Reconnect n8n so the FlowPilot workflow can be checked ([[flowpilot]]).
+- Get the Investing Apprentice data sources ([[investing-apprentice]]).
+- Add the Gmail and Google Calendar connectors to the two Brain routines.
 
 ## Entries
 *(Newest first. Each day gets a `daily-YYYY-MM-DD` page.)*
@@ -50,4 +53,5 @@ Stellan's daily routine with Claude: a **morning check-in** to plan the day and 
 
 ## Pages
 - [[schedule]]: upcoming events from schedule links (also in Google Calendar)
+- [[connected-apps]]: every briefing agent (this brain and the Command Centre)
 - Related: [[flowpilot]] · [[investing-apprentice]] · [[overview]]

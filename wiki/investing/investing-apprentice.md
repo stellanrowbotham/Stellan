@@ -3,54 +3,62 @@ type: hub
 section: investing
 title: AI Stock & Crypto Investing Apprentice
 aliases: ["Investing Apprentice", "Apprentice", "AI Investing Apprentice"]
-tags: [product, investing, stocks, crypto, ai]
+tags: [product, investing, stocks, crypto, ai, simulation]
 created: 2026-10-10
 updated: 2026-10-10
-sources: []
+sources: [src-command-centre]
 ---
 
 # AI Stock & Crypto Investing Apprentice
-An AI product Stellan is building for investing in stocks and crypto *(Stellan, 2026-10-10)*.
+An AI agent Stellan is building that researches stocks and crypto, makes forecasts, and paper-trades with virtual money. It earns promotions as it proves itself *(Stellan, 2026-10-10)* ([[src-command-centre]]).
 
 ## Snapshot
-- **What it is:** an AI stock and crypto investing product, built by Stellan *(Stellan, 2026-10-10)*.
-- **Stage:** unknown. See Open questions.
-- **This week's focus:** not set yet. The first morning check-in will set it.
+- **What it is:** a research-and-forecasting agent for TSX/US stocks and crypto that paper-trades $1,000 CAD of virtual money. Simulation only: there is no code for real-money trading. ([[src-command-centre]])
+- **Stage:** set up 2026-10-10 at **Level 1 (Research Apprentice)**. ([[src-command-centre]])
+- **Blocker:** every data source is blocked by the cloud network settings or needs a free API key, so it hasn't produced research yet. ([[src-command-centre]])
+- **Dashboard:** its own private app (Overview, Research, Paper trading, Learning, Progress, Settings). See [[connected-apps]].
 
 ## Vision
-*(Not captured yet.)*
+An apprentice that has to *earn* trust. It starts by writing research and forecasts, gets scored on accuracy and calibration, and moves up a ladder only when it meets every requirement and Stellan approves. Even the top level never unlocks real money. ([[src-command-centre]])
 
 ## Target user
-*(Not captured yet.)*
+Stellan, for now *(synthesis)*. Whether it becomes a product for others is an open question.
 
 ## Features
-| Feature | Status | Page |
+| Feature | Status | Source |
 |---|---|---|
-| *(none captured yet)* | | |
+| Pre-market research report (weekdays 8:27 AM) and after-the-bell update (4:33 PM) | Built; waiting on data | [[src-command-centre]] |
+| Crypto checks every 4 h and an hourly experiment | Paused until data is connected | [[src-command-centre]] |
+| Forecasts scored for hit rate and Brier score, with a calibration table | Built | [[src-command-centre]] |
+| Paper trading with fees and slippage, stop-loss required, long only | Unlocks at Level 2 | [[src-command-centre]] |
+| 5-level promotion ladder, scorecard of rewards and penalties, and demotions | Built | [[src-command-centre]] |
+| Mistake journal, lessons and post-trade reviews | Built | [[src-command-centre]] |
+| Risk limits: position, sector and crypto caps, daily-loss halt, drawdown review | Built | [[src-command-centre]] |
+| Stellan approves settings changes and promotions | Built | [[src-command-centre]] |
+| This brain's Stock Agent researching any ticker dropped in the app | Built (uses web search) | `agents/inbox-agent.md` |
 
 ## Tech & data stack
-*(Not captured yet.)*
+- Runs as scheduled Claude agents. Its results are written to the dashboard's database. ([[src-command-centre]])
+- **Data:** market data and news feeds are currently blocked or need free API keys. ([[src-command-centre]])
 
 ## Roadmap
-*(Not captured yet.)*
+1. Connect data: allow the sources in the cloud environment's network settings, or add free API keys.
+2. First research reports and scored forecasts at Level 1.
+3. Earn Level 2, which unlocks paper trading with Stellan's approval.
 
 ## Decisions
-*(None recorded yet. Each decision gets a `decision-YYYY-MM-DD-<slug>` page.)*
+*(None recorded as decision pages yet.)*
 
 ## Research
-- **Markets & assets:** *(none yet)*
-- **Strategies:** *(none yet)*
+- **Markets & assets:** TSX and US stocks, plus crypto ([[src-command-centre]])
+- **Stock Agent research:** *(none yet. Drop a ticker link in the app.)*
 - **Competitors:** *(none yet)*
 
 ## Open questions
-1. In one or two sentences, what does the Apprentice do for its user? Does it teach them, signal trades, automate trades, or something else?
-2. Who is it for: you, beginners, active traders, or crypto-first people?
-3. What stage is it at: idea, prototype, in use, or live with users?
-4. What is it built with? For example, Claude chats or Projects, n8n or Make, a web app, or a bot on Telegram or Discord.
-5. Which data does it use: stock prices, crypto exchanges, news, social sentiment?
-6. Is it connected to [[flowpilot]]? Is it a FlowPilot product, or separate?
-7. What does "Apprentice" in the name mean? Does the AI learn alongside the user, or does the user learn from the AI?
+1. Which free API keys should the Apprentice get (market data, news)?
+2. Should it stay your own research tool, or become a product for other people?
+3. How should the Stock Agent's research (from links you drop) feed the Apprentice's reports?
 
 ## Pages
-- *(Feature, research, competitor, and decision pages will be listed here.)*
-- Related: [[flowpilot]] · [[daily-run-through]] · [[overview]]
+- Sources: [[src-command-centre]]
+- Related: [[connected-apps]] · [[flowpilot]] · [[daily-run-through]] · [[overview]]

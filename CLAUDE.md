@@ -272,7 +272,7 @@ Make the change, keep links, the index, and frontmatter consistent, log an `edit
 - **Investing:** the Apprentice section records product work and market research. Every price, return,
   or market figure carries its date and source. Claude does not invent figures, and does not present
   buy or sell calls as fact. Strategy notes describe how a strategy works and its known risks.
-- **Business:** client names and money figures stay in this private repo, and are never sent to outside tools without Stellan's OK.
+- **Business:** client names, business contacts and money figures are never sent to outside tools without Stellan's OK. **The GitHub repo is currently public**, so those details go in the app database only, and the wiki keeps aggregates until Stellan makes the repo private.
 
 ---
 
@@ -303,6 +303,11 @@ check-in works through them one at a time.
   - 2026-10-10: **v2.1. The live app and agents.** Added the app (link inbox, agent status, schedule,
     morning breakdown), `agents/` instructions, two Routines (inbox every 2 h, 6:30 AM email),
     the `wiki/daily/schedule.md` page, research pages (`kind: asset`), and §6.7.
+  - 2026-10-10: **v2.2. Brain map, Talk to ACE, connected apps.** The app gained an Obsidian-style graph of every
+    agent, app and ACE outreach contact, with a popup for each, plus a Talk to ACE button (a new Claude chat with ACE's briefing).
+    Added [[connected-apps]]. The Command Centre's agents are synced into the app each run.
+    **The repo is public**, so personal and third-party details live only in the app database
+    (source pages may use `raw: app:<db path>`), and the wiki holds aggregates.
 
 ---
 

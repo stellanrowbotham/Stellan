@@ -28,3 +28,17 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ `CLAUDE.md` §0/§2/§3/§4/§6.7/§10, [[overview]], [[daily-run-through]], [[index]]
 - ⚠️ The cloud environment blocks most websites (nhl.com, finance.yahoo.com, wikipedia.org tested). Web search works. Until network access is widened, agents fall back to search and mark links they can't open as "Needs you".
 - → Routines: Brain · Inbox agent and Brain · Morning brief
+
+## [2026-10-10] ingest | Connected apps: Command Centre, Apprentice dashboard, request page, ACE outreach log
+- Read: Command Centre app (its 6 agents from its database), Investing Apprentice dashboard, WebsitePublisher request page (project 28751), and Google Doc "Ace — Contacted Businesses Log (v8)". The FlowPilot Manus site couldn't be opened (DNS blocked from the cloud).
+- Mode: unsupervised (Stellan asked to "fill it with information")
+- + [[src-command-centre]], [[src-flowpilot-request-page]], [[src-ace-outreach-log]], [[connected-apps]]
+- ~ [[ace]] (cold-outreach agent, 69 businesses in 4 batches), [[flowpilot]] (offer, funnel, n8n, pipeline), [[investing-apprentice]] (simulation, 5 levels, Level 1, blocked on data), [[daily-run-through]] (open loops), [[schedule]] (team details removed), [[overview]], [[index]]
+- ⚠️ Two morning briefings now exist (6:30 AM here, 7:45 AM Command Centre). Status: open
+- ⚠️ The GitHub repo is PUBLIC. Business names and emails were kept out of the wiki (aggregates only); the full list is in the app database at `ace/outreach`, without emails
+- → Stellan: make the repo private; decide on one or two briefings; reconnect n8n
+
+## [2026-10-10] schema | v2.2: brain map, Talk to ACE, connected apps
+- App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
+- App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
+- ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
