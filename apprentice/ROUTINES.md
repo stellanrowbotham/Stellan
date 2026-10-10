@@ -4,7 +4,7 @@
 |---|---|---|---|
 | Apprentice · Pre-market | `trig_01EBzV8jv969JgHxMPNSrwjt` | 8:27 AM Mon–Fri | on |
 | Apprentice · After the close | `trig_01A5A8LVVor9ofNUqa4tYF5z` | 4:33 PM Mon–Fri | on |
-| Apprentice · Crypto check | `trig_01EZPKbyn9wamX7f7gvKEtpi` | 12:13, 4:13, 8:13 (AM/PM) daily | **paused** until data sites are allowed |
+| Apprentice · Opportunity scan (every 4 h) | `trig_01EZPKbyn9wamX7f7gvKEtpi` | 2:13, 6:13, 10:13 AM and PM, daily | on (turned on 2026-10-10 at Stellan's request). Hunts for a new buy each run |
 | Apprentice · Hourly experiment | `trig_01CXcNa8V3PhuiNXPq17hKxY` | 10:37–3:37 hourly Mon–Fri | **paused** until data sites are allowed |
 
 Each firing starts a fresh session, attaches this repo, reads `ROUTINE_GUIDE.md` and runs one job.

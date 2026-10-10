@@ -34,7 +34,7 @@ export APPRENTICE_ROUTINE=1
 cd <repo>                                  # stellanrowbotham/Stellan
 git fetch origin claude/practical-galileo-8nwjmp
 git checkout -B claude/practical-galileo-8nwjmp origin/claude/practical-galileo-8nwjmp
-python3 -m apprentice run-start <job>      # job = pre_market | post_close | crypto | day_experiment
+python3 -m apprentice run-start <job>      # job = pre_market | post_close | opportunity_scan | day_experiment
 python3 -m apprentice health               # read it; carry on even if it reports problems
 python3 -m apprentice status
 ```
@@ -98,6 +98,20 @@ Check `status`. At **Level 1, do not propose trades.** From Level 2:
 it. If so, read the reasons and don't retry the same idea in the same run. To close early because the
 thesis broke: `python3 -m apprentice exit <trade_id> thesis_invalidated`.
 `day_experiment` trades are a **labelled experiment**: hourly checks on free, possibly delayed data.
+
+## 5b. Opportunity scan: hunting for a new buy (every 4 hours)
+Stellan's instruction (2026-10-10): every 4 hours, look for a new stock (or crypto) to buy. If you
+believe it will make a profit, pretend-buy it within the budget. **You are the one being trained.**
+1. Pick 3-5 approved symbols from `apprentice/config/universe.json` that are **not** on the watchlist
+   yet. Prefer TSX names and assets priced under about $100, since whole shares only fit the $100
+   position cap. Add them with `python3 -m apprentice watch add SYMBOL "why"`. Then collect.
+2. Research each one and the existing watchlist. Score them honestly using the report fields.
+3. Propose **at most 2** buys, and only for candidates that pass every report gate (score, reward:risk
+   of 2 or more, 2 or more independent sources). The risk engine sizes them. Outside market hours a
+   stock order waits and fills at the next run during market hours, at the real price then. Crypto
+   fills any time.
+4. If nothing passes, record "No trade" with the reasons. Skipping is better than a weak buy.
+5. Remove watchlist names that have been rejected 3 or more times: `watch remove SYMBOL "reason"`.
 
 ## 6. Post-trade reviews
 `python3 -m apprentice reviews-due`. For each closed trade, answer all eight questions honestly:

@@ -4,8 +4,8 @@ kind: routine
 title: Investing Apprentice
 aliases: ["AI investing apprentice", "Stock and crypto apprentice", "Apprentice"]
 tags: [agents, investing]
-status: live (Level 1, data blocked)
-schedule: 8:27 AM and 4:33 PM weekdays; crypto every 4 h and hourly experiment paused
+status: live (Level 2, data blocked)
+schedule: 8:27 AM and 4:33 PM weekdays; opportunity scan every 4 h; hourly experiment paused
 created: 2026-10-10
 updated: 2026-10-10
 sources: [src-stellan-investing-apprentice-brief]
@@ -18,11 +18,13 @@ A planned AI agent that studies Canadian and US stocks and crypto, makes **prete
 Picture a new employee at an investing company. On day one they can't touch any money. First they read the news, make predictions and write down *why*. If those notes are honest and well sourced, they're allowed to trade with play money. Every trade is written down before it happens, so it can't be changed afterwards. When a trade ends, they ask "was I right, or just lucky?" Only steady, careful results over many months earn a promotion, and even the top level never gets real money on its own *(synthesis)*.
 
 ## Key facts
-- Status: **built and scheduled on 2026-10-10, Level 1** (forecasts only). Plan approved by Stellan the same day; see [[investing-apprentice-plan]] *(Stellan, 2026-10-10)*.
+- Status: **built and scheduled on 2026-10-10.** Stellan moved it straight to **Level 2 (pretend trading)** the same day, skipping the forecast-only Level 1: "I am training you not me" *(Stellan, 2026-10-10)*.
+- **Every 4 hours** it hunts for a new stock or crypto to buy, and pretend-buys up to 2 when they pass every check *(Stellan, 2026-10-10)*.
+- Original Level 1 start: Plan approved by Stellan the same day; see [[investing-apprentice-plan]] *(Stellan, 2026-10-10)*.
 - ⚠️ **Can't research yet:** on its first run every data site was blocked by the cloud environment's network policy, and the free API keys aren't set. The fix is in `apprentice/README.md` → Setup *(synthesis)*.
 - Dashboard (private, works on phone): [Investing Apprentice](https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ). Also shown as an agent card on [[stellans-brain]].
 - Code: `apprentice/` in this repo; 56 automated tests; append-only, hash-chained records, so old predictions can't be quietly edited *(synthesis)*.
-- Routines: Pre-market `trig_01EBzV8jv969JgHxMPNSrwjt` and After the close `trig_01A5A8LVVor9ofNUqa4tYF5z` are on. Crypto check `trig_01EZPKbyn9wamX7f7gvKEtpi` and Hourly experiment `trig_01CXcNa8V3PhuiNXPq17hKxY` are paused until data works. They have no Gmail connector yet, so email won't send until Stellan adds it.
+- Routines: Pre-market `trig_01EBzV8jv969JgHxMPNSrwjt` and After the close `trig_01A5A8LVVor9ofNUqa4tYF5z` are on. Opportunity scan `trig_01EZPKbyn9wamX7f7gvKEtpi` (every 4 h) is on. Hourly experiment `trig_01CXcNa8V3PhuiNXPq17hKxY` is paused. They have no Gmail connector yet, so email won't send until Stellan adds it.
 - Simulation only. It has no ability to place real orders ([[src-stellan-investing-apprentice-brief]]).
 - Starting virtual balance: **$1,000 CAD**, with a Canadian focus (TSX first, then US) *(Stellan, 2026-10-10)*.
 - Five levels, from Research Apprentice to Trusted Research Agent ([[promotion-system]], [[src-stellan-investing-apprentice-brief]]).

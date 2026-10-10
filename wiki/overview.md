@@ -15,7 +15,7 @@ The top-level synthesis of Stellan's second brain. It is rewritten (not appended
 Stellan runs a small team of AI agents. They all report to one live dashboard, [[stellans-brain]] ([[src-agent-roster-2026-10-10]]).
 - **Daily life team (scheduled):** [[morning-rundown]] (7:45 AM), [[inbox-sweep]] (six times a day) and [[six-pm-update]] (5:51 PM). They read email and calendars, propose calendar adds, draft replies, and never send or delete anything themselves.
 - **Business team:** [[ace]] does outreach on request, and [[flowpilot]] answers website inquiries automatically.
-- **Investing:** the [[investing-apprentice]], built 2026-10-10. It is at Level 1 and waiting on data access.
+- **Investing:** the [[investing-apprentice]], built 2026-10-10. It is at Level 2 (pretend trading, approved by Stellan) and scans for buys every 4 hours, but it is still waiting on data access.
 - Around-the-clock view: [[agents-24-7]].
 
 **Pattern so far:** agents are allowed to *read and propose* but not to *act* on anything that can't be undone. Stellan stays the one who approves *(synthesis)*. The investing apprentice extends that pattern: it trades only pretend money, and code enforces its limits ([[src-stellan-investing-apprentice-brief]]).

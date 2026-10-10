@@ -3,9 +3,10 @@
   "version": 1,
   "agent": {
     "name": "Investing Apprentice",
-    "level": 1,
+    "level": 2,
     "home_currency": "CAD",
-    "timezone": "America/Toronto"
+    "timezone": "America/Toronto",
+    "level_note": "Level 2 (paper trading) approved directly by Stellan on 2026-10-10: 'I am training you not me'. Level 1 forecast-only stage skipped at his request."
   },
   "live_trading": {
     "enabled": false,
@@ -19,9 +20,9 @@
     "crypto_venue_model": "kraken"
   },
   "risk": {
-    "max_position_pct": 0.10,
-    "max_sector_pct": 0.30,
-    "max_crypto_pct": 0.20,
+    "max_position_pct": 0.1,
+    "max_sector_pct": 0.3,
+    "max_crypto_pct": 0.2,
     "max_risk_per_trade_pct": 0.01,
     "daily_loss_halt_pct": 0.03,
     "drawdown_review_pct": 0.15,
@@ -29,33 +30,65 @@
     "require_stop": true,
     "long_only": true,
     "allow_leverage": false,
-    "banned_tags": ["leveraged", "inverse", "penny", "otc"]
+    "banned_tags": [
+      "leveraged",
+      "inverse",
+      "penny",
+      "otc"
+    ]
   },
   "strategies": {
     "swing": {
       "enabled": true,
       "min_level": 2,
       "label": "Swing (days to weeks)",
-      "holding_days": [2, 30],
-      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
-      "max_research_price_age_hours": {"stock": 30, "crypto": 6}
+      "holding_days": [
+        2,
+        30
+      ],
+      "max_fill_quote_age_minutes": {
+        "stock": 20,
+        "crypto": 10
+      },
+      "max_research_price_age_hours": {
+        "stock": 30,
+        "crypto": 6
+      }
     },
     "long_term": {
       "enabled": true,
       "min_level": 2,
       "label": "Long-term (months+)",
-      "holding_days": [60, 1000],
-      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
-      "max_research_price_age_hours": {"stock": 80, "crypto": 24}
+      "holding_days": [
+        60,
+        1000
+      ],
+      "max_fill_quote_age_minutes": {
+        "stock": 20,
+        "crypto": 10
+      },
+      "max_research_price_age_hours": {
+        "stock": 80,
+        "crypto": 24
+      }
     },
     "day_experiment": {
       "enabled": true,
       "min_level": 2,
       "label": "EXPERIMENT: hourly day-trading test (not real day trading: checks only once an hour on free, possibly delayed data)",
       "experiment": true,
-      "holding_days": [0, 0],
-      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
-      "max_research_price_age_hours": {"stock": 1, "crypto": 1},
+      "holding_days": [
+        0,
+        0
+      ],
+      "max_fill_quote_age_minutes": {
+        "stock": 20,
+        "crypto": 10
+      },
+      "max_research_price_age_hours": {
+        "stock": 1,
+        "crypto": 1
+      },
       "force_close_minutes_before_close": 30
     }
   },
@@ -64,21 +97,32 @@
       "status": "UNVERIFIED: from secondary reviews read 2026-10-10 (money.ca, brokerchooser, milesopedia). Check questrade.com pricing before Level 3.",
       "stock_commission": 0.0,
       "fx_fee_pct": 0.015,
-      "fractional_shares": {"TSX": false, "US": false},
-      "estimated_spread_pct": {"etf": 0.0005, "large_cap": 0.0007, "mid_cap": 0.0020, "default": 0.0030},
+      "fractional_shares": {
+        "TSX": false,
+        "US": false
+      },
+      "estimated_spread_pct": {
+        "etf": 0.0005,
+        "large_cap": 0.0007,
+        "mid_cap": 0.002,
+        "default": 0.003
+      },
       "slippage_pct": 0.0005
     },
     "kraken": {
       "status": "UNVERIFIED: Kraken Pro starter-tier taker fee from general knowledge. Check kraken.com/features/fee-schedule.",
-      "taker_fee_pct": 0.0040,
-      "slippage_pct": 0.0010,
+      "taker_fee_pct": 0.004,
+      "slippage_pct": 0.001,
       "min_order_value": 5.0
     }
   },
   "forecasts": {
     "min_probability": 0.5,
     "max_probability": 0.95,
-    "score_tolerance_minutes": {"stock": 1440, "crypto": 60}
+    "score_tolerance_minutes": {
+      "stock": 1440,
+      "crypto": 60
+    }
   },
   "candidate_scoring": {
     "weights": {
@@ -136,7 +180,7 @@
     "demotion": {
       "drawdown_pct": 0.15,
       "integrity_violation": true,
-      "rolling_brier_worse_than": 0.30
+      "rolling_brier_worse_than": 0.3
     }
   },
   "scorecard": {
@@ -158,15 +202,27 @@
     "notes": "No points for volume: more trades, more research or higher confidence earn nothing by themselves. Integrity penalties also block promotion."
   },
   "benchmarks": {
-    "CA_STOCK": {"symbol": "XIU", "exchange": "TSX", "label": "iShares S&P/TSX 60 (XIU)"},
-    "US_STOCK": {"symbol": "SPY", "exchange": "NYSE", "label": "SPDR S&P 500 (SPY), in CAD"},
-    "CRYPTO": {"symbol": "XBTCAD", "exchange": "KRAKEN", "label": "Bitcoin in CAD"}
+    "CA_STOCK": {
+      "symbol": "XIU",
+      "exchange": "TSX",
+      "label": "iShares S&P/TSX 60 (XIU)"
+    },
+    "US_STOCK": {
+      "symbol": "SPY",
+      "exchange": "NYSE",
+      "label": "SPDR S&P 500 (SPY), in CAD"
+    },
+    "CRYPTO": {
+      "symbol": "XBTCAD",
+      "exchange": "KRAKEN",
+      "label": "Bitcoin in CAD"
+    }
   },
   "schedule": {
     "pre_market": "08:27 Mon-Fri",
     "post_close": "16:33 Mon-Fri",
-    "crypto": "every 4 hours",
-    "day_experiment": "hourly 10:37-15:37 Mon-Fri"
+    "opportunity_scan": "every 4 hours: 2:13, 6:13, 10:13 AM and 2:13, 6:13, 10:13 PM (stocks fill only in market hours; crypto any time)",
+    "day_experiment": "hourly 10:37-15:37 Mon-Fri (paused)"
   },
   "notifications": {
     "email": {

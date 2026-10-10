@@ -15,7 +15,7 @@ sources: [src-agent-roster-2026-10-10, src-stellan-investing-apprentice-brief]
 ## Answer: a normal day
 | Time | Agent | What it's doing |
 |---|---|---|
-| 12:00 AM – 7:45 AM | *(nobody, until the apprentice's crypto check is turned on)* | Quiet. [[flowpilot]] still fires if a website inquiry comes in. |
+| 12:00 AM – 7:45 AM | Apprentice · Opportunity scan at 2:13 and 6:13 | Otherwise quiet. [[flowpilot]] still fires if a website inquiry comes in. |
 | **7:45 AM** | [[morning-rundown]] | Overnight email, all calendars, school check, today's plan. Morning brief and push notification. |
 | 8:49 AM | [[inbox-sweep]] | New email, 48-hour clash check |
 | 10:49 AM | [[inbox-sweep]] | same |
@@ -37,7 +37,7 @@ All schedule facts are from [[src-agent-roster-2026-10-10]].
 | 8:27 AM Mon–Fri | Apprentice · Pre-market | Research, forecasts, emailed report before the 9:30 open | on |
 | 10:37 AM–3:37 PM hourly, Mon–Fri | Apprentice · Hourly experiment | Labelled hourly day-trading test (1-hour forecasts at Level 1) | paused (no data yet) |
 | 4:33 PM Mon–Fri | Apprentice · After the close | Scores forecasts, reviews trades, promotion check | on |
-| 12:13, 4:13, 8:13 AM and PM, daily | Apprentice · Crypto check | Crypto never closes, so this also runs overnight | paused (no data yet) |
+| 2:13, 6:13, 10:13 AM and PM, daily | Apprentice · Opportunity scan | Hunts for a new stock or crypto to pretend-buy (stocks fill only during market hours) | on |
 
 Times are offset a few minutes from the other agents so their runs don't overlap *(synthesis)*. The 8:30 AM / 4:30 PM / 4-hourly schedule was approved by Stellan on 2026-10-10 *(Stellan, 2026-10-10)*. The brief asks for research "at the frequency I choose" ([[src-stellan-investing-apprentice-brief]]).
 

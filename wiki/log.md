@@ -36,3 +36,9 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - ~ [[investing-apprentice]], [[investing-apprentice-plan]], [[agents-24-7]], [[stellans-brain]], [[trading-costs]], [[overview]], [[index]]
 - ⚠️ First real run: every data host was blocked by the network policy and no API keys are set. The Routines have no Gmail connector
 - → Stellan: allow the domains, add the free keys, and add Gmail to the Routines (see `apprentice/README.md`); then turn on the crypto and hourly Routines
+
+## [2026-10-10] edit | Apprentice moved to Level 2 with a 4-hourly opportunity scan
+- Stellan: "every 4 hours look for a new stock to buy … fake buy … I am training you not me"
+- Config level 1 → 2 (re-approved hash); promotion recorded in `level_events`; crypto Routine turned into "Opportunity scan" every 4 h and switched on
+- ~ [[investing-apprentice]], [[promotion-system]], [[agents-24-7]], [[investing-apprentice-plan]], [[overview]], [[index]]
+- ⚠️ Level 1's forecast check was skipped by choice; still blocked on network access, keys and Gmail
