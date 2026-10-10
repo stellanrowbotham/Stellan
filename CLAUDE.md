@@ -1,8 +1,18 @@
-# CLAUDE.md: LLM Wiki schema for Stellan's second brain
+# CLAUDE.md: schema for Stellan's Brain
 
-This file is the **schema**. It makes the agent a disciplined wiki maintainer instead of a generic
-chatbot. Read it at the start of every session and follow it in every interaction. The human and
-the agent change it together over time (see §9).
+This file is the **schema** for Stellan's Brain, a personal knowledge base that Claude writes and
+maintains (the "LLM Wiki" pattern). Read it at the start of every session and follow it in every
+interaction. Stellan and Claude change it together over time (see §10).
+
+The brain has three sections:
+
+| Section | Folder | Hub page | What it's for |
+|---|---|---|---|
+| **AI Stock & Crypto Investing Apprentice** | `wiki/investing/` | [[investing-apprentice]] | The product Stellan is building: vision, features, roadmap, decisions, market and competitor research |
+| **FlowPilot** | `wiki/flowpilot/` | [[flowpilot]] | Stellan's AI automations business: offers, clients, pipeline, tools, operations. Includes [[ace]], the business assistant Stellan uses in Claude chats |
+| **Daily Run-Through** | `wiki/daily/` | [[daily-run-through]] | Morning check-ins and end-of-day reviews. The day's items get filed into the other two sections |
+
+[[overview]] is the home page that ties the three sections together.
 
 ---
 
@@ -10,11 +20,11 @@ the agent change it together over time (see §9).
 
 | Who | Owns | Never does |
 |---|---|---|
-| **Human (Stellan)** | Picks sources, steers what matters, asks questions, makes final calls on schema changes | Has to write wiki pages (but may) |
-| **Agent (Claude)** | All of `wiki/`: summaries, entity and concept pages, cross-references, index, log, lint | Edits anything in `raw/`, makes up facts, deletes pages without asking |
+| **Stellan** | Picks sources, answers check-ins, steers what matters, makes final calls on the schema | Has to write wiki pages (but may) |
+| **Claude** | All of `wiki/`: hubs, pages, cross-references, index, log, lint, and running the daily check-ins | Edits files already in `raw/`, makes up facts, deletes pages without asking |
 
-The wiki is a **persistent, compounding artifact**. Knowledge gets compiled once and then kept
-current. It is not re-derived from raw files on every question.
+The brain is a **persistent, compounding artifact**. Knowledge gets compiled once and kept current.
+It is not re-derived on every question.
 
 ---
 
@@ -22,29 +32,29 @@ current. It is not re-derived from raw files on every question.
 
 ```
 /
-├── CLAUDE.md              ← this schema
-├── tools/
-│   └── wiki.py            ← helper CLI: search · lint · stats · graph (stdlib Python)
-├── raw/                   ← LAYER 1: immutable sources (human curates; agent only reads)
-│   ├── assets/            ← images/attachments downloaded locally (Obsidian attachment folder)
-│   └── YYYY-MM-DD-<slug>.<ext>
-└── wiki/                  ← LAYER 2: LLM-owned knowledge base
-    ├── index.md           ← content catalog (read FIRST on every query)
-    ├── log.md             ← append-only chronological record
-    ├── overview.md        ← the evolving top-level synthesis of everything
-    ├── sources/           ← one summary page per raw source      (src-<slug>.md)
-    ├── entities/          ← people, orgs, products, tools, places, works (<slug>.md)
-    ├── concepts/          ← ideas, frameworks, themes, methods, recurring topics (<slug>.md)
-    └── analyses/          ← filed-back query answers, comparisons, syntheses (<slug>.md)
+├── CLAUDE.md                 ← this schema
+├── tools/wiki.py             ← helper CLI: search · lint · stats · graph (stdlib Python)
+├── raw/                      ← LAYER 1: immutable inputs (Claude only creates new files, never edits)
+│   ├── assets/               ← images/attachments (Obsidian attachment folder)
+│   ├── daily/                ← Stellan's check-in answers, verbatim: YYYY-MM-DD-morning.md / -evening.md
+│   ├── investing/            ← sources for the Apprentice: articles, docs, specs, data exports
+│   └── flowpilot/            ← sources for FlowPilot: client briefs, call notes, proposals, ACE chat exports
+└── wiki/                     ← LAYER 2: Claude-owned knowledge
+    ├── overview.md           ← HOME: Stellan's Brain, the current big picture across all sections
+    ├── index.md              ← catalog of every page, grouped by section (read FIRST on every query)
+    ├── log.md                ← append-only record of every operation
+    ├── sources/              ← one summary page per raw source, any section (src-<slug>.md)
+    ├── investing/            ← hub investing-apprentice.md + feature, research, competitor, decision pages
+    ├── flowpilot/            ← hub flowpilot.md + ace.md + client, offer, tool, process pages
+    └── daily/                ← hub daily-run-through.md + one page per day (daily-YYYY-MM-DD.md)
 ```
 
 Rules:
-- **`raw/` is read-only to the agent.** It never edits, renames, or deletes anything there.
-  The one exception: when the human pastes a source into chat, the agent may *create* a new
-  file in `raw/` with the pasted content and a capture header (§4.1), and never touches it again.
-- Only create a new top-level folder in `wiki/` when the human agrees to it, and record it in §2 and §9.
-- If a personal area grows big enough (for example health, goals, or a book), propose a
-  subfolder such as `wiki/concepts/health/`. Keep filenames unique across the whole wiki anyway.
+- **Files already in `raw/` are never edited, renamed, or deleted.** Claude may *create* new raw
+  files to capture something Stellan pasted or answered in chat (§4.1).
+- New top-level folders in `wiki/` or `raw/` need Stellan's OK and get recorded here and in §10.
+- When a topic inside a section grows large (for example many clients), propose a subfolder
+  (`wiki/flowpilot/clients/`). Filenames stay unique across the whole wiki anyway.
 
 ---
 
@@ -52,237 +62,240 @@ Rules:
 
 - **Filenames:** lowercase `kebab-case.md`, ASCII only, **unique across all of `wiki/`**, so
   Obsidian `[[wikilinks]]` resolve without paths.
-  - Sources: `src-<author-or-org>-<short-title>.md` (e.g. `src-karpathy-llm-wiki.md`)
-  - Entities: the canonical name (e.g. `andrej-karpathy.md`, `obsidian.md`)
-  - Concepts: a noun phrase (e.g. `retrieval-augmented-generation.md`)
-  - Analyses: the question or comparison (e.g. `llm-wiki-vs-rag.md`)
-- **Raw filenames:** `YYYY-MM-DD-<slug>.<ext>`, where the date is the day it was added.
-- **Links:** always Obsidian wikilinks: `[[slug]]` or `[[slug|display text]]`. No markdown
-  links between wiki pages. External URLs use normal markdown links.
-- **Link on first mention.** The first time a page mentions an entity or concept that has a page,
-  it links to it. If something matters and has no page yet, link it anyway (red link) and add it
-  to the "Open questions / gaps" section of `overview.md` so lint can pick it up.
-- **Every page needs at least one inbound link.** At minimum that is its index entry, but it should also be linked from a related page.
-- **Aliases:** put alternate names in `aliases:` frontmatter so Obsidian search finds them.
+  - Sources: `src-<author-or-org>-<short-title>.md`
+  - Daily pages: `daily-YYYY-MM-DD.md`
+  - FlowPilot clients: `client-<name>.md`. Offers: `offer-<name>.md`.
+  - Apprentice features: `feature-<name>.md`. Decisions: `decision-YYYY-MM-DD-<slug>.md`.
+  - Everything else: the canonical name or a noun phrase (`n8n.md`, `dollar-cost-averaging.md`).
+- **Raw filenames:** `YYYY-MM-DD-<slug>.<ext>` (the date it was added), inside the right `raw/` subfolder.
+- **Links:** always Obsidian wikilinks: `[[slug]]` or `[[slug|display text]]`. External URLs use
+  normal markdown links.
+- **Link on first mention.** If something matters and has no page yet, link it anyway (a red link)
+  and list it under the hub's "Open questions" so it gets filled in.
+- **Every page is linked from its section hub** (and from the index).
+- **Cross-section links are encouraged.** For example, a FlowPilot automation idea can come from
+  an Apprentice feature, or a daily page can link to both sections.
 
 ---
 
 ## 4. Page types & templates
 
-Every wiki page starts with YAML frontmatter (so Dataview can query it):
+Every wiki page starts with YAML frontmatter:
 
 ```yaml
 ---
-type: source | entity | concept | analysis | overview | meta
+type: hub | entity | concept | analysis | source | daily | overview | meta
+section: investing | flowpilot | daily | brain
 title: Human Readable Title
 aliases: []
 tags: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-sources: [src-slug, ...]        # source pages this page draws on
+sources: [src-slug, ...]        # source pages this page draws on ([] if none yet)
 ---
 ```
+Extra fields: entity → `kind: person|org|product|tool|place|work|feature|client|offer`;
+analysis → `question:`; source → `raw:`; daily → `raw: [raw/daily/…]` and `date:`.
 
-### 4.1 Raw source capture header (only when the agent creates the raw file from a paste)
+### 4.1 Raw capture header (when Claude creates a raw file from chat)
 ```markdown
-<!-- captured: YYYY-MM-DD | origin: <URL or "pasted by Stellan"> | author: <name> | published: <date or approx> -->
+<!-- captured: YYYY-MM-DD HH:MM | origin: <URL, or "pasted by Stellan", or "check-in answers"> | author: <name> | published: <date or approx> -->
 ```
-After the header, the content goes in as given. Strip only obvious web-page chrome (sign-in
-buttons, share widgets) and say so in the header.
+Then the content exactly as given. For check-ins, record each question followed by Stellan's
+answer word for word (typos included).
 
-### 4.2 Source page (`wiki/sources/src-*.md`)
+### 4.2 Hub page (one per section)
 ```markdown
-# <Title>
-> **Raw:** `raw/<file>` · **Author:** [[entity]] · **Published:** <date> · **Ingested:** <date>
+# <Section name>
+One-line description.
 
-## TL;DR
-2–4 sentences.
-
-## Key points
-- Bullet list of the substantive claims, each specific enough to cite.
-
-## Notable quotes
-> Short verbatim quotes worth keeping (with section reference).
-
-## How it connects
-- What it adds, confirms, or contradicts in existing pages, with [[links]].
-
-## Pages touched by this ingest
-- [[page]]: what changed
+## Snapshot            ← current state in 3–6 bullets, rewritten (not appended) as things change
+## <Section-specific blocks>   ← see below
+## Open questions      ← unknowns to ask Stellan about at the next check-in
+## Pages               ← every page in this section, grouped
 ```
+Section-specific blocks:
+- **investing-apprentice:** Vision · Target user · Features (planned / building / shipped) ·
+  Tech & data stack · Roadmap · Decisions · Research (markets, strategies, competitors)
+- **flowpilot:** What FlowPilot sells · Offers & pricing · Clients & pipeline · Tool stack ·
+  Processes · Goals & numbers · ACE
+- **daily-run-through:** How it works · Morning questions · Evening questions · Open loops ·
+  Entries (newest first)
 
-### 4.3 Entity page (`wiki/entities/*.md`), extra frontmatter: `kind: person|org|product|tool|place|work`
+### 4.3 Entity / concept page
 ```markdown
 # <Name>
 One-line description.
 
-## Summary
-What it is / who they are, as relevant to this wiki.
-
-## Key facts
-- Fact. ([[src-…]])
-
-## Connections
-- [[related page]]: how it relates
-
-## Timeline (optional)
-- YYYY-MM-DD: event ([[src-…]])
+## Summary / Explanation     ← current best understanding, rewritten as it improves
+## Key facts / Evidence      ← bullets, each cited
+## Tensions & contradictions ← ⚠️ A says X, B says Y. Status: open / resolved because…
+## Connections               ← [[links]] and how they relate
+## Timeline (optional)       ← YYYY-MM-DD: event (citation)
 ```
 
-### 4.4 Concept page (`wiki/concepts/*.md`)
+### 4.4 Decision page (`decision-YYYY-MM-DD-<slug>`, type `analysis`)
 ```markdown
-# <Concept>
-One-line definition.
-
-## Explanation
-The current best synthesis, rewritten as understanding improves (not appended to).
-
-## Evidence & claims
-- Claim. ([[src-…]])
-
-## Tensions & contradictions
-- ⚠️ Source A says X ([[src-a]]); source B says Y ([[src-b]]). Status: open / resolved because…
-
-## Related
-- [[page]]
+# Decision: <what was decided>
+> Decided YYYY-MM-DD by Stellan · Status: active / reversed (link to the replacement)
+## Context · ## Options considered · ## Decision & why · ## Revisit when
 ```
 
-### 4.5 Analysis page (`wiki/analyses/*.md`), extra frontmatter: `question:`
+### 4.5 Daily page (`wiki/daily/daily-YYYY-MM-DD.md`)
 ```markdown
-# <Question or comparison>
-> Filed from a query on YYYY-MM-DD.
+# <Weekday> YYYY-MM-DD
+> Energy AM n/10 · PM n/10 · Raw: `raw/daily/…`
 
-## Answer
-Synthesized answer with citations.
+## Morning
+- **Top 3:** 1. … 2. … 3. …
+- **FlowPilot today:** …
+- **Apprentice today:** …
+- **On my mind:** …
 
-## Basis
-- Pages used: [[…]], [[…]]
+## Evening
+- **Done:** ✅ / ⏳ against each Top 3 item
+- **FlowPilot:** wins, client/lead updates, numbers
+- **Apprentice:** progress, bugs, decisions, market notes
+- **Learned / ideas:** …
+- **Tomorrow first:** …
+
+## Filed to
+- [[page]]: what was added
 ```
 
 ### 4.6 Citations
-- Every non-obvious factual claim in the wiki cites the **source page** it came from: `([[src-slug]])`.
-- Inference or synthesis by the agent is labelled: `*(synthesis)*`.
-- The human's own opinions or statements from chat are cited as `*(Stellan, YYYY-MM-DD)*`.
-- Never state something as fact without a source. If unsure, write `*(unverified)*`.
+- A fact from a source cites the source page: `([[src-slug]])`.
+- Something Stellan said in chat or a check-in: `*(Stellan, YYYY-MM-DD)*`, or link the daily page `([[daily-YYYY-MM-DD]])`.
+- Claude's own inference: `*(synthesis)*`. General knowledge: `*(general knowledge)*`. Not sure: `*(unverified)*`.
+- Never state something as fact without one of these.
 
 ---
 
 ## 5. Special files
 
-### 5.1 `wiki/index.md` (content-oriented)
-- A catalog of **every** wiki page, grouped by category: Overview, Sources, Entities, Concepts, Analyses.
-- One line per page: `- [[slug]]: one-line summary · <metadata>`
-  - Sources: `· <published date> · <author>`
-  - Entities/Concepts: `· N sources`
-- Within each group, sort alphabetically, except Sources, which are newest first.
-- Update it on **every** operation that creates, renames, or deletes a page, or changes what a page is about.
-- Keep the counts in the header line current.
+### 5.1 `wiki/index.md`
+- Every wiki page, grouped as: **Home**, **Investing Apprentice**, **FlowPilot**, **Daily**, **Sources**.
+- One line per page: `- [[slug]]: one-line summary · <metadata>`. Entity/concept pages end with
+  `· N sources`. Daily pages are newest first and list only the last 14 days (the full list is on
+  [[daily-run-through]]). Sources are newest first. Everything else is alphabetical.
+- Update it on every operation that creates, renames, or deletes a page, or changes what a page is about.
 
-### 5.2 `wiki/log.md` (chronological, append-only)
-- Never edit or reorder past entries. New entries go at the **bottom**.
-- Every entry starts with this exact parseable prefix:
-  `## [YYYY-MM-DD] <op> | <subject>`
-  where `<op>` ∈ `setup | ingest | query | lint | schema | edit`.
-- The body is a short bullet list: what was read, pages created (`+`), pages updated (`~`),
-  pages deleted (`-`), contradictions flagged (`⚠️`), and follow-ups (`→`).
+### 5.2 `wiki/log.md`
+- Append-only, newest at the bottom. Every entry starts with `## [YYYY-MM-DD] <op> | <subject>`,
+  where `<op>` ∈ `setup | ingest | query | lint | schema | edit | morning | evening`.
+- Body bullets: read, `+` created, `~` updated, `-` deleted, `⚠️` contradiction, `→` follow-up.
 - Recent activity: `grep "^## \[" wiki/log.md | tail -5`
 
-### 5.3 `wiki/overview.md`
-- The top-level synthesis: what this second brain currently knows, its main themes, an evolving
-  thesis, and a running **Open questions / gaps** list.
-- Revisit it on every ingest. Rewrite sections when understanding changes; don't just append.
+### 5.3 `wiki/overview.md` (Home)
+- The big picture across all three sections: what Stellan is working on, how the sections connect,
+  this week's focus, and top open loops. Rewrite it; don't just append.
 
 ---
 
 ## 6. Workflows
 
-### 6.1 INGEST (the human says "ingest X", drops a file in `raw/`, or pastes a source)
-1. **Locate/capture.** Find the file in `raw/`. If the source was pasted, create the raw file per §4.1.
-2. **Read** the whole source. For images in `raw/assets/`, read the text first, then view the relevant images.
-3. **Orient.** Read `wiki/index.md` and any existing pages the source touches.
-4. **Discuss.** Give the human 3–7 key takeaways, list the pages to create or update, and note any
-   contradictions with the wiki. Ask what to emphasize. *(Skip this only if the human says
-   "batch", "just do it", or similar. Then note "unsupervised" in the log entry.)*
-5. **Write the source page** `wiki/sources/src-<slug>.md` (§4.2).
-6. **Update or create entity and concept pages.** Integrate new facts *into* existing explanations instead
-   of appending them, add citations, and flag contradictions under "Tensions & contradictions" on
-   **both** affected pages. One source usually touches 5–15 pages.
-7. **Update `overview.md`** if the big picture, the thesis, or the open questions changed.
-8. **Update `index.md`** with the new pages, changed summaries, and source counts.
-9. **Append to `log.md`.**
-10. **Commit** (§8) with the message `ingest: <source title>`.
-11. **Report back.** Summarize which pages were created and updated, and suggest 1–3 follow-up questions or sources.
+### 6.1 MORNING CHECK-IN
+Triggers: "morning", "gm", "check-in", "start my day", or the first message of a day that isn't
+about something else.
+1. Read [[daily-run-through]] (open loops), yesterday's daily page (its "Tomorrow first" item), and both section hubs' Snapshots and Open questions.
+2. Ask the **morning questions** from [[daily-run-through]] in one short message. Add **at most one**
+   open question from a hub, and mention yesterday's carry-overs by name.
+3. When Stellan answers, capture the answers verbatim in `raw/daily/YYYY-MM-DD-morning.md`.
+4. Create `wiki/daily/daily-YYYY-MM-DD.md` and fill in its Morning section.
+5. Reply with a short **day plan**: the Top 3 in order, with anything due in FlowPilot or the Apprentice next to the right item.
+6. File new facts into the section pages (§6.3 step 6), update the index, log a `morning` entry, and commit.
 
-### 6.2 QUERY (any question about the wiki's subject matter)
-1. Read `wiki/index.md` first, then the relevant pages. Use `python3 tools/wiki.py search "<terms>"`
-   when the index alone doesn't make it obvious which pages matter. Read `raw/` only to check a detail.
-2. Answer from the wiki with `[[citations]]`. Say clearly when the wiki doesn't cover something,
-   and keep general knowledge separate from wiki knowledge (label it *(general knowledge)*).
-3. Choose the format that fits: prose, a table, a Marp slide deck, a matplotlib chart, or a canvas.
-4. **File back** anything worth keeping, such as a comparison, analysis, or new connection, as
-   `wiki/analyses/<slug>.md`. Do this by default for non-trivial answers, or ask when unsure.
-   Link it from the relevant concept and entity pages and from the index.
-5. Append a `query` entry to `log.md` (even when nothing is filed, so the question is on record).
-6. Commit if any files changed.
+### 6.2 END-OF-DAY REVIEW
+Triggers: "eod", "end of day", "evening", "wrap up", "review my day".
+1. Read today's daily page.
+2. Ask the **evening questions** in one short message. Name the morning's Top 3 so Stellan can tick them off.
+3. Capture the answers verbatim in `raw/daily/YYYY-MM-DD-evening.md`. Fill in the Evening section.
+4. **File everything:** client and lead updates go to FlowPilot pages, product progress and decisions
+   to Apprentice pages, and ideas to the right hub. Update each hub's Snapshot when the state changed.
+   List every page touched under "Filed to".
+5. Carry unfinished items to Open loops on [[daily-run-through]]. Remove loops that are closed.
+6. Reply with a 3-line recap: what moved, what's open, and the first task for tomorrow.
+7. Update the index and overview if this week's focus changed, log an `evening` entry, and commit.
 
-### 6.3 LINT (the human says "lint" or "health check"; the agent may suggest one every ~10 ingests)
-Start with `python3 tools/wiki.py lint`, which mechanically checks broken links, orphans, index drift,
-frontmatter, and raw files that haven't been ingested. Then do the judgment checks it can't.
-Check for, and report as a prioritized list:
-- Contradictions between pages, and stale claims a newer source has superseded
-- Orphan pages (no inbound links other than the index)
-- Red links or concepts that come up often and have no page
-- Missing cross-references between pages that clearly relate
-- Index drift: pages missing from the index, or index entries pointing at nothing
-- Frontmatter problems (missing fields, a wrong `updated` date, a wrong `sources` list)
-- Data gaps that a web search or new source could fill, plus suggested questions to explore
+### 6.3 INGEST (Stellan drops a file in `raw/…`, pastes a source, or says "ingest X")
+1. Locate the file, or capture the paste into the right `raw/` subfolder (§4.1).
+2. Read all of it. 3. Read the index and the pages it touches.
+4. **Discuss:** 3–7 takeaways, the pages to create or update, and any contradictions. Ask what to emphasize.
+   *(Skip this only if Stellan says "just do it" or "batch", and write "unsupervised" in the log entry.)*
+5. Write `wiki/sources/src-<slug>.md` (TL;DR · Key points · Notable quotes · How it connects · Pages touched).
+6. Update or create section pages. Integrate facts *into* existing text, cite them, and flag contradictions
+   on **both** pages. Keep the section hub's "Pages" list and Snapshot current.
+7. Update the overview, the index, and the log. Commit as `ingest: <title>`. Report back with 1–3 follow-ups.
 
-Fix the mechanical issues (links, index, frontmatter) directly. Bring anything that needs
-judgment (content contradictions, deletions, merges) to the human. Log it as `lint` and commit.
+### 6.4 QUERY (any question about Stellan's work, product, business, or days)
+1. Read the index first, then the relevant pages. Use `python3 tools/wiki.py search "<terms>"` when the index alone doesn't make it obvious which pages matter.
+2. Answer with citations. Say clearly what the brain doesn't know yet, and label general knowledge.
+3. Pick the format that fits: prose, a table, a chart, or slides.
+4. **File back** answers worth keeping as an analysis or decision page in the right section, linked from its hub.
+5. Log a `query` entry, and commit if files changed.
 
-### 6.4 EDIT (the human asks for a specific change to the wiki)
-Make the change, keep links, the index, and frontmatter consistent, log it as `edit`, and commit.
+### 6.5 LINT ("lint", "health check"; Claude may suggest one weekly)
+Run `python3 tools/wiki.py lint` first. It checks broken links, orphans, index drift, frontmatter,
+and raw files that haven't been processed. Then do the judgment checks:
+- Contradictions and stale claims, especially old numbers and statuses
+- Hub Snapshots that disagree with recent daily pages
+- Open loops older than 7 days
+- Hub open questions that a check-in could answer
+Fix mechanical issues directly. Bring judgment calls to Stellan. Log a `lint` entry and commit.
 
----
-
-## 7. Writing style
-
-- Write clearly and in a neutral, encyclopedic tone. Lead with the most important point. Prefer bullets for facts and
-  prose for explanations.
-- Keep pages focused. Split a page once it covers two distinct things or grows past ~800 words.
-- Use absolute dates (`2026-10-01`), never relative ones ("last week").
-- Keep the human's personal material (journal, health, goals) factual and non-judgmental, and
-  never send it to external services.
+### 6.6 EDIT (Stellan asks for a specific change)
+Make the change, keep links, the index, and frontmatter consistent, log an `edit` entry, and commit.
 
 ---
 
-## 8. Git conventions
+## 7. Writing style & guardrails
 
-- The wiki is a git repo. Make one commit per operation (ingest, filed query, lint pass, schema change).
-- Commit messages: `<op>: <subject>`, e.g. `ingest: Karpathy – LLM Wiki`.
+- Clear, plain, and neutral. Lead with the most important point. Use bullets for facts and short prose for reasoning.
+- Keep pages focused. Split a page once it covers two things or passes ~800 words.
+- Use absolute dates (`2026-10-10`), never relative ones.
+- **Personal material** (check-ins, energy, worries) stays factual and non-judgmental, and never goes to
+  an external service.
+- **Investing:** the Apprentice section records product work and market research. Every price, return,
+  or market figure carries its date and source. Claude does not invent figures, and does not present
+  buy or sell calls as fact. Strategy notes describe how a strategy works and its known risks.
+- **Business:** client names and money figures stay in this private repo, and are never sent to outside tools without Stellan's OK.
+
+---
+
+## 8. Asking questions
+
+When something is unclear, ask, the way Stellan asked to be asked. Prefer one short question to
+guessing. Anything still unknown goes under the relevant hub's **Open questions**, and the morning
+check-in works through them one at a time.
+
+---
+
+## 9. Git conventions
+
+- One commit per operation, with the message `<op>: <subject>` (e.g. `evening: 2026-10-10`, `ingest: Client brief – Acme`).
 - Push to the working branch after committing.
 
 ---
 
-## 9. Schema evolution
+## 10. Schema evolution
 
-- This file is co-owned. When a convention isn't working, the agent proposes a change, the human
-  approves it, the agent edits this file, and logs it as `schema`.
+- Co-owned: Claude proposes a change, Stellan approves it, Claude edits this file and logs a `schema` entry.
 - Changelog:
-  - 2026-10-01: v1. Initial schema based on Karpathy's "LLM Wiki" idea file.
-  - 2026-10-02: v1.1. Added `tools/wiki.py` (search/lint/stats/graph) and wired it into QUERY and LINT.
-    Before ending a turn that changed the wiki, `tools/wiki.py lint` should pass, except for red links
-    that are deliberately open.
+  - 2026-10-01: v1. Generic LLM Wiki schema based on Karpathy's idea file.
+  - 2026-10-02: v1.1. Added `tools/wiki.py` and the lint-before-finishing rule.
+  - 2026-10-10: **v2. Became Stellan's Brain.** Demo pages deleted (they're still in git history at
+    `b76fec2`). Three sections (Investing Apprentice, FlowPilot with ACE, Daily Run-Through), new
+    `hub` and `daily` page types, morning and evening workflows, and investing and business guardrails.
 
 ---
 
-## 10. Every interaction checklist
+## 11. Every interaction checklist
 
-Before replying to anything, decide which operation it is: **ingest / query / lint / edit / schema /
-chit-chat**. For anything other than chit-chat, follow that workflow, and make sure that before the turn ends:
-- [ ] `raw/` is untouched (except for capturing a new paste)
-- [ ] every new or changed page has correct frontmatter, citations, and links
-- [ ] `index.md` reflects the current set of pages
+Decide which operation it is: **morning / evening / ingest / query / lint / edit / schema / chit-chat**.
+For anything except chit-chat, before the turn ends:
+- [ ] existing `raw/` files are untouched (new captures are fine)
+- [ ] new and changed pages have correct frontmatter, citations, and links, and are listed on their hub
+- [ ] `index.md` and the hub Snapshots reflect the current state
 - [ ] `log.md` has a new entry at the bottom
 - [ ] `python3 tools/wiki.py lint` is clean (or only shows deliberate red links)
-- [ ] changes are committed
+- [ ] changes are committed and pushed

@@ -29,6 +29,8 @@ REQUIRED_FM = {
     "entity": ["type", "kind", "title", "created", "updated", "sources"],
     "concept": ["type", "title", "created", "updated", "sources"],
     "analysis": ["type", "title", "created", "updated", "sources", "question"],
+    "hub": ["type", "section", "title", "created", "updated"],
+    "daily": ["type", "section", "title", "date", "created", "updated", "raw"],
     "overview": ["type", "title", "created", "updated"],
     "meta": ["type", "title", "created"],
 }
@@ -49,6 +51,12 @@ def parse_frontmatter(text):
     return fm, text[m.end():]
 
 
+def raw_list(fm):
+    """`raw:` may be one path (sources) or a list of paths (daily pages)."""
+    r = fm.get("raw") or []
+    return [r] if isinstance(r, str) else list(r)
+
+
 def load_pages():
     pages = {}
     for path in sorted(WIKI.rglob("*.md")):
@@ -59,7 +67,7 @@ def load_pages():
             "path": path,
             "fm": fm,
             "body": body,
-            "links": [l.strip() for l in links],
+            "links": [l.strip().rstrip("\\") for l in links],  # `\|` escapes the pipe inside tables
         }
     return pages
 
@@ -132,8 +140,9 @@ def cmd_lint(args):
         for key in REQUIRED_FM.get(ptype, []):
             if key not in fm:
                 problems["frontmatter"].append(f"[[{name}]] ({ptype}) missing `{key}`")
-        if ptype == "source" and fm.get("raw") and not (ROOT / fm["raw"]).exists():
-            problems["source"].append(f"[[{name}]] points at missing raw file {fm['raw']}")
+        for r in raw_list(fm):
+            if not (ROOT / r).exists():
+                problems["source"].append(f"[[{name}]] points at missing raw file {r}")
         listed = set(fm.get("sources", []) or [])
         for s in listed:
             if s not in names:
@@ -161,7 +170,7 @@ def cmd_lint(args):
             problems["index drift"].append(f"[[{name}]] index says {n} sources, frontmatter has {actual}")
 
     raw_files = {p.relative_to(ROOT).as_posix() for p in RAW.rglob("*") if p.is_file() and p.name != ".gitkeep"}
-    ingested = {p["fm"].get("raw") for p in pages.values() if p["fm"].get("type") == "source"}
+    ingested = {r for p in pages.values() for r in raw_list(p["fm"])}
     for r in sorted(raw_files - ingested):
         if not r.startswith("raw/assets/"):
             problems["not yet ingested"].append(r)

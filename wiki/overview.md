@@ -1,36 +1,36 @@
 ---
 type: overview
-title: Overview
-aliases: ["Second brain overview", "Synthesis"]
-tags: [meta]
+section: brain
+title: Stellan's Brain
+aliases: ["Home", "Second brain", "Overview"]
+tags: [home]
 created: 2026-10-01
-updated: 2026-10-02
-sources: [src-karpathy-llm-wiki, src-qmd-readme, src-qmd-source-code]
+updated: 2026-10-10
+sources: []
 ---
 
-# Overview
-The top-level synthesis of Stellan's second brain. It is rewritten (not appended to) as understanding changes.
+# Stellan's Brain
+Home page. This is the big picture across everything Stellan is working on, kept current by Claude.
 
-## What this wiki is
-A personal knowledge base built on the [[llm-wiki]] pattern ([[src-karpathy-llm-wiki]]). Stellan curates sources into `raw/`, and Claude compiles them into this interlinked wiki under the rules in `CLAUDE.md`. Browse it in [[obsidian]]. Start with [[index]], and see [[log]] for what happened recently. `tools/wiki.py` provides search, lint, and stats from the terminal.
-
-## Current state (3 sources)
-The only domain so far is **meta**: how this second brain works, and the retrieval technology underneath tools like it.
-- **Core thesis:** knowledge should be *compiled once and kept current*, not re-derived on every question as in [[retrieval-augmented-generation|RAG]]. The approach is viable because LLMs remove the [[maintenance-burden]] that kills human-run wikis. The idea goes back to the [[memex]] of [[vannevar-bush]] ([[src-karpathy-llm-wiki]]).
-- **Refinement after source 2:** the LLM Wiki doesn't reject retrieval; it changes *what* gets retrieved. Once the wiki is large, a local [[hybrid-search]] engine such as [[qmd]] can search the compiled pages. It runs on-device on ~2 GB of models ([[src-qmd-readme]]). So "wiki vs. RAG" turns out to be layering rather than a contradiction *(synthesis)*.
-- **Method lesson after source 3:** the README contradicted itself three times, and the code settled all three ([[src-qmd-source-code]]). Documentation is a secondary source about its own code. Prefer primary sources and date them *(synthesis)*.
-
-## Main themes
-| Theme | Key pages | Sources |
+## The three sections
+| Section | What it holds | Status |
 |---|---|---|
-| Personal knowledge management with LLMs | [[llm-wiki]], [[maintenance-burden]], [[retrieval-augmented-generation]] | 2 |
-| Search & retrieval technology | [[hybrid-search]], [[reciprocal-rank-fusion]], [[document-chunking]], [[qmd]] | 3 |
-| Agent tooling | [[model-context-protocol]], [[qmd]], [[obsidian]] | 3 |
-| History of knowledge tools | [[memex]], [[vannevar-bush]] | 1 |
+| [[investing-apprentice\|AI Stock & Crypto Investing Apprentice]] | The AI investing product Stellan is building | Set up; details pending |
+| [[flowpilot\|FlowPilot]] | Stellan's AI automations business, with [[ace]] as its assistant | Set up; details pending |
+| [[daily-run-through\|Daily Run-Through]] | Morning check-ins and end-of-day reviews that feed the other two sections | Ready; first check-in pending |
 
-## Open questions / gaps
-- **What domains should this second brain cover?** Personal goals and health, research topics, books, work? This is still the biggest decision, and the schema may gain subfolders.
-- Ingest Vannevar Bush's "As We May Think" (1945) to confirm the [[memex]] claims that are currently *(unverified)*. The Atlantic and Wikipedia are blocked from the cloud container, so Stellan will need to clip it locally.
-- At what scale does index-only navigation break down? Plan: [[qmd-setup-for-this-wiki]].
-- qmd's benchmark is self-reported on a tiny corpus. Look for an independent evaluation of hybrid search vs. BM25 vs. vector.
-- Possible future pages: Obsidian Web Clipper, Marp, Dataview, HyDE (hypothetical document embeddings).
+## How they connect
+- The **daily run-through** is the main way information gets in. Each morning sets the day's focus across both projects, and each evening files the day's progress into [[flowpilot]] and [[investing-apprentice]].
+- **Sources** go in `raw/investing/` or `raw/flowpilot/`: articles, client briefs, call notes, exported [[ace]] chats. Claude summarizes each one into `wiki/sources/` and updates the section pages.
+- *(synthesis)* FlowPilot and the Apprentice may share tools and skills, such as automations and AI agents. When an idea or tool appears in both, it gets one page linked from both hubs.
+
+## This week's focus
+*(Set at the first morning check-in.)*
+
+## Top open loops
+*(None yet. See [[daily-run-through]].)*
+
+## Biggest unknowns
+- What the Apprentice does and what stage it's at ([[investing-apprentice]] Open questions)
+- FlowPilot's offers, clients, and tools ([[flowpilot]] Open questions)
+- How ACE is set up ([[ace]] Open questions)
