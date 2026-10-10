@@ -4,33 +4,31 @@ title: Overview
 aliases: ["Second brain overview", "Synthesis"]
 tags: [meta]
 created: 2026-10-01
-updated: 2026-10-02
-sources: [src-karpathy-llm-wiki, src-qmd-readme, src-qmd-source-code]
+updated: 2026-10-10
+sources: [src-agent-roster-2026-10-10, src-stellan-investing-apprentice-brief]
 ---
 
 # Overview
-The top-level synthesis of Stellan's second brain. It is rewritten (not appended to) as understanding changes.
+The top-level synthesis of Stellan's second brain. It is rewritten (not appended to) as understanding changes. The wiki was reset on 2026-10-10 and now has two sections.
 
-## What this wiki is
-A personal knowledge base built on the [[llm-wiki]] pattern ([[src-karpathy-llm-wiki]]). Stellan curates sources into `raw/`, and Claude compiles them into this interlinked wiki under the rules in `CLAUDE.md`. Browse it in [[obsidian]]. Start with [[index]], and see [[log]] for what happened recently. `tools/wiki.py` provides search, lint, and stats from the terminal.
+## 1. My agents
+Stellan runs a small team of AI agents. They all report to one live dashboard, [[stellans-brain]] ([[src-agent-roster-2026-10-10]]).
+- **Daily life team (scheduled):** [[morning-rundown]] (7:45 AM), [[inbox-sweep]] (six times a day) and [[six-pm-update]] (5:51 PM). They read email and calendars, propose calendar adds, draft replies, and never send or delete anything themselves.
+- **Business team:** [[ace]] does outreach on request, and [[flowpilot]] answers website inquiries automatically.
+- **Investing:** the [[investing-apprentice]], built 2026-10-10. It is at Level 1 and waiting on data access.
+- Around-the-clock view: [[agents-24-7]].
 
-## Current state (3 sources)
-The only domain so far is **meta**: how this second brain works, and the retrieval technology underneath tools like it.
-- **Core thesis:** knowledge should be *compiled once and kept current*, not re-derived on every question as in [[retrieval-augmented-generation|RAG]]. The approach is viable because LLMs remove the [[maintenance-burden]] that kills human-run wikis. The idea goes back to the [[memex]] of [[vannevar-bush]] ([[src-karpathy-llm-wiki]]).
-- **Refinement after source 2:** the LLM Wiki doesn't reject retrieval; it changes *what* gets retrieved. Once the wiki is large, a local [[hybrid-search]] engine such as [[qmd]] can search the compiled pages. It runs on-device on ~2 GB of models ([[src-qmd-readme]]). So "wiki vs. RAG" turns out to be layering rather than a contradiction *(synthesis)*.
-- **Method lesson after source 3:** the README contradicted itself three times, and the code settled all three ([[src-qmd-source-code]]). Documentation is a secondary source about its own code. Prefer primary sources and date them *(synthesis)*.
+**Pattern so far:** agents are allowed to *read and propose* but not to *act* on anything that can't be undone. Stellan stays the one who approves *(synthesis)*. The investing apprentice extends that pattern: it trades only pretend money, and code enforces its limits ([[src-stellan-investing-apprentice-brief]]).
 
-## Main themes
-| Theme | Key pages | Sources |
-|---|---|---|
-| Personal knowledge management with LLMs | [[llm-wiki]], [[maintenance-burden]], [[retrieval-augmented-generation]] | 2 |
-| Search & retrieval technology | [[hybrid-search]], [[reciprocal-rank-fusion]], [[document-chunking]], [[qmd]] | 3 |
-| Agent tooling | [[model-context-protocol]], [[qmd]], [[obsidian]] | 3 |
-| History of knowledge tools | [[memex]], [[vannevar-bush]] | 1 |
+## 2. Investing knowledge
+Starting point: learn how markets work by watching an AI apprentice research, predict and paper-trade with $1,000 CAD of pretend money, with every decision recorded before the outcome is known ([[src-stellan-investing-apprentice-brief]]).
+- Core ideas so far: [[paper-trading]], [[look-ahead-bias]], [[trading-costs]], [[risk-management]], [[promotion-system]] and [[source-reliability]].
+- **Evolving thesis:** honest records beat clever predictions. A strategy only "works" if it still beats a simple benchmark after costs, on data it never saw while being designed *(synthesis)*.
 
 ## Open questions / gaps
-- **What domains should this second brain cover?** Personal goals and health, research topics, books, work? This is still the biggest decision, and the schema may gain subfolders.
-- Ingest Vannevar Bush's "As We May Think" (1945) to confirm the [[memex]] claims that are currently *(unverified)*. The Atlantic and Wikipedia are blocked from the cloud container, so Stellan will need to clip it locally.
-- At what scale does index-only navigation break down? Plan: [[qmd-setup-for-this-wiki]].
-- qmd's benchmark is self-reported on a tiny corpus. Look for an independent evaluation of hybrid search vs. BM25 vs. vector.
-- Possible future pages: Obsidian Web Clipper, Marp, Dataview, HyDE (hypothetical document embeddings).
+- [[investing-apprentice]] can't research yet. It needs the data sites allowed in the cloud environment's network settings, free API keys, and Gmail added to its Routines (`apprentice/README.md`).
+- Do free data plans cover TSX prices? This will show on the first run with keys ([[source-reliability]]).
+- Questrade's official fee schedule still needs checking ([[trading-costs]]).
+- [[flowpilot]]: is the n8n workflow still active after the trial pause? The n8n connector needs fixing.
+- [[ace]]: its instructions haven't been captured yet.
+- School email isn't connected to the hub yet ([[morning-rundown]]).

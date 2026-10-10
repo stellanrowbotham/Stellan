@@ -1,0 +1,418 @@
+<title>Investing Apprentice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a sticky tab rail over one scrolling column of panels; summary first, detail below. */
+:root {
+  --bg: #f3f5f8; --surface: #ffffff; --ink: #142130; --muted: #5b6878; --line: #dde3ea;
+  --accent: #b8322a; --accent-soft: #f6e3e1; --up: #17784a; --down: #b42318; --warn: #a15c00; --chart: #2a5d8f; --bench: #8a97a6;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f151c; --surface: #17202a; --ink: #e6ecf2; --muted: #9aa8b7; --line: #283544;
+  --accent: #ec6b5f; --accent-soft: #3a2220; --up: #4cc58a; --down: #f0776b; --warn: #e3a64a; --chart: #7fb2e5; --bench: #6f7d8c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f151c; --surface: #17202a; --ink: #e6ecf2; --muted: #9aa8b7; --line: #283544;
+  --accent: #ec6b5f; --accent-soft: #3a2220; --up: #4cc58a; --down: #f0776b; --warn: #e3a64a; --chart: #7fb2e5; --bench: #6f7d8c; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); margin: 0 }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px }
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding-block: 20px 8px }
+h1 { font: 700 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em }
+h1 small { display: block; font: 400 .8rem var(--body); color: var(--muted); letter-spacing: .02em }
+h2 { font: 700 1.15rem/1.2 var(--display); margin: 0 0 10px; text-wrap: balance }
+h3 { font: 700 1rem/1.25 var(--display); margin: 0 }
+.meta { color: var(--muted); font-size: .85rem }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  display: flex; gap: 4px; overflow-x: auto; padding-block: 6px; scrollbar-width: none }
+nav.tabs button { font: 600 .9rem var(--body); color: var(--muted); background: none; border: 0; padding: 8px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap }
+nav.tabs button[aria-selected="true"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 -2px 0 var(--accent) }
+nav.tabs button:focus-visible, button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--chart); outline-offset: 2px }
+section.panel { display: grid; gap: 16px; padding-block: 16px }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0 }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)) }
+.kpis { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden }
+.kpi { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px }
+.kpi .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+.kpi .value { font: 600 1.25rem var(--mono); font-variant-numeric: tabular-nums }
+.kpi .sub { font-size: .78rem; color: var(--muted) }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+.up { color: var(--up) } .down { color: var(--down) }
+.pill { display: inline-block; font: 700 .7rem var(--body); letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.pill.ok { color: var(--up) } .pill.bad { color: var(--down) } .pill.warn { color: var(--warn) } .pill.info { color: var(--muted) } .pill.exp { color: var(--accent) }
+.banner { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 6px }
+.scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: .88rem }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700 }
+td.r, th.r { text-align: right }
+ul.plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px }
+ul.plain li { min-width: 0 }
+a { color: var(--chart) }
+details { border-top: 1px solid var(--line); padding-block: 8px }
+details summary { cursor: pointer; font-weight: 700 }
+.cand { display: grid; gap: 8px }
+.cand-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between }
+.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden }
+.bar > i { display: block; height: 100%; background: var(--chart) }
+.crit { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; align-items: start; padding-block: 8px; border-bottom: 1px solid var(--line) }
+.crit:last-child { border-bottom: 0 }
+.dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px }
+.dot.ok { background: var(--up) } .dot.bad { background: var(--down) }
+.ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px }
+.rung { padding: 8px 6px; border-radius: 6px; border: 1px solid var(--line); font-size: .72rem; text-align: center; color: var(--muted) }
+.rung.done { background: var(--line); color: var(--ink) }
+.rung.now { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 -3px 0 var(--accent) }
+.rung b { display: block; font: 700 1rem var(--mono) }
+svg text { fill: var(--muted); font: 11px var(--mono) }
+.empty { color: var(--muted); padding: 16px; border: 1px dashed var(--line); border-radius: 10px; background: var(--surface) }
+.btn { font: 600 .85rem var(--body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+.btn:hover { border-color: var(--chart) }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.md { white-space: pre-wrap }
+@media (prefers-reduced-motion: no-preference) { .bar > i { transition: width .4s ease } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Investing Apprentice <small>Pretend-money stock &amp; crypto research · simulation only · no real trades</small></h1>
+    <div class="meta" id="updated">Waiting for data…</div>
+  </header>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-overview" aria-selected="true" data-tab="overview">Overview</button>
+    <button role="tab" id="tab-research" aria-selected="false" data-tab="research">Research</button>
+    <button role="tab" id="tab-trading" aria-selected="false" data-tab="trading">Paper trading</button>
+    <button role="tab" id="tab-learning" aria-selected="false" data-tab="learning">Learning</button>
+    <button role="tab" id="tab-progression" aria-selected="false" data-tab="progression">Progress</button>
+    <button role="tab" id="tab-settings" aria-selected="false" data-tab="settings">Settings</button>
+  </nav>
+  <main id="main">
+    <section class="panel" id="p-overview">
+      <div class="empty">
+        <h2>Nothing recorded yet</h2>
+        <p>After each scheduled run (8:27 AM and 4:33 PM on weekdays, plus crypto checks), the apprentice writes its account value, forecasts and reports here. Only real recorded data appears on this page, so it stays empty until the first run succeeds.</p>
+        <p>If it stays empty, the data sources are probably blocked or missing keys. The Settings tab will show which ones once the first run reports in.</p>
+      </div>
+    </section>
+    <section class="panel" id="p-research" hidden></section>
+    <section class="panel" id="p-trading" hidden></section>
+    <section class="panel" id="p-learning" hidden></section>
+    <section class="panel" id="p-progression" hidden></section>
+    <section class="panel" id="p-settings" hidden></section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const DOCS = ["overview", "research", "trading", "learning", "progression", "settings"];
+  const state = {};
+  let downloads = null;
+
+  // ---------- tiny safe DOM helper (all data is untrusted text) ----------
+  function h(tag, attrs, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else if (k === "href") { if (/^https?:\/\//i.test(v)) { el.href = v; el.target = "_blank"; el.rel = "noopener"; } }
+      else el.setAttribute(k, v);
+    }
+    for (const k of kids.flat(Infinity)) if (k != null && k !== false) el.append(k instanceof Node ? k : String(k));
+    return el;
+  }
+  const money = (v, sign) => v == null ? "–" : (sign && v > 0 ? "+" : v < 0 ? "−" : "") + "$" + Math.abs(v).toLocaleString("en-CA", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const pct = (v, sign = true) => v == null ? "–" : (sign && v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v * 100).toFixed(2) + "%";
+  const cls = v => v == null ? "" : v > 0 ? "up" : v < 0 ? "down" : "";
+  const when = s => { if (!s) return "–"; const d = new Date(s); return isNaN(d) ? String(s) : d.toLocaleString("en-CA", {timeZone: "America/Toronto", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}) + " ET"; };
+  const kpi = (label, value, sub, c) => h("div", {class: "kpi"}, h("span", {class: "label"}, label), h("span", {class: "value " + (c || "")}, value), sub ? h("span", {class: "sub"}, sub) : null);
+  const pill = (text, kind) => h("span", {class: "pill " + kind}, text);
+  const table = (cols, rows) => h("div", {class: "scroll"}, h("table", {},
+    h("thead", {}, h("tr", {}, cols.map(c => h("th", {class: c.r ? "r" : ""}, c.t)))),
+    h("tbody", {}, rows.map(r => h("tr", {}, cols.map(c => h("td", {class: (c.r ? "r num " : "") + (c.c ? c.c(r) : "")}, c.v(r))))))));
+  const empty = text => h("div", {class: "empty"}, text);
+  const card = (title, ...kids) => h("div", {class: "card"}, title ? h("h2", {}, title) : null, ...kids);
+
+  // ---------- tabs (remember choice per viewer; optional) ----------
+  function show(tab) {
+    for (const d of DOCS) {
+      document.getElementById("p-" + d).hidden = d !== tab;
+      document.getElementById("tab-" + d).setAttribute("aria-selected", d === tab ? "true" : "false");
+    }
+    try { localStorage.setItem("tab", tab); } catch (e) {}
+  }
+  document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
+  try { const t = (location.hash || "").slice(1) || localStorage.getItem("tab"); if (DOCS.includes(t)) show(t); } catch (e) {}
+
+  // ---------- equity chart (inline SVG, one scale) ----------
+  function equityChart(curve, start, benchLabel) {
+    if (!curve || curve.length < 2) return empty("The account-value chart appears after two valuations have been recorded.");
+    const W = 640, H = 220, L = 56, R = 12, T = 12, B = 28;
+    const ys = curve.flatMap(p => [p.equity, p.benchmark].filter(v => v != null)).concat([start]);
+    let lo = Math.min(...ys), hi = Math.max(...ys);
+    if (hi - lo < 1) { lo -= 1; hi += 1; }
+    const pad = (hi - lo) * 0.1; lo -= pad; hi += pad;
+    const t0 = new Date(curve[0].t).getTime(), t1 = new Date(curve[curve.length - 1].t).getTime() || t0 + 1;
+    const x = t => L + (W - L - R) * ((new Date(t).getTime() - t0) / Math.max(t1 - t0, 1));
+    const y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+    const path = key => curve.filter(p => p[key] != null).map((p, i) => (i ? "L" : "M") + x(p.t).toFixed(1) + " " + y(p[key]).toFixed(1)).join(" ");
+    const ns = "http://www.w3.org/2000/svg";
+    const s = (tag, a) => { const e = document.createElementNS(ns, tag); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img", "aria-label": "Account value over time"});
+    for (let i = 0; i <= 4; i++) {
+      const v = lo + (hi - lo) * i / 4;
+      svg.append(s("line", {x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: "var(--line)", "stroke-width": 1}));
+      const tx = s("text", {x: L - 6, y: y(v) + 4, "text-anchor": "end"}); tx.textContent = "$" + Math.round(v); svg.append(tx);
+    }
+    svg.append(s("line", {x1: L, x2: W - R, y1: y(start), y2: y(start), stroke: "var(--muted)", "stroke-dasharray": "3 4", "stroke-width": 1}));
+    const area = path("equity") + ` L${x(curve[curve.length - 1].t).toFixed(1)} ${H - B} L${L} ${H - B} Z`;
+    svg.append(s("path", {d: area, fill: "var(--chart)", "fill-opacity": .08, stroke: "none"}));
+    if (curve.some(p => p.benchmark != null)) svg.append(s("path", {d: path("benchmark"), fill: "none", stroke: "var(--bench)", "stroke-width": 1.5, "stroke-dasharray": "5 4"}));
+    svg.append(s("path", {d: path("equity"), fill: "none", stroke: "var(--chart)", "stroke-width": 2}));
+    const last = curve[curve.length - 1];
+    svg.append(s("circle", {cx: x(last.t), cy: y(last.equity), r: 4, fill: "var(--chart)"}));
+    for (const p of [curve[0], last]) { const tx = s("text", {x: x(p.t), y: H - 8, "text-anchor": p === last ? "end" : "start"}); tx.textContent = when(p.t).replace(/, .*$/, ""); svg.append(tx); }
+    return h("div", {}, svg, h("div", {class: "row meta"}, h("span", {}, "— Apprentice"), curve.some(p => p.benchmark != null) ? h("span", {}, "- - " + benchLabel + " (same $ start)") : null, h("span", {}, "··· starting balance")));
+  }
+
+  // ---------- panels ----------
+  function renderOverview() {
+    const o = state.overview, p = document.getElementById("p-overview");
+    if (!o) return;
+    const lvl = o.level || 1;
+    p.replaceChildren(
+      lvl < 2 ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place pretend trades until it earns Level 2 and you approve.") : null,
+      h("div", {class: "kpis"},
+        kpi("Pretend account", money(o.equity), "started at " + money(o.startingBalance)),
+        kpi("Total return", pct(o.totalReturnPct), money((o.equity || 0) - (o.startingBalance || 0), true), cls(o.totalReturnPct)),
+        kpi("Today", pct(o.dayReturnPct), "since yesterday's close", cls(o.dayReturnPct)),
+        kpi("Cash", money(o.cash), (o.positions || []).length + " open position(s)"),
+        kpi("Biggest drop", pct(o.maxDrawdownPct), "from a high point", o.maxDrawdownPct < 0 ? "down" : ""),
+        kpi("Level", String(lvl), o.levelName)),
+      h("div", {class: "grid"},
+        card("Account value", equityChart(o.equityCurve, o.startingBalance, o.benchmarkLabel),
+          h("p", {class: "meta"}, "Week " + pct(o.weekReturnPct) + " · Month " + pct(o.monthReturnPct) + " · " +
+            (o.riskAdjusted && o.riskAdjusted.available ? "Sharpe " + (o.riskAdjusted.sharpe ?? 0).toFixed(2) + ", Sortino " + (o.riskAdjusted.sortino ?? 0).toFixed(2) : "Risk-adjusted stats: " + ((o.riskAdjusted || {}).reason || "not enough data")))),
+        card("Promotion progress", promoMini(o.promotion))),
+      card("Open positions", (o.positions || []).length ? table([
+        {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)},
+        {t: "Units", r: 1, v: r => r.qty},
+        {t: "Bought at", r: 1, v: r => r.entry},
+        {t: "Stop / target", r: 1, v: r => r.stop + " / " + r.target},
+        {t: "Gain/loss", r: 1, v: r => money(r.unrealized, true), c: r => cls(r.unrealized)},
+        {t: "Since", v: r => when(r.openedAt)}], o.positions) : empty("No open positions.")),
+      card("Latest market headlines", (o.headlines || []).length ? h("ul", {class: "plain"}, o.headlines.map(x =>
+        h("li", {}, h("a", {href: x.url}, x.title), h("div", {class: "meta"}, x.source + " · " + when(x.publishedAt) + (x.syndicated ? " · repost of an earlier story" : ""))))) :
+        empty("No headlines collected yet. News feeds may be blocked by the network settings.")),
+      card("System health", healthList(o.health)));
+  }
+  function healthList(items) {
+    if (!items || !items.length) return h("p", {}, pill("all checks passed", "ok"));
+    return h("ul", {class: "plain"}, items.map(i => h("li", {}, pill(i.level, i.level === "error" ? "bad" : i.level === "warn" ? "warn" : "info"), " ", h("b", {}, i.what), h("div", {class: "meta"}, i.detail))));
+  }
+  function promoMini(ev) {
+    if (!ev) return empty("No evaluation yet. One runs after every post-close update.");
+    const crit = ev.criteria || [], passed = crit.filter(c => c.passed).length;
+    return h("div", {},
+      h("p", {}, "Working toward ", h("b", {}, "Level " + (ev.next_level ?? "–") + (ev.next_level_name ? " · " + ev.next_level_name : "")), ": ", passed + " of " + crit.length + " requirements met."),
+      h("div", {class: "bar", role: "progressbar", "aria-valuenow": passed, "aria-valuemax": crit.length}, h("i", {style: `width:${crit.length ? 100 * passed / crit.length : 0}%`})),
+      h("p", {class: "meta"}, ev.note || ""));
+  }
+
+  function renderResearch() {
+    const r = state.research, p = document.getElementById("p-research");
+    if (!r) return;
+    const reps = r.reports || [];
+    if (!reps.length) return p.replaceChildren(empty("No research reports yet. The first one arrives after the 8:27 AM run."));
+    const cur = reps[0];
+    p.replaceChildren(
+      card(null, h("div", {class: "cand-head"}, h("h2", {}, labelRun(cur.run) + " · " + when(cur.at)), cur.no_trade ? pill("no trade", "info") : pill("candidates pass", "ok")),
+        h("p", {}, h("b", {}, cur.headline)),
+        cur.market_summary && cur.market_summary.text ? h("p", {class: "md"}, cur.market_summary.text) : null,
+        h("p", {class: "meta"}, "Reports are guesses with reasons, not promises. A high score doesn't mean a trade will work.")),
+      ...(cur.candidates || []).map(candCard),
+      card("What it actually checked", (cur.sources_searched || []).length ? h("ul", {}, cur.sources_searched.map(s => h("li", {}, s))) : empty("Not listed."),
+        (cur.limitations || []).length ? h("div", {}, h("h3", {}, "Limits of this report"), h("ul", {}, cur.limitations.map(s => h("li", {}, s)))) : null),
+      reps.length > 1 ? card("Earlier reports", h("ul", {class: "plain"}, reps.slice(1).map(x => h("li", {}, labelRun(x.run) + " · " + when(x.at) + " · ", h("span", {class: "meta"}, x.headline))))) : null);
+  }
+  const labelRun = r => ({pre_market: "Morning report", post_close: "After-the-bell update", crypto: "Crypto check", day_experiment: "Hourly experiment"})[r] || r;
+  function candCard(c) {
+    const s = c.score || {}, parts = s.parts || {};
+    const list = v => Array.isArray(v) ? h("ul", {}, v.map(x => h("li", {}, typeof x === "object" ? JSON.stringify(x) : x))) : typeof v === "object" && v ? h("ul", {}, Object.entries(v).map(([k, x]) => h("li", {}, k + ": " + x))) : h("span", {}, v ?? "–");
+    const sec = (t, v) => v == null || v === "" ? null : h("div", {}, h("h3", {}, t), list(v));
+    return card(null, h("div", {class: "cand"},
+      h("div", {class: "cand-head"}, h("h2", {}, (c.name || c.symbol) + " (" + c.symbol + ")"),
+        h("span", {class: "row"}, c.tradeable ? pill("passes", "ok") : pill("does not pass", "bad"), h("span", {class: "num"}, (s.total ?? 0).toFixed(0) + "/100"))),
+      h("p", {class: "meta"}, "Price " + (c.price ?? "–") + " · data time " + when(c.price_ts) + " · reward:risk " + (s.reward_risk ?? "–") + " · " + (s.independent_sources ?? 0) + " independent sources"),
+      (c.missing || []).length ? h("p", {class: "down"}, "Missing: " + c.missing.join(", ")) : null,
+      sec("Why it's on the list", c.why_considered), sec("Why it might go up", c.bull_case), sec("Why it might go down", c.bear_case),
+      sec("Main risks", c.risks), sec("We're wrong if…", c.invalidation),
+      h("details", {}, h("summary", {}, "Full plan, technicals and score breakdown"),
+        sec("News", c.news), sec("Chart clues", c.technicals), sec("Coming up", c.catalysts), sec("When to buy", c.entry_conditions),
+        sec("When to sell", c.exit_conditions), sec("Safety plan", c.stop_plan), sec("How long", c.holding_period), sec("Scenarios", c.scenarios),
+        sec("Confidence", (c.confidence || "–") + ". " + (c.confidence_basis || "")),
+        c.size ? sec("Suggested pretend size", c.size.qty + " units" + (c.size.cost_cad ? " ≈ " + money(c.size.cost_cad) : " (" + (c.size.note || "") + ")")) : null,
+        h("div", {}, h("h3", {}, "Score parts (0–1)"), table([{t: "Part", v: r => r[0]}, {t: "Score", r: 1, v: r => Number(r[1]).toFixed(2)}], Object.entries(parts))),
+        h("div", {}, h("h3", {}, "Checks"), h("ul", {class: "plain"}, Object.entries(s.gates || {}).map(([k, g]) => h("li", {}, pill(g.passed ? "pass" : "fail", g.passed ? "ok" : "bad"), " ", g.detail))))),
+      (c.sources || []).length ? h("div", {}, h("h3", {}, "Sources"), h("ul", {class: "plain"}, c.sources.map(x => h("li", {}, x.url ? h("a", {href: x.url}, x.title || x.url) : (x.title || "record"), h("span", {class: "meta"}, " · " + (x.source_id || "") + " · " + when(x.published_at)))))) : null));
+  }
+
+  function renderTrading() {
+    const t = state.trading, p = document.getElementById("p-trading");
+    if (!t) return;
+    const st = t.stats || {}, costs = t.costs || {};
+    p.replaceChildren(
+      h("div", {class: "kpis"},
+        kpi("Closed trades", String(st.closed || 0)),
+        kpi("Win rate", st.closed ? pct(st.win_rate, false) : "–"),
+        kpi("Avg win", money(st.avg_win_cad), null, "up"), kpi("Avg loss", money(st.avg_loss_cad), null, "down"),
+        kpi("Profit factor", st.profit_factor != null ? st.profit_factor.toFixed(2) : "–", "wins ÷ losses"),
+        kpi("Fees + slippage", money((costs.fees || 0) + (costs.slippage || 0)), "spread " + money(costs.spread))),
+      card("Trade history",
+        h("div", {class: "row"}, h("button", {class: "btn", type: "button", onclick: () => saveCsv("trades")}, "Download trades (CSV)"),
+          h("button", {class: "btn", type: "button", onclick: () => saveCsv("equity")}, "Download account history (CSV)"), h("span", {class: "meta", id: "dl-msg"})),
+        (t.closed || []).length ? table([
+          {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)}, {t: "Strategy", v: r => r.strategy},
+          {t: "In", r: 1, v: r => r.entry}, {t: "Out", r: 1, v: r => r.exit}, {t: "Why sold", v: r => r.exitReason},
+          {t: "P&L", r: 1, v: r => money(r.pnl, true), c: r => cls(r.pnl)}, {t: "Return", r: 1, v: r => pct(r.returnPct), c: r => cls(r.returnPct)},
+          {t: "Days", r: 1, v: r => r.holdingDays}, {t: "Fees", r: 1, v: r => money(r.fees)}], t.closed) : empty("No pretend trades yet. Trading starts at Level 2.")),
+      st.closed ? h("div", {class: "grid"},
+        card("Best and worst", h("p", {}, "Best: ", h("b", {}, st.best.symbol), " ", h("span", {class: "up num"}, money(st.best.pnl_cad, true))), h("p", {}, "Worst: ", h("b", {}, st.worst.symbol), " ", h("span", {class: "down num"}, money(st.worst.pnl_cad, true)))),
+        card("By strategy", groupTable(st.by_strategy)), card("By holding time", groupTable(st.by_holding_period)), card("By asset", groupTable(st.by_asset))) : null,
+      card("Exposure", exposureView(t.exposure)),
+      card("Orders (newest first)", (t.orders || []).length ? table([
+        {t: "When", v: r => when(r.recorded_at)}, {t: "Event", v: r => r.event}, {t: "Asset", v: r => r.symbol || "–"},
+        {t: "Side", v: r => r.side || ""}, {t: "Why", v: r => (r.reasons || []).join("; ") || r.reason || ""}], t.orders.slice(0, 60)) : empty("No orders yet.")));
+  }
+  const groupTable = g => table([{t: "Group", v: r => r[0]}, {t: "Trades", r: 1, v: r => r[1].trades}, {t: "Wins", r: 1, v: r => r[1].wins}, {t: "P&L", r: 1, v: r => money(r[1].pnl_cad, true), c: r => cls(r[1].pnl_cad)}], Object.entries(g || {}));
+  function exposureView(e) {
+    const secs = Object.entries((e && e.bySector) || {});
+    if (!secs.length) return empty("Nothing invested right now: it's all cash.");
+    const tot = secs.reduce((a, [, v]) => a + v, 0) || 1;
+    return h("div", {}, secs.map(([k, v]) => h("div", {}, h("div", {class: "row meta"}, k + " · " + money(v)), h("div", {class: "bar"}, h("i", {style: `width:${100 * v / tot}%`})))),
+      h("p", {class: "meta"}, "Crypto: " + money(e.crypto)));
+  }
+  async function saveCsv(kind) {
+    const msg = document.getElementById("dl-msg");
+    let rows;
+    if (kind === "trades") {
+      rows = [["trade_id", "symbol", "strategy", "experiment", "decided_at", "entry", "exit", "exit_reason", "pnl_cad", "return_pct", "holding_days", "fees_cad", "thesis"]]
+        .concat((state.trading.closed || []).map(r => [r.tradeId, r.symbol, r.strategy, r.experiment, r.decidedAt, r.entry, r.exit, r.exitReason, r.pnl, r.returnPct, r.holdingDays, r.fees, r.thesis]));
+    } else {
+      rows = [["at", "equity_cad", "benchmark_cad"]].concat(((state.overview || {}).equityCurve || []).map(p => [p.t, p.equity, p.benchmark ?? ""]));
+    }
+    const csv = rows.map(r => r.map(v => { const s = v == null ? "" : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(",")).join("\n");
+    if (!downloads) { msg.textContent = "Downloads aren't available in this view."; return; }
+    try { await downloads.save({filename: kind === "trades" ? "apprentice-trades.csv" : "apprentice-account-history.csv", data: csv}); msg.textContent = "Saved."; }
+    catch (e) { msg.textContent = "Download not saved."; }
+  }
+
+  function renderLearning() {
+    const l = state.learning, p = document.getElementById("p-learning");
+    if (!l) return;
+    const fs = l.forecastStats || {};
+    p.replaceChildren(
+      h("div", {class: "kpis"},
+        kpi("Forecasts scored", String(fs.scored || 0), (fs.pending || 0) + " waiting · " + (fs.unscorable || 0) + " unscorable"),
+        kpi("Hit rate", fs.scored ? pct(fs.hit_rate, false) : "–", "direction right"),
+        kpi("Brier score", fs.brier != null ? fs.brier.toFixed(3) : "–", "0 = perfect · 0.25 = coin flip"),
+        kpi("Last 30 Brier", fs.brier_last30 != null ? fs.brier_last30.toFixed(3) : "–")),
+      card("Is it well calibrated?", fs.calibration ? h("div", {},
+        h("p", {class: "meta"}, "When it says 70% sure, it should be right about 70% of the time."),
+        table([{t: "It said", v: r => r[0].replace("-", "–")}, {t: "Times", r: 1, v: r => r[1].n}, {t: "Actually right", r: 1, v: r => pct(r[1].hit_rate, false)}], Object.entries(fs.calibration))) :
+        empty("Needs scored forecasts first.")),
+      card("Forecasts (newest first)", (l.forecasts || []).length ? table([
+        {t: "Made", v: r => when(r.made_at)}, {t: "Asset", v: r => r.symbol}, {t: "Call", v: r => r.direction + " · " + Math.round(r.probability * 100) + "%"},
+        {t: "Check at", v: r => when(r.horizon_end)},
+        {t: "Result", v: r => !r.score ? pill("waiting", "info") : r.score.status !== "scored" ? pill(r.score.status, "warn") : r.score.hit ? pill("right", "ok") : pill("wrong", "bad")},
+        {t: "Why", v: r => r.rationale}], l.forecasts.slice(0, 80)) : empty("No forecasts yet.")),
+      card("Post-trade reviews", (l.reviews || []).length ? h("div", {}, l.reviews.slice(0, 20).map(r => h("details", {},
+        h("summary", {}, r.symbol + " · " + money(r.realized_pnl_cad, true) + " · " + (r.verdict || "").replace("_", " ") + (r.complete ? "" : " · incomplete")),
+        h("p", {}, h("b", {}, "Original idea: "), r.original_thesis),
+        h("ul", {}, Object.entries(r.answers || {}).map(([k, v]) => h("li", {}, h("b", {}, k.replaceAll("_", " ") + ": "), v))),
+        h("p", {class: "meta"}, "Rules followed (checked by code): " + (r.rule_compliance && r.rule_compliance.all ? "yes" : "no"))))) : empty("Reviews appear after pretend trades close.")),
+      h("div", {class: "grid"},
+        card("Mistake journal", (l.mistakes || []).length ? h("ul", {class: "plain"}, l.mistakes.map(m => h("li", {}, h("b", {}, m.category || "mistake"), ": ", m.description || ""))) : empty("No mistakes logged yet.")),
+        card("Lessons learned", (l.lessons || []).length ? h("ul", {class: "plain"}, l.lessons.map(m => h("li", {}, m.lesson, h("span", {class: "meta"}, " · " + m.symbol)))) : empty("No lessons yet."))),
+      card("Experiments waiting for your approval", (l.experiments || []).length ? h("ul", {class: "plain"}, l.experiments.map(x => h("li", {}, pill(x.status || "proposed", "warn"), " ", h("b", {}, x.title), h("div", {}, x.hypothesis), h("div", {class: "meta"}, "Change: " + x.change + " · Test: " + x.test_plan)))) :
+        empty("None. Strategy changes are tested out-of-sample before you're asked.")));
+  }
+
+  function renderProgression() {
+    const g = state.progression, p = document.getElementById("p-progression");
+    if (!g) return;
+    const lvl = g.level || 1, names = g.levels || {};
+    const ev = g.latest, sc = g.scorecard || {};
+    p.replaceChildren(
+      card("The ladder", h("div", {class: "ladder"}, [1, 2, 3, 4, 5].map(n => h("div", {class: "rung " + (n < lvl ? "done" : n === lvl ? "now" : "")}, h("b", {}, n), names[n] || ""))),
+        h("p", {class: "meta"}, "Promotions need every requirement met and your approval. Level 5 never unlocks real money.")),
+      card(ev ? "Requirements for Level " + (ev.next_level ?? "–") : "Requirements", ev ? h("div", {}, (ev.criteria || []).map(c => h("div", {class: "crit"},
+        h("span", {class: "dot " + (c.passed ? "ok" : "bad"), "aria-label": c.passed ? "passed" : "not yet"}),
+        h("div", {}, h("b", {}, c.name.replaceAll("_", " ")), h("div", {class: "meta"}, c.explanation)),
+        h("div", {class: "num", style: "text-align:right"}, String(c.actual), h("div", {class: "meta"}, "need " + c.required)))),
+        h("p", {}, h("b", {}, ev.note)), (ev.demotion_flags || []).length ? h("div", {class: "banner"}, ev.demotion_flags.map(f => h("div", {}, f.detail))) : null) : empty("No evaluation yet.")),
+      h("div", {class: "kpis"}, kpi("Scorecard points", String(sc.points ?? 0)), kpi("Rewards", "+" + (sc.rewards ?? 0), null, "up"), kpi("Penalties", String(sc.penalties ?? 0), null, (sc.penalties || 0) < 0 ? "down" : ""),
+        kpi("Integrity issues", String(sc.integrity_violations ?? 0), "made-up or mistimed facts", (sc.integrity_violations || 0) > 0 ? "down" : ""), kpi("Risk-rule attempts", String(sc.risk_violations ?? 0), "all were blocked")),
+      card("Rewards and penalties", (g.events || []).length ? table([{t: "When", v: r => when(r.recorded_at)}, {t: "What", v: r => r.kind.replaceAll("_", " ")},
+        {t: "Points", r: 1, v: r => (r.points > 0 ? "+" : "") + r.points, c: r => cls(r.points)}, {t: "Why", v: r => r.reason}], g.events.slice(0, 80)) : empty("Nothing yet. Points only come from careful work, never from how many trades it makes.")),
+      card("Promotions and demotions", (g.levelEvents || []).length ? h("ul", {class: "plain"}, g.levelEvents.map(e => h("li", {}, pill(e.event, e.event === "demotion" ? "bad" : "ok"), " Level " + e.from_level + " → " + e.to_level + ": " + e.reason))) : empty("None yet.")),
+      card("Evaluation history", (g.history || []).length ? table([{t: "When", v: r => when(r.at)}, {t: "Level", r: 1, v: r => r.level}, {t: "Result", v: r => r.eligible ? pill("eligible", "ok") : pill("not yet", "info")}], g.history) : empty("No evaluations yet.")));
+  }
+
+  function renderSettings() {
+    const s = state.settings, p = document.getElementById("p-settings");
+    if (!s) return;
+    const r = s.risk || {}, perms = s.permissions || {};
+    const stat = st => ({ok: ["working", "ok"], partial: ["partly working", "warn"], "needs-key": ["needs free API key", "warn"], "blocked-by-network": ["blocked by network settings", "bad"],
+      "headline-only": ["link reference only", "info"], manual: ["manual / later", "info"], "not-integrated": ["not integrated yet", "info"], "not-yet-checked": ["not checked yet", "info"],
+      "rate-limited": ["rate-limited", "warn"], "http-error": ["error", "bad"], "bad-response": ["bad response", "bad"]})[st] || [st, "info"];
+    p.replaceChildren(
+      !s.approved ? h("div", {class: "banner"}, h("b", {}, "Settings changed without approval. "), "All pretend trading is locked until Stellan approves.") : null,
+      card("Permissions", h("ul", {class: "plain"},
+        h("li", {}, pill("off", "bad"), " Real-money trading: there is no code for it, and simulated success never unlocks it."),
+        h("li", {}, pill(perms.canPlaceSimulatedTrades ? "on" : "off", perms.canPlaceSimulatedTrades ? "ok" : "info"), " Pretend trades (Level 2 and up)"),
+        h("li", {}, pill("off", "bad"), " Changing its own rules, limits or level"),
+        h("li", {}, pill("on", "ok"), " Email reports, to Stellan only"))),
+      h("div", {class: "grid"},
+        card("Risk limits", table([{t: "Rule", v: x => x[0]}, {t: "Limit", r: 1, v: x => x[1]}], [
+          ["Biggest single position", pct(r.max_position_pct, false)], ["Most in one sector", pct(r.max_sector_pct, false)], ["Most in crypto", pct(r.max_crypto_pct, false)],
+          ["Most lost on one trade", pct(r.max_risk_per_trade_pct, false)], ["Daily loss that pauses trading", pct(-r.daily_loss_halt_pct)], ["Drop that triggers a review", pct(-r.drawdown_review_pct)],
+          ["Max open positions", r.max_open_positions], ["Stop-loss required", r.require_stop ? "yes" : "no"], ["Long only (no shorting)", r.long_only ? "yes" : "no"]])),
+        card("Account & schedule", table([{t: "", v: x => x[0]}, {t: "", r: 1, v: x => x[1]}], [
+          ["Starting balance", money((s.account || {}).starting_balance) + " " + ((s.account || {}).currency || "")], ["Fee model", (s.account || {}).broker_model + " (stocks), " + (s.account || {}).crypto_venue_model + " (crypto)"],
+          ...Object.entries(s.schedule || {}).map(([k, v]) => [k.replaceAll("_", " "), v]),
+          ...Object.values(s.benchmarks || {}).map(b => ["Benchmark", b.label])]))),
+      card("Strategies", h("ul", {class: "plain"}, Object.entries(s.strategies || {}).map(([k, v]) => h("li", {}, v.experiment ? pill("experiment", "exp") : pill("strategy", "info"), " ", h("b", {}, v.label), h("span", {class: "meta"}, " · from Level " + v.min_level))))),
+      card("Data sources (" + (s.sources || []).length + ")", table([
+        {t: "#", r: 1, v: x => x.n}, {t: "Source", v: x => x.url ? h("a", {href: x.url}, x.name) : x.name}, {t: "Tier", v: x => x.tier},
+        {t: "How", v: x => x.integration}, {t: "Status", v: x => { const [t, k] = stat(x.status); return pill(t, k); }},
+        {t: "Last worked", v: x => when(x.last_success)}, {t: "Limits", v: x => h("span", {class: "meta"}, x.last_error || x.limitations)}], s.sources || [])),
+      card("Approved assets (" + (s.universe || []).length + ")", h("p", {class: "meta"}, (s.universe || []).map(a => a.symbol).join(" · "))),
+      h("p", {class: "meta"}, "Settings can only be changed by Stellan. Ask Claude in a chat, approve the change, and it re-signs the rules."));
+  }
+
+  const RENDER = {overview: renderOverview, research: renderResearch, trading: renderTrading, learning: renderLearning, progression: renderProgression, settings: renderSettings};
+  function stamp() {
+    const t = state.overview && state.overview.updatedAt;
+    document.getElementById("updated").textContent = t ? "Last run: " + when(t) : "Waiting for the first run…";
+  }
+
+  (async () => {
+    const db = await claude.use("db");
+    downloads = await claude.use("downloads");
+    if (!db) { document.getElementById("updated").textContent = "Sign in to claude.ai to see the data."; return; }
+    for (const name of DOCS) {
+      db.doc("dash/" + name).onSnapshot(snap => {
+        const d = snap && (typeof snap.data === "function" ? snap.data() : snap.data);
+        if (!d) return;
+        state[name] = d;
+        try { RENDER[name](); } catch (e) { console.error(e); }
+        if (name === "overview") stamp();
+      }, err => console.error(err));
+    }
+  })();
+})();
+</script>

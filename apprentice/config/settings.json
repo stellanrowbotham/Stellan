@@ -1,0 +1,178 @@
+{
+  "_readme": "Protected file. Approved by Stellan on 2026-10-10. The agent must never edit this file. Any change must be approved by Stellan and re-hashed with `python3 -m apprentice approve-config` in an interactive session. If the hash in approved.sha256 does not match, the risk engine locks all simulated trading.",
+  "version": 1,
+  "agent": {
+    "name": "Investing Apprentice",
+    "level": 1,
+    "home_currency": "CAD",
+    "timezone": "America/Toronto"
+  },
+  "live_trading": {
+    "enabled": false,
+    "note": "There is no live-trading module. This flag exists only so tests can prove it stays false. Real-money trading needs a separate, human-approved project."
+  },
+  "account": {
+    "starting_balance": 1000.0,
+    "currency": "CAD",
+    "start_date": "2026-10-10",
+    "broker_model": "questrade",
+    "crypto_venue_model": "kraken"
+  },
+  "risk": {
+    "max_position_pct": 0.10,
+    "max_sector_pct": 0.30,
+    "max_crypto_pct": 0.20,
+    "max_risk_per_trade_pct": 0.01,
+    "daily_loss_halt_pct": 0.03,
+    "drawdown_review_pct": 0.15,
+    "max_open_positions": 8,
+    "require_stop": true,
+    "long_only": true,
+    "allow_leverage": false,
+    "banned_tags": ["leveraged", "inverse", "penny", "otc"]
+  },
+  "strategies": {
+    "swing": {
+      "enabled": true,
+      "min_level": 2,
+      "label": "Swing (days to weeks)",
+      "holding_days": [2, 30],
+      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
+      "max_research_price_age_hours": {"stock": 30, "crypto": 6}
+    },
+    "long_term": {
+      "enabled": true,
+      "min_level": 2,
+      "label": "Long-term (months+)",
+      "holding_days": [60, 1000],
+      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
+      "max_research_price_age_hours": {"stock": 80, "crypto": 24}
+    },
+    "day_experiment": {
+      "enabled": true,
+      "min_level": 2,
+      "label": "EXPERIMENT: hourly day-trading test (not real day trading: checks only once an hour on free, possibly delayed data)",
+      "experiment": true,
+      "holding_days": [0, 0],
+      "max_fill_quote_age_minutes": {"stock": 20, "crypto": 10},
+      "max_research_price_age_hours": {"stock": 1, "crypto": 1},
+      "force_close_minutes_before_close": 30
+    }
+  },
+  "costs": {
+    "questrade": {
+      "status": "UNVERIFIED: from secondary reviews read 2026-10-10 (money.ca, brokerchooser, milesopedia). Check questrade.com pricing before Level 3.",
+      "stock_commission": 0.0,
+      "fx_fee_pct": 0.015,
+      "fractional_shares": {"TSX": false, "US": false},
+      "estimated_spread_pct": {"etf": 0.0005, "large_cap": 0.0007, "mid_cap": 0.0020, "default": 0.0030},
+      "slippage_pct": 0.0005
+    },
+    "kraken": {
+      "status": "UNVERIFIED: Kraken Pro starter-tier taker fee from general knowledge. Check kraken.com/features/fee-schedule.",
+      "taker_fee_pct": 0.0040,
+      "slippage_pct": 0.0010,
+      "min_order_value": 5.0
+    }
+  },
+  "forecasts": {
+    "min_probability": 0.5,
+    "max_probability": 0.95,
+    "score_tolerance_minutes": {"stock": 1440, "crypto": 60}
+  },
+  "candidate_scoring": {
+    "weights": {
+      "evidence_quality": 25,
+      "fundamentals": 20,
+      "technicals": 20,
+      "reward_risk": 20,
+      "catalyst": 10,
+      "freshness": 5
+    },
+    "min_total_score": 65,
+    "min_reward_risk": 2.0,
+    "min_independent_sources": 2,
+    "require_primary_or_licensed_source": true
+  },
+  "promotion": {
+    "1": {
+      "to": 2,
+      "min_trading_days": 20,
+      "min_forecasts_scored": 50,
+      "max_integrity_violations": 0,
+      "max_timestamp_errors": 0,
+      "min_forecast_completeness": 1.0
+    },
+    "2": {
+      "to": 3,
+      "min_trading_days": 60,
+      "min_closed_trades": 30,
+      "max_risk_violations": 0,
+      "min_review_completeness": 1.0,
+      "max_integrity_violations": 0
+    },
+    "3": {
+      "to": 4,
+      "min_calendar_days": 182,
+      "min_closed_trades": 40,
+      "holdout_fraction": 0.33,
+      "must_beat_benchmark_after_costs": true,
+      "max_single_trade_profit_share": 0.25,
+      "max_drawdown_pct": 0.15,
+      "max_integrity_violations": 0
+    },
+    "4": {
+      "to": 5,
+      "min_calendar_days": 365,
+      "min_market_regimes": 2,
+      "max_drawdown_pct": 0.15,
+      "max_risk_violations": 0,
+      "max_integrity_violations": 0
+    },
+    "5": {
+      "to": null,
+      "note": "Top level. Never unlocks real money."
+    },
+    "demotion": {
+      "drawdown_pct": 0.15,
+      "integrity_violation": true,
+      "rolling_brier_worse_than": 0.30
+    }
+  },
+  "scorecard": {
+    "rewards": {
+      "complete_post_trade_review": 1,
+      "followed_all_rules_on_closed_trade": 2,
+      "well_calibrated_month": 5,
+      "abstained_with_reason": 1,
+      "verified_claim_with_independent_source": 1
+    },
+    "penalties": {
+      "fabricated_or_unsourced_fact": -50,
+      "used_stale_data": -5,
+      "risk_rule_breach_attempt": -3,
+      "missing_required_disclosure": -5,
+      "incomplete_review": -2,
+      "timestamp_error": -10
+    },
+    "notes": "No points for volume: more trades, more research or higher confidence earn nothing by themselves. Integrity penalties also block promotion."
+  },
+  "benchmarks": {
+    "CA_STOCK": {"symbol": "XIU", "exchange": "TSX", "label": "iShares S&P/TSX 60 (XIU)"},
+    "US_STOCK": {"symbol": "SPY", "exchange": "NYSE", "label": "SPDR S&P 500 (SPY), in CAD"},
+    "CRYPTO": {"symbol": "XBTCAD", "exchange": "KRAKEN", "label": "Bitcoin in CAD"}
+  },
+  "schedule": {
+    "pre_market": "08:27 Mon-Fri",
+    "post_close": "16:33 Mon-Fri",
+    "crypto": "every 4 hours",
+    "day_experiment": "hourly 10:37-15:37 Mon-Fri"
+  },
+  "notifications": {
+    "email": {
+      "enabled": true,
+      "only_to_owner": true,
+      "note": "The recipient lives in the Routine prompt. The apprentice may email only Stellan's own address (approved 2026-10-10)."
+    }
+  }
+}
