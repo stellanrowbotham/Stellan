@@ -25,7 +25,7 @@ The private web dashboard that every one of Stellan's agents reports to. Open it
 | [[morning-rundown]] | today's plan, morning brief, school tracker, connection status |
 | [[inbox-sweep]] | approvals, drafts, plan patches when a new clash appears |
 | [[six-pm-update]] | tomorrow's plan, evening brief, health checks for all agents, including [[ace]] and [[flowpilot]] |
-| [[investing-apprentice]] | *(planned)* a summary card linking to its own dashboard |
+| [[investing-apprentice]] | its agent card and log lines; full detail lives on its own dashboard |
 
 ## Not the same as this wiki
 The Brain is the live **status board** (what's happening now). This wiki is the long-term **memory** (what the agents are, how they work, and what's been learned) *(synthesis)*. The round-the-clock view is in [[agents-24-7]].

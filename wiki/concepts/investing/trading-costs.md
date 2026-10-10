@@ -22,10 +22,11 @@ The small amounts you lose every time you buy or sell. They add up fast, especia
 ## Explanation
 With $1,000, costs matter a lot. A 1.5% currency fee on a $100 US-stock buy is $1.50 going in and about $1.50 coming out. The trade has to gain about 3% just to break even *(synthesis)*. That's one reason the Canadian-first focus makes sense: buying TSX stocks in CAD avoids the FX fee *(synthesis)*.
 
-Working assumptions for the simulator, modelled on a typical Canadian app such as Wealthsimple. These are **to be verified against the official fee schedule before use**:
-- Canadian stocks and ETFs: $0 commission *(unverified, secondary reviews read 2026-10-10)*
-- US stocks from a CAD account: about 1.5% FX fee each way *(unverified, secondary reviews read 2026-10-10)*
-- Crypto: about 1.5–2% spread on the basic tier *(unverified, secondary reviews read 2026-10-10)*
+The simulator copies **Questrade**, which Stellan chose on 2026-10-10 *(Stellan, 2026-10-10)*. These figures are **to be verified against the official fee schedule before Level 3**:
+- Stocks and ETFs: $0 commission on online trades since early 2025 *(unverified, secondary reviews read 2026-10-10)*
+- US stocks from a CAD account: about 1.5% currency conversion each way; one review says 1.99% *(unverified, secondary reviews read 2026-10-10)*
+- Fractional shares: reportedly US-only. The simulator assumes **whole shares only** to stay on the safe side *(synthesis)*
+- Crypto: no Questrade crypto data was found, so crypto uses Kraken's real bid/ask plus about 0.40% taker fee *(unverified, general knowledge)*
 - Slippage: half the quoted spread, plus extra for thinly traded assets *(synthesis)*
 
 ## Evidence & claims
@@ -33,7 +34,8 @@ Working assumptions for the simulator, modelled on a typical Canadian app such a
 - Crypto costs vary by platform, and prices differ between exchanges ([[src-stellan-investing-apprentice-brief]]).
 
 ## Tensions & contradictions
-- ⚠️ Secondary reviews disagree on the crypto spread (0.05–2% vs 1.5–2%). Status: open until the official schedule is checked.
+- ⚠️ Secondary reviews disagree on Questrade's FX fee (1.5% vs about 2% vs 1.99%). Status: open, so the simulator uses 1.5% until the official page is checked.
+- Earlier Wealthsimple figures (crypto spread 0.05–2% vs 1.5–2%) no longer apply, since Questrade was chosen.
 
 ## Related
 - [[paper-trading]], [[risk-management]]

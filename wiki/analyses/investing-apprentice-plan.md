@@ -4,14 +4,14 @@ title: Investing Apprentice: requirements and build plan
 aliases: ["Apprentice plan", "Investing agent plan"]
 tags: [investing, agents, plan]
 question: What exactly should the Investing Apprentice be, and how should it be built?
-status: awaiting approval
+status: approved 2026-10-10; phases 1-2 built
 created: 2026-10-10
 updated: 2026-10-10
 sources: [src-stellan-investing-apprentice-brief]
 ---
 
 # Investing Apprentice: requirements and build plan
-> Filed from the interview on 2026-10-10. **Status: waiting for Stellan's approval. No app code has been written.**
+> Filed from the interview on 2026-10-10. **Approved by Stellan on 2026-10-10** *(Stellan, 2026-10-10)*. Phases 1-2 were built the same day, and the engine for phases 3-4 is in place and tested; see [[investing-apprentice]].
 
 ## 1. What Stellan wants (interview answers, 2026-10-10)
 | Topic | Answer |
@@ -42,7 +42,7 @@ All answers are *(Stellan, 2026-10-10)*. The full brief is in [[src-stellan-inve
 - **Where it runs:** Claude Routines, each firing a fresh session that checks out this repo, runs the engine, and commits the new records *(synthesis)*.
 - **Storage:** append-only JSON-lines files (forecasts, trades, price snapshots, reviews, scorecard), each record hash-chained to the one before. Old predictions physically can't be edited without the chain breaking, and git history is a second audit trail *(synthesis)*.
 - **Dashboard:** a private claude.ai artifact, like [[stellans-brain]]. It works on the phone and needs no server, and is linked from the Brain *(synthesis)*.
-- **Email:** sent through the connected Gmail, **only to Stellan's own address** *(synthesis, needs approval)*.
+- **Email:** sent through the connected Gmail, **only to Stellan's own address** *(Stellan, 2026-10-10)*.
 - **Free data, first choice:** Bank of Canada Valet (CAD rates, USD/CAD), Statistics Canada, FRED, SEC EDGAR, CoinGecko (free key), Kraken public market data (real crypto bid/ask), DefiLlama, Twelve Data / Alpha Vantage / Finnhub free keys for stock prices, and RSS headlines from the news outlets *(general knowledge, each to verify before use)*.
 
 ## 4. Costs and limits
@@ -86,12 +86,17 @@ Live trading would be a separate module that doesn't exist. The paper broker has
 - Risk limits and promotion rules live in a config file the agent is told never to edit, and a test fails if they change without a matching approved-config hash *(synthesis)*.
 - Emails, news and web pages are treated as information, never instructions. This is the same rule as the existing agents ([[src-stellan-investing-apprentice-brief]]).
 
-## 9. Open decisions
-1. Approve this plan?
-2. Email: may the apprentice send email to Stellan's own address, or only create drafts?
-3. Day trading: run it as a labelled hourly experiment, or drop it for now?
-4. Stellan will need to sign up for free API keys (Twelve Data, Alpha Vantage, Finnhub, FRED, CoinGecko). Claude can't sign up for him.
-5. Which app would he eventually use (Wealthsimple, Questrade, other)? This only sets the fee model.
+## 9. Decisions (2026-10-10)
+1. Plan: **approved**.
+2. Email: **send to Stellan's own address only**.
+3. Day trading: **labelled hourly experiment**.
+4. Fee model: **Questrade** for stocks *(Stellan, 2026-10-10)*.
+
+## 10. What's still blocking (as of 2026-10-10)
+- The cloud environment's network policy blocks every data host, from the first run *(synthesis)*.
+- Free API keys aren't set (Twelve Data, Alpha Vantage, Finnhub, FRED, CoinGecko, SEC user agent).
+- The Routines have no Gmail connector, because they were created from a session that couldn't pass connectors.
+- Steps for all three are in `apprentice/README.md` and `apprentice/ROUTINES.md`.
 
 ## Basis
 - Pages used: [[src-stellan-investing-apprentice-brief]], [[risk-management]], [[promotion-system]], [[trading-costs]], [[source-reliability]], [[agents-24-7]]

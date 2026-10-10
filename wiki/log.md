@@ -29,3 +29,10 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - + [[paper-trading]], [[look-ahead-bias]], [[trading-costs]], [[risk-management]], [[promotion-system]], [[source-reliability]]
 - ⚠️ Free-plan TSX price coverage unconfirmed, which conflicts with the Canadian-first goal; secondary sources disagree on the crypto spread
 - → Plan awaiting approval; Phase 1 verifies each data source's terms and limits
+
+## [2026-10-10] edit | Investing Apprentice built and scheduled
+- Stellan approved the plan. Decisions: email to his own address only, day trading as a labelled hourly experiment, Questrade fee model
+- Built `apprentice/` (engine, 56 tests, CI workflow), dashboard https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ, 4 Routines (2 on, 2 paused), and an agent card plus log line on the Brain
+- ~ [[investing-apprentice]], [[investing-apprentice-plan]], [[agents-24-7]], [[stellans-brain]], [[trading-costs]], [[overview]], [[index]]
+- ⚠️ First real run: every data host was blocked by the network policy and no API keys are set. The Routines have no Gmail connector
+- → Stellan: allow the domains, add the free keys, and add Gmail to the Routines (see `apprentice/README.md`); then turn on the crypto and hourly Routines
