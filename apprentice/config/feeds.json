@@ -1,0 +1,15 @@
+{
+ "_readme": "RSS/Atom feeds for headline collection. URLs are best-known public feeds as of 2026-10-10 and are verified on first successful fetch (see ledger/source_checks.jsonl). Headlines and links only; full articles are not copied.",
+ "feeds": [
+  {"source_id": "cnbc", "url": "https://www.cnbc.com/id/20910258/device/rss/rss.html", "topic": "markets"},
+  {"source_id": "marketwatch", "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories", "topic": "markets"},
+  {"source_id": "yahoo_finance", "url": "https://finance.yahoo.com/news/rssindex", "topic": "markets"},
+  {"source_id": "investing_com", "url": "https://www.investing.com/rss/news.rss", "topic": "markets"},
+  {"source_id": "federal_reserve", "url": "https://www.federalreserve.gov/feeds/press_all.xml", "topic": "macro"},
+  {"source_id": "coindesk", "url": "https://www.coindesk.com/arc/outboundfeeds/rss/", "topic": "crypto"},
+  {"source_id": "cointelegraph", "url": "https://cointelegraph.com/rss", "topic": "crypto"},
+  {"source_id": "decrypt", "url": "https://decrypt.co/feed", "topic": "crypto"},
+  {"source_id": "the_block", "url": "https://www.theblock.co/rss.xml", "topic": "crypto"},
+  {"source_id": "kraken_blog", "url": "https://blog.kraken.com/feed", "topic": "crypto"}
+ ]
+}

@@ -1,0 +1,22 @@
+name: apprentice
+
+on:
+  push:
+    paths: ["apprentice/**", "tests/apprentice/**", ".github/workflows/apprentice.yml"]
+  pull_request:
+    paths: ["apprentice/**", "tests/apprentice/**", ".github/workflows/apprentice.yml"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests (calculations, costs, accounting, timestamps, risk limits, promotions, no-live-trading)
+        run: python -m unittest discover -s tests/apprentice -t . -v
+      - name: Ledger hash chains and accounting reconcile
+        run: python -m apprentice verify
+      - name: Protected config matches Stellan's approved hash
+        run: python -c "from apprentice.settings import is_approved; import sys; sys.exit(0 if is_approved() else 'settings.json/universe.json changed without approval')"

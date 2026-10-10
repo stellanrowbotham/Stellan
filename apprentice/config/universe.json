@@ -1,0 +1,766 @@
+{
+ "_readme": "Protected file (approved universe). The agent may only research and trade assets listed here. It may PROPOSE additions in its report; Stellan approves. Starter universe chosen 2026-10-10: a subset of the S&P/TSX 60, major US large caps, about 20 ETFs, and major crypto (stablecoins excluded: they are not investments). Leveraged and inverse ETFs are excluded by risk rules.",
+ "version": 1,
+ "assets": [
+  {
+   "symbol": "RY",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "TD",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "BNS",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "BMO",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "CM",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "NA",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "MFC",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "SLF",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "IFC",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "POW",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "BN",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "BAM",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "ENB",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "TRP",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "CNQ",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "SU",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "CVE",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "CCO",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "CNR",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "industrials",
+   "tags": []
+  },
+  {
+   "symbol": "CP",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "industrials",
+   "tags": []
+  },
+  {
+   "symbol": "WCN",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "industrials",
+   "tags": []
+  },
+  {
+   "symbol": "TRI",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "industrials",
+   "tags": []
+  },
+  {
+   "symbol": "WSP",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "industrials",
+   "tags": []
+  },
+  {
+   "symbol": "SHOP",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "CSU",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "OTEX",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "GIB.A",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "BCE",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "T",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "RCI.B",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "ATD",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "L",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "DOL",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "consumer_discretionary",
+   "tags": []
+  },
+  {
+   "symbol": "QSR",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "consumer_discretionary",
+   "tags": []
+  },
+  {
+   "symbol": "MG",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "consumer_discretionary",
+   "tags": []
+  },
+  {
+   "symbol": "NTR",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "AEM",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "WPM",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "FNV",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "TECK.B",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "FTS",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "utilities",
+   "tags": []
+  },
+  {
+   "symbol": "EMA",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "utilities",
+   "tags": []
+  },
+  {
+   "symbol": "H",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "stock",
+   "sector": "utilities",
+   "tags": []
+  },
+  {
+   "symbol": "XIU",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "broad_market",
+   "tags": []
+  },
+  {
+   "symbol": "XIC",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "broad_market",
+   "tags": []
+  },
+  {
+   "symbol": "VCN",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "broad_market",
+   "tags": []
+  },
+  {
+   "symbol": "VFV",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "XEQT",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "global_balanced",
+   "tags": []
+  },
+  {
+   "symbol": "VEQT",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "global_balanced",
+   "tags": []
+  },
+  {
+   "symbol": "ZAG",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "bonds",
+   "tags": []
+  },
+  {
+   "symbol": "XBB",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "bonds",
+   "tags": []
+  },
+  {
+   "symbol": "ZEB",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "XEG",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "XGD",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "HXT",
+   "exchange": "TSX",
+   "currency": "CAD",
+   "asset_type": "etf",
+   "sector": "broad_market",
+   "tags": []
+  },
+  {
+   "symbol": "AAPL",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "MSFT",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "NVDA",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "AMD",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "technology",
+   "tags": []
+  },
+  {
+   "symbol": "GOOGL",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "META",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "NFLX",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "communication",
+   "tags": []
+  },
+  {
+   "symbol": "AMZN",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "consumer_discretionary",
+   "tags": []
+  },
+  {
+   "symbol": "JPM",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "V",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "BRK.B",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "JNJ",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "health_care",
+   "tags": []
+  },
+  {
+   "symbol": "XOM",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "KO",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "PG",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "WMT",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "COST",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "stock",
+   "sector": "consumer_staples",
+   "tags": []
+  },
+  {
+   "symbol": "SPY",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "QQQ",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "VTI",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "IWM",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "DIA",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "us_market",
+   "tags": []
+  },
+  {
+   "symbol": "XLE",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "energy",
+   "tags": []
+  },
+  {
+   "symbol": "XLF",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "financials",
+   "tags": []
+  },
+  {
+   "symbol": "GLD",
+   "exchange": "US",
+   "currency": "USD",
+   "asset_type": "etf",
+   "sector": "materials",
+   "tags": []
+  },
+  {
+   "symbol": "XBTCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "bitcoin",
+   "name": "Bitcoin",
+   "tags": []
+  },
+  {
+   "symbol": "ETHCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "ethereum",
+   "name": "Ethereum",
+   "tags": []
+  },
+  {
+   "symbol": "SOLCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "solana",
+   "name": "Solana",
+   "tags": []
+  },
+  {
+   "symbol": "XRPCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "ripple",
+   "name": "XRP",
+   "tags": []
+  },
+  {
+   "symbol": "ADACAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "cardano",
+   "name": "Cardano",
+   "tags": []
+  },
+  {
+   "symbol": "DOGECAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "dogecoin",
+   "name": "Dogecoin",
+   "tags": []
+  },
+  {
+   "symbol": "LINKCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "chainlink",
+   "name": "Chainlink",
+   "tags": []
+  },
+  {
+   "symbol": "DOTCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "polkadot",
+   "name": "Polkadot",
+   "tags": []
+  },
+  {
+   "symbol": "LTCCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "litecoin",
+   "name": "Litecoin",
+   "tags": []
+  },
+  {
+   "symbol": "AVAXCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "avalanche-2",
+   "name": "Avalanche",
+   "tags": []
+  },
+  {
+   "symbol": "XLMCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "stellar",
+   "name": "Stellar",
+   "tags": []
+  },
+  {
+   "symbol": "BCHCAD",
+   "exchange": "KRAKEN",
+   "currency": "CAD",
+   "asset_type": "crypto",
+   "sector": "crypto",
+   "coingecko_id": "bitcoin-cash",
+   "name": "Bitcoin Cash",
+   "tags": []
+  }
+ ]
+}
