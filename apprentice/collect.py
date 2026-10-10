@@ -63,7 +63,7 @@ def run(settings, broker, now, scope=("crypto", "stocks", "macro", "news"), ledg
         if us:
             results.append(P.sec_recent_filings(us))
     if "news" in scope:
-        feeds = json.loads((PKG / "config" / "feeds.json").read_text())["feeds"]
+        feeds = [f for f in json.loads((PKG / "config" / "feeds.json").read_text())["feeds"] if not f.get("disabled")]
         if "crypto" not in scope:
             feeds = [f for f in feeds if f["topic"] != "crypto"]
         if "stocks" not in scope and "macro" not in scope:

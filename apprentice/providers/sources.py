@@ -39,44 +39,57 @@ def bank_of_canada(series=("FXUSDCAD", "V39079")):
 
 
 # ---------------------------------------------------------------- Kraken (tradable crypto bid/ask)
+def _kraken_norm(name):
+    """XBT/CAD, XXBTZCAD-style keys and XBTCAD all normalise to BTCCAD; XDG (Kraken's Dogecoin) to DOGE."""
+    n = name.upper().replace("/", "")
+    return n.replace("XBT", "BTC").replace("XDG", "DOGE")
+
+
 def kraken(pairs):
+    """Real bid/ask for the requested CAD pairs. Pairs Kraken doesn't list are reported, not guessed.
+    Symbols in the result always use OUR names (e.g. DOGECAD even though Kraken says XDGCAD)."""
     pairs = list(pairs)
     if not pairs:
         return ProviderResult("kraken_market_data", "ok")
-    q = ",".join(pairs)
     try:
-        meta = http_json(f"https://api.kraken.com/0/public/AssetPairs?pair={q}")
-        tick = http_json(f"https://api.kraken.com/0/public/Ticker?pair={q}")
+        meta = http_json("https://api.kraken.com/0/public/AssetPairs")
+    except FetchError as e:
+        return _fail("kraken_market_data", e, 1)
+    listed = {}
+    for key, v in (meta.get("result") or {}).items():
+        for n in (v.get("wsname"), v.get("altname")):
+            if n:
+                listed[_kraken_norm(n)] = key
+    want = {p: listed.get(_kraken_norm(p)) for p in pairs}
+    unlisted = sorted(p for p, k in want.items() if not k)
+    keys = {k: p for p, k in want.items() if k}
+    if not keys:
+        return ProviderResult("kraken_market_data", "bad-response", [], f"none of the pairs are listed: {unlisted}", 1)
+    try:
+        tick = http_json("https://api.kraken.com/0/public/Ticker?pair=" + ",".join(keys))
     except FetchError as e:
         return _fail("kraken_market_data", e, 2)
-    if meta.get("error") or tick.get("error"):
-        # Kraken rejects the whole request if one pair is unknown; retry pair by pair.
-        if len(pairs) > 1:
-            out = ProviderResult("kraken_market_data", "ok", [], "", 2)
-            errs = []
-            for p in pairs:
-                r = kraken([p])
-                out.calls += r.calls
-                out.records += r.records
-                if not r.ok:
-                    errs.append(f"{p}: {r.error}")
-            out.status = "ok" if not errs else ("partial" if out.records else "bad-response")
-            out.error = "; ".join(errs)
-            return out
-        return ProviderResult("kraken_market_data", "bad-response", [], f"{pairs[0]}: {meta.get('error') or tick.get('error')}", 2)
-    alt = {k: v.get("altname") for k, v in meta.get("result", {}).items()}
+    if tick.get("error"):
+        return ProviderResult("kraken_market_data", "bad-response", [], str(tick["error"])[:200], 2)
     now = iso(utcnow())
     recs = []
-    for key, t in tick.get("result", {}).items():
-        sym = alt.get(key, key)
+    for key, t in (tick.get("result") or {}).items():
+        sym = keys.get(key) or next((p for k, p in keys.items() if _kraken_norm(k) == _kraken_norm(key)), None)
+        if not sym:
+            continue
         recs.append(quote_record(symbol=sym, exchange="KRAKEN", asset_type="crypto", currency="CAD",
                                  provider="kraken", source_id="kraken_market_data",
                                  price=float(t["c"][0]), bid=float(t["b"][0]), ask=float(t["a"][0]),
                                  data_ts=now, observed_at=now,
-                                 extra={"volume_24h": float(t["v"][1]), "data_ts_note": "Kraken ticker has no timestamp; observed_at used"}))
-    missing = set(pairs) - {r["symbol"] for r in recs}
-    return ProviderResult("kraken_market_data", "ok" if not missing else "partial", recs,
-                          f"missing pairs: {sorted(missing)}" if missing else "", 2)
+                                 extra={"kraken_pair": key, "volume_24h": float(t["v"][1]),
+                                        "data_ts_note": "Kraken ticker has no timestamp; observed_at used"}))
+    missing = set(keys.values()) - {r["symbol"] for r in recs}
+    note = []
+    if unlisted:
+        note.append(f"not listed on Kraken in CAD (can't be traded here): {unlisted}")
+    if missing:
+        note.append(f"no ticker returned for {sorted(missing)}")
+    return ProviderResult("kraken_market_data", "ok" if not missing else "partial", recs, "; ".join(note), 2)
 
 
 # ---------------------------------------------------------------- CoinGecko (market context, not fills)

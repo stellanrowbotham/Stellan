@@ -232,13 +232,18 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(r.status, "blocked-by-network")
         self.assertEqual(r.records, [])
 
-    def test_kraken_parsing(self):
-        meta = {"error": [], "result": {"XXBTZCAD": {"altname": "XBTCAD"}}}
-        tick = {"error": [], "result": {"XXBTZCAD": {"a": ["90010.0", "1", "1"], "b": ["90000.0", "1", "1"], "c": ["90005.0", "0.1"], "v": ["1", "2"]}}}
+    def test_kraken_parsing_and_renames(self):
+        meta = {"error": [], "result": {"XXBTZCAD": {"altname": "XBTCAD", "wsname": "XBT/CAD"},
+                                        "XDGCAD": {"altname": "XDGCAD", "wsname": "XDG/CAD"}}}
+        tick = {"error": [], "result": {
+            "XXBTZCAD": {"a": ["90010.0", "1", "1"], "b": ["90000.0", "1", "1"], "c": ["90005.0", "0.1"], "v": ["1", "2"]},
+            "XDGCAD": {"a": ["0.123", "1", "1"], "b": ["0.122", "1", "1"], "c": ["0.1225", "1"], "v": ["1", "2"]}}}
         with mock.patch.object(P, "http_json", side_effect=[meta, tick]):
-            r = P.kraken(["XBTCAD"])
-        self.assertEqual(r.status, "ok")
-        self.assertEqual((r.records[0]["bid"], r.records[0]["ask"]), (90000.0, 90010.0))
+            r = P.kraken(["XBTCAD", "DOGECAD", "ADACAD"])
+        by = {q["symbol"]: q for q in r.records}
+        self.assertEqual((by["XBTCAD"]["bid"], by["XBTCAD"]["ask"]), (90000.0, 90010.0))
+        self.assertIn("DOGECAD", by)  # Kraken's XDG mapped back to our symbol
+        self.assertIn("ADACAD", r.error)  # unlisted pair reported, not invented
 
     def test_rss_parse(self):
         xml = b"""<rss><channel><item><title>Fictional headline</title><link>https://x.invalid/a</link>
