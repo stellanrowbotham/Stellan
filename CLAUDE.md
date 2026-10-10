@@ -14,6 +14,8 @@ The brain has three sections:
 
 [[overview]] is the home page that ties the three sections together.
 
+**The live app:** https://claude.ai/artifact/RmkjrydKPNeqMoYjDdNXm5 shows Stellan's link inbox, agent status and activity, the schedule, the morning breakdown, and a snapshot of each section. Scheduled **agents** (claude.ai Routines) work the inbox every 2 hours and send the 6:30 AM email. Their instructions live in `agents/` (§6.7).
+
 ---
 
 ## 1. Roles
@@ -34,6 +36,7 @@ It is not re-derived on every question.
 /
 ├── CLAUDE.md                 ← this schema
 ├── tools/wiki.py             ← helper CLI: search · lint · stats · graph (stdlib Python)
+├── agents/                   ← standing instructions for the scheduled agents (protocol, inbox, morning brief)
 ├── raw/                      ← LAYER 1: immutable inputs (Claude only creates new files, never edits)
 │   ├── assets/               ← images/attachments (Obsidian attachment folder)
 │   ├── daily/                ← Stellan's check-in answers, verbatim: YYYY-MM-DD-morning.md / -evening.md
@@ -46,7 +49,7 @@ It is not re-derived on every question.
     ├── sources/              ← one summary page per raw source, any section (src-<slug>.md)
     ├── investing/            ← hub investing-apprentice.md + feature, research, competitor, decision pages
     ├── flowpilot/            ← hub flowpilot.md + ace.md + client, offer, tool, process pages
-    └── daily/                ← hub daily-run-through.md + one page per day (daily-YYYY-MM-DD.md)
+    └── daily/                ← hub daily-run-through.md + schedule.md + one page per day (daily-YYYY-MM-DD.md)
 ```
 
 Rules:
@@ -66,6 +69,7 @@ Rules:
   - Daily pages: `daily-YYYY-MM-DD.md`
   - FlowPilot clients: `client-<name>.md`. Offers: `offer-<name>.md`.
   - Apprentice features: `feature-<name>.md`. Decisions: `decision-YYYY-MM-DD-<slug>.md`.
+  - Stock/crypto research: `research-<ticker>.md` in `wiki/investing/` (entity, `kind: asset`).
   - Everything else: the canonical name or a noun phrase (`n8n.md`, `dollar-cost-averaging.md`).
 - **Raw filenames:** `YYYY-MM-DD-<slug>.<ext>` (the date it was added), inside the right `raw/` subfolder.
 - **Links:** always Obsidian wikilinks: `[[slug]]` or `[[slug|display text]]`. External URLs use
@@ -94,7 +98,7 @@ updated: YYYY-MM-DD
 sources: [src-slug, ...]        # source pages this page draws on ([] if none yet)
 ---
 ```
-Extra fields: entity → `kind: person|org|product|tool|place|work|feature|client|offer`;
+Extra fields: entity → `kind: person|org|product|tool|place|work|feature|client|offer|asset`;
 analysis → `question:`; source → `raw:`; daily → `raw: [raw/daily/…]` and `date:`.
 
 ### 4.1 Raw capture header (when Claude creates a raw file from chat)
@@ -246,6 +250,16 @@ Fix mechanical issues directly. Bring judgment calls to Stellan. Log a `lint` en
 ### 6.6 EDIT (Stellan asks for a specific change)
 Make the change, keep links, the index, and frontmatter consistent, log an `edit` entry, and commit.
 
+### 6.7 AGENTS & THE APP INBOX
+- Stellan adds links and notes in the app. They land in the app database's `inbox`.
+- **Brain · Inbox agent** (every 2 h, 6:53–22:53 Toronto) and **Brain · Morning brief** (daily 6:18,
+  email ~6:30 to rowbs34@gmail.com) are claude.ai Routines. Each starts a fresh session that follows
+  `agents/protocol.md`, then `agents/inbox-agent.md` or `agents/morning-brief.md`.
+- Agent runs are ingests done unsupervised. They follow §6.3 and log `ingest` entries noting "agent run".
+- In chat, when Stellan pastes a link, Claude can handle it directly (as an ingest), or add it to the inbox when Stellan says "queue it".
+- Any session that changes the hubs refreshes the app's `brain/snapshot` so the app stays in sync.
+- To change agent behaviour, edit the file in `agents/` and log a `schema` entry.
+
 ---
 
 ## 7. Writing style & guardrails
@@ -286,6 +300,9 @@ check-in works through them one at a time.
   - 2026-10-10: **v2. Became Stellan's Brain.** Demo pages deleted (they're still in git history at
     `b76fec2`). Three sections (Investing Apprentice, FlowPilot with ACE, Daily Run-Through), new
     `hub` and `daily` page types, morning and evening workflows, and investing and business guardrails.
+  - 2026-10-10: **v2.1. The live app and agents.** Added the app (link inbox, agent status, schedule,
+    morning breakdown), `agents/` instructions, two Routines (inbox every 2 h, 6:30 AM email),
+    the `wiki/daily/schedule.md` page, research pages (`kind: asset`), and §6.7.
 
 ---
 

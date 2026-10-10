@@ -15,6 +15,7 @@ Stellan's daily routine with Claude: a **morning check-in** to plan the day and 
 ## Snapshot
 - **Entries so far:** 0
 - **Started:** 2026-10-10 (set up; first check-in pending)
+- **Morning breakdown email:** daily at 6:30 AM Toronto time to rowbs34@gmail.com *(Stellan, 2026-10-10)*
 
 ## How it works
 1. **Morning:** say "morning" or "gm". Claude asks the morning questions below, saves your answers word for word in `raw/daily/`, writes today's page, and replies with a day plan.
@@ -48,4 +49,5 @@ Stellan's daily routine with Claude: a **morning check-in** to plan the day and 
 3. Should the check-in include anything personal, such as health, gym, or habits, or stay work-focused?
 
 ## Pages
+- [[schedule]]: upcoming events from schedule links (also in Google Calendar)
 - Related: [[flowpilot]] · [[investing-apprentice]] · [[overview]]
