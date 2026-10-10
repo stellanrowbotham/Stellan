@@ -32,9 +32,11 @@ current. It is not re-derived from raw files on every question.
     ├── index.md           ← content catalog (read FIRST on every query)
     ├── log.md             ← append-only chronological record
     ├── overview.md        ← the evolving top-level synthesis of everything
+    ├── agents/            ← one page per AI agent Stellan runs (+ agents-24-7 timeline)
     ├── sources/           ← one summary page per raw source      (src-<slug>.md)
     ├── entities/          ← people, orgs, products, tools, places, works (<slug>.md)
     ├── concepts/          ← ideas, frameworks, themes, methods, recurring topics (<slug>.md)
+    │   └── investing/     ← investing knowledge (paper trading, risk, sources, …)
     └── analyses/          ← filed-back query answers, comparisons, syntheses (<slug>.md)
 ```
 
@@ -73,7 +75,7 @@ Every wiki page starts with YAML frontmatter (so Dataview can query it):
 
 ```yaml
 ---
-type: source | entity | concept | analysis | overview | meta
+type: source | entity | concept | analysis | agent | overview | meta
 title: Human Readable Title
 aliases: []
 tags: []
@@ -159,7 +161,24 @@ Synthesized answer with citations.
 - Pages used: [[…]], [[…]]
 ```
 
-### 4.6 Citations
+### 4.6 Agent page (`wiki/agents/*.md`), extra frontmatter: `kind: routine|chat-on-demand|workflow|dashboard`, `status:`, `schedule:`
+```markdown
+# <Agent name>
+One-line description of its job.
+
+## What it does
+Numbered or bulleted steps, as plainly as possible.
+
+## Key facts
+- Trigger/ID, schedule, latest status with date. ([[src-…]])
+
+## Connections
+- [[other agent]]: how they hand off
+```
+Live status belongs on the Brain dashboard; agent pages hold the stable description plus a dated status snapshot.
+Refresh `agents-24-7` whenever an agent is added, removed, or rescheduled.
+
+### 4.7 Citations
 - Every non-obvious factual claim in the wiki cites the **source page** it came from: `([[src-slug]])`.
 - Inference or synthesis by the agent is labelled: `*(synthesis)*`.
 - The human's own opinions or statements from chat are cited as `*(Stellan, YYYY-MM-DD)*`.
@@ -170,7 +189,7 @@ Synthesized answer with citations.
 ## 5. Special files
 
 ### 5.1 `wiki/index.md` (content-oriented)
-- A catalog of **every** wiki page, grouped by category: Overview, Sources, Entities, Concepts, Analyses.
+- A catalog of **every** wiki page, grouped by category: Overview, Agents, Investing knowledge, Sources, Entities, Concepts, Analyses.
 - One line per page: `- [[slug]]: one-line summary · <metadata>`
   - Sources: `· <published date> · <author>`
   - Entities/Concepts: `· N sources`
@@ -273,6 +292,8 @@ Make the change, keep links, the index, and frontmatter consistent, log it as `e
   - 2026-10-02: v1.1. Added `tools/wiki.py` (search/lint/stats/graph) and wired it into QUERY and LINT.
     Before ending a turn that changed the wiki, `tools/wiki.py lint` should pass, except for red links
     that are deliberately open.
+  - 2026-10-10: v1.2. At Stellan's request the wiki and raw/ were wiped and restarted (old content is in git history).
+    Added `wiki/agents/` (type `agent`, §4.6) and `wiki/concepts/investing/`; index gains Agents and Investing sections.
 
 ---
 

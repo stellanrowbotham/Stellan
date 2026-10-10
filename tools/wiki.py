@@ -29,6 +29,7 @@ REQUIRED_FM = {
     "entity": ["type", "kind", "title", "created", "updated", "sources"],
     "concept": ["type", "title", "created", "updated", "sources"],
     "analysis": ["type", "title", "created", "updated", "sources", "question"],
+    "agent": ["type", "kind", "title", "created", "updated", "sources"],
     "overview": ["type", "title", "created", "updated"],
     "meta": ["type", "title", "created"],
 }
@@ -139,7 +140,7 @@ def cmd_lint(args):
             if s not in names:
                 problems["frontmatter"].append(f"[[{name}]] lists unknown source `{s}`")
         cited = {l for l in p["links"] if l.startswith("src-")}
-        if ptype in ("entity", "concept", "analysis") and cited - listed:
+        if ptype in ("entity", "concept", "analysis", "agent") and cited - listed:
             problems["frontmatter"].append(
                 f"[[{name}]] cites {sorted(cited - listed)} but they're not in `sources:`")
 
