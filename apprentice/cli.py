@@ -18,6 +18,7 @@
     python3 -m apprentice health                  health checks
     python3 -m apprentice verify                  verify every ledger hash chain + accounting
     python3 -m apprentice sources                 source registry with live status
+    python3 -m apprentice keys                    check API key format (never prints the keys)
     python3 -m apprentice approve-config          HUMAN ONLY: re-approve config after Stellan agrees to a change
     python3 -m apprentice run-start JOB           record that a scheduled job started
 """
@@ -46,7 +47,7 @@ def _print(x):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="apprentice", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("status", "forecast-score", "process", "reviews-due", "evaluate", "dashboard", "health", "verify", "sources", "approve-config"):
+    for name in ("keys", "status", "forecast-score", "process", "reviews-due", "evaluate", "dashboard", "health", "verify", "sources", "approve-config"):
         sub.add_parser(name)
     c = sub.add_parser("collect")
     c.add_argument("--scope", default="crypto,stocks,macro,news")
@@ -70,6 +71,26 @@ def main(argv=None):
     s = Settings()
     b = PaperBroker(s)
 
+    if a.cmd == "keys":
+        import re
+        for k in health.ENV_KEYS:
+            v = os.environ.get(k)
+            if v is None:
+                print(f"{k}: MISSING")
+                continue
+            notes = []
+            if v != v.strip():
+                notes.append("has spaces/newlines at the start or end")
+            if v.strip()[:1] in "'\"" or v.strip()[-1:] in "'\"":
+                notes.append("is wrapped in quotes (remove them)")
+            if "=" in v:
+                notes.append("contains '=' (did you paste NAME=key into the value box?)")
+            if k == "FRED_API_KEY" and not re.fullmatch(r"[a-z0-9]{32}", v.strip().strip("'\"")):
+                notes.append("FRED keys are exactly 32 lowercase letters/digits")
+            if k == "SEC_USER_AGENT" and "@" not in v:
+                notes.append("should include a contact email")
+            print(f"{k}: set, {len(v)} characters" + (" -> " + "; ".join(notes) if notes else ", format looks fine"))
+        return 0
     if a.cmd == "status":
         port = b.portfolio()
         ok, *_ = port.reconcile()

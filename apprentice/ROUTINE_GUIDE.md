@@ -33,7 +33,8 @@ and record what you decided.
 export APPRENTICE_ROUTINE=1
 cd <repo>                                  # stellanrowbotham/Stellan
 git fetch origin claude/practical-galileo-8nwjmp
-git checkout -B claude/practical-galileo-8nwjmp origin/claude/practical-galileo-8nwjmp
+git checkout -B claude/practical-galileo-8nwjmp origin/claude/practical-galileo-8nwjmp   # not reset --hard (blocked)
+python3 -m apprentice keys                 # note any key problems under limitations
 python3 -m apprentice run-start <job>      # job = pre_market | post_close | opportunity_scan | day_experiment
 python3 -m apprentice health               # read it; carry on even if it reports problems
 python3 -m apprentice status
@@ -155,7 +156,8 @@ python3 -m apprentice verify
   Read it first, then pass `if_version`. Change only `status` (`ok` / `attention` / `error`), `startedAt`,
   `lastRunAt` and `lastSummary` (one plain sentence). Append one entry to `log/YYYY-MM-DD` there
   (`agent: "Investing Apprentice"`). Never touch other agents' docs.
-- **Email** (when your job says to): Gmail `send_message` to `["stellanrowbotham@gmail.com"]`, subject
+- **Email** (when your job says to): find the Gmail send tool with ToolSearch `"gmail send_message"` (its name
+  may be `mcp__Gmail__send_message` or `mcp__<uuid>__send_message`), then `send_message` to `["stellanrowbotham@gmail.com"]`, subject
   `Apprentice · <job> · <date>: <headline>`. `htmlBody` = the generated `.html` report, plus a short
   plain `body` with the dashboard link `https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ`.
 - **Commit and push:**
