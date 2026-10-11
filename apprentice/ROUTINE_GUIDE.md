@@ -34,7 +34,6 @@ export APPRENTICE_ROUTINE=1
 cd <repo>                                  # stellanrowbotham/Stellan
 git fetch origin claude/practical-galileo-8nwjmp
 git checkout -B claude/practical-galileo-8nwjmp origin/claude/practical-galileo-8nwjmp   # not reset --hard (blocked)
-python3 -m apprentice keys                 # note any key problems under limitations
 python3 -m apprentice run-start <job>      # job = pre_market | post_close | opportunity_scan | day_experiment
 python3 -m apprentice health               # read it; carry on even if it reports problems
 python3 -m apprentice status

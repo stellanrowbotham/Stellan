@@ -35,7 +35,7 @@ All schedule facts are from [[src-agent-roster-2026-10-10]].
 | Time | Routine | What it does | State |
 |---|---|---|---|
 | 8:27 AM Mon–Fri | Apprentice · Pre-market | Research, forecasts, emailed report before the 9:30 open | on |
-| 10:37 AM–3:37 PM hourly, Mon–Fri | Apprentice · Hourly experiment | Labelled hourly day-trading test (1-hour forecasts at Level 1) | paused (no data yet) |
+| 10:37 AM–3:37 PM hourly, Mon–Fri | Apprentice · Hourly experiment | Labelled hourly day-trading test | on |
 | 4:33 PM Mon–Fri | Apprentice · After the close | Scores forecasts, reviews trades, promotion check | on |
 | 2:13, 6:13, 10:13 AM and PM, daily | Apprentice · Opportunity scan | Hunts for a new stock or crypto to pretend-buy (stocks fill only during market hours) | on |
 

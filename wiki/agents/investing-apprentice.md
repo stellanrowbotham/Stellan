@@ -24,7 +24,7 @@ Picture a new employee at an investing company. On day one they can't touch any 
 - ⚠️ **Can't research yet:** on its first run every data site was blocked by the cloud environment's network policy, and the free API keys aren't set. The fix is in `apprentice/README.md` → Setup *(synthesis)*.
 - Dashboard (private, works on phone): [Investing Apprentice](https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ). Also shown as an agent card on [[stellans-brain]].
 - Code: `apprentice/` in this repo; 56 automated tests; append-only, hash-chained records, so old predictions can't be quietly edited *(synthesis)*.
-- Routines: Pre-market `trig_01EBzV8jv969JgHxMPNSrwjt` and After the close `trig_01A5A8LVVor9ofNUqa4tYF5z` are on. Opportunity scan `trig_01EZPKbyn9wamX7f7gvKEtpi` (every 4 h) is on. Hourly experiment `trig_01CXcNa8V3PhuiNXPq17hKxY` is paused. They have no Gmail connector yet, so email won't send until Stellan adds it.
+- Routines: Since 2026-10-11 all four (Opportunity scan `trig_01QKsnz2SDFE8aPVmfpd7MHK`, Pre-market `trig_01FmUM5ztD9juXXFidRQtDhh`, After the close `trig_01U9PAFTabbCKbruyu8eodNT`, Hourly experiment `trig_01AjwVsVAvt7u9R36KUW7PCK`) run inside one runner session that has the code and Gmail. The first versions couldn't reach the repo, so they were replaced (`apprentice/ROUTINES.md`).
 - Simulation only. It has no ability to place real orders ([[src-stellan-investing-apprentice-brief]]).
 - Starting virtual balance: **$1,000 CAD**, with a Canadian focus (TSX first, then US) *(Stellan, 2026-10-10)*.
 - Five levels, from Research Apprentice to Trusted Research Agent ([[promotion-system]], [[src-stellan-investing-apprentice-brief]]).

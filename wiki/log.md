@@ -42,3 +42,9 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Config level 1 → 2 (re-approved hash); promotion recorded in `level_events`; crypto Routine turned into "Opportunity scan" every 4 h and switched on
 - ~ [[investing-apprentice]], [[promotion-system]], [[agents-24-7]], [[investing-apprentice-plan]], [[overview]], [[index]]
 - ⚠️ Level 1's forecast check was skipped by choice; still blocked on network access, keys and Gmail
+
+## [2026-10-11] edit | Apprentice test run and runner session
+- Test: the fresh-session Routines couldn't reach the repo or Gmail. Replaced them with 4 Routines bound to one runner session (`apprentice/ROUTINES.md`)
+- Live data now flowing: Bank of Canada, Kraken (BTC, ETH, SOL, XRP, DOGE in CAD), CoinGecko, DefiLlama, Alpha Vantage, 7 news feeds
+- ⚠️ Twelve Data and Finnhub return 401 and FRED returns 400, meaning those keys are rejected by the providers; Stellan to re-enter them
+- ~ [[investing-apprentice]], [[agents-24-7]]
