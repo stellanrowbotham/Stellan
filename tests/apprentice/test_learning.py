@@ -178,6 +178,14 @@ class ScoringAndReport(Base):
         self.assertIn("why it's being considered", rec["candidates"][0]["missing"])
         self.assertTrue(html.read_text().startswith("<html>"))
 
+    def test_price_record_counts_as_licensed_source(self):
+        q = self.env.quote("XBTCAD", T0 - timedelta(minutes=1), bid=90000, ask=90010, exchange="KRAKEN", asset_type="crypto")
+        n = self.env.note(T0 - timedelta(hours=1), source_id="coindesk")
+        cand = {"symbol": "XBTCAD", "name": "Bitcoin", "quote_id": q["id"], "evidence_ids": [n["id"]], "entry_price": 90010,
+                "stop_price": 88000, "target_price": 95000, "strategy": "swing"}
+        rec, _, _ = report.build(self.s, self.b, {"candidates": [cand]}, T0, "crypto")
+        self.assertTrue(rec["candidates"][0]["score"]["gates"]["primary_or_licensed"]["passed"])
+
     def test_score_gates(self):
         q = self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
         ev = [self.env.note(T0 - timedelta(hours=1), source_id="sec_edgar"), self.env.note(T0 - timedelta(hours=1), source_id="cnbc", title="Other story")]

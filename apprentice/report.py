@@ -58,6 +58,8 @@ def build(settings, broker, payload, now, run_name):
         miss = _missing(c)
         q = pool.get(c.get("quote_id"))
         ev = [pool[i] for i in c.get("evidence_ids", []) if i in pool]
+        if c.get("quote_id") in pool and c["quote_id"] not in c.get("evidence_ids", []):
+            ev.append(pool[c["quote_id"]])  # the price record itself is licensed market data (tier B)
         bad_ids = [i for i in c.get("evidence_ids", []) if i not in pool]
         if q is None:
             miss.append("a price record that exists in the ledger")
