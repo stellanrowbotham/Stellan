@@ -1324,7 +1324,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "status": "NEEDS_REVIEW",
+            "status": "={{ (String($('Loop leads').first().json.settings.send_mode || '').toUpperCase() === 'SEND' && $('Loop leads').first().json.settings.paused !== 'true' && $('Loop leads').first().json.settings.dry_run !== 'true') ? 'APPROVED' : 'NEEDS_REVIEW' }}",
             "ai_decision": "APPROVE",
             "email_subject": "={{ $('Finalize email').first().json.subject }}",
             "email_body": "={{ $('Finalize email').first().json.body }}",
@@ -1388,6 +1388,31 @@
         }
       },
       "onError": "continueRegularOutput"
+    },
+    {
+      "id": "aca631cb-ff45-4b06-a639-2cd937e620cc",
+      "name": "Send approved emails now (Sender v2)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1568,
+        2040
+      ],
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ewY30DPW3LnvGdNz",
+          "cachedResultName": "FlowPilot Outreach Sender v2"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      }
     }
   ],
   "connections": {
@@ -1506,7 +1531,13 @@
     },
     "Loop leads": {
       "main": [
-        [],
+        [
+          {
+            "node": "Send approved emails now (Sender v2)",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "MX lookup",

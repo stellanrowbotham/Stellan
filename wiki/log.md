@@ -108,3 +108,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - Stellan chose "Auto-send now"
 - ~ Published Composer, Follow-ups and Outreach Sender v2. The Prospector's search now uses Stellan's own Brave key (republished). Its model and page reader still use the AI gateway credits, which Stellan has not topped up
 - → Stellan: set `paused` to false in FlowPilot Settings (I can't edit table rows), then mark leads APPROVED to have them sent at 10:15 or 13:15
+
+## [2026-10-12] edit | Outreach: send right after AI approval
+- Stellan asked for emails to go out as soon as they pass the checks, and reported that nothing was sending
+- Cause of "stuck": `paused` was still "True", so every Composer and Sender run since publishing stopped at the first step
+- ~ Composer: in SEND mode (not paused, not a dry run), AI-approved emails are set to APPROVED instead of NEEDS_REVIEW. When a run finishes, it starts Sender v2 at once, which sends them with all its checks (suppression, duplicates, MX, limits, sending hours on weekdays 8:00–18:00)
+- ~ Sender v2: + "When called by Composer" trigger. The 10:15 and 13:15 runs stay as a backup
+- → Stellan: set `paused` to false

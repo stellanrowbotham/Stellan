@@ -21,7 +21,7 @@ Exports are from 2026-10-12. Credentials appear only as n8n credential IDs and n
 
 ## State on 2026-10-12
 
-- Sending mode is **DRAFT_ONLY**: AI-approved emails become Gmail drafts for Stellan.
+- Sending mode is **SEND** (Stellan, 2026-10-12): the Composer starts Sender v2 right after it approves emails.
 - The new workflows are **not published**. Old Sender v1 (`JYLp19AwhhrEpswo`) was unpublished when v2
   replaced it.
 - The n8n AI gateway credits are used up, so AI steps fail safely until they're topped up or replaced

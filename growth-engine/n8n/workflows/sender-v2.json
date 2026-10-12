@@ -1016,6 +1016,19 @@
         "resource": "row"
       },
       "onError": "continueRegularOutput"
+    },
+    {
+      "id": "9e1e532d-6a58-413c-824c-6be9e3cc1b2e",
+      "name": "When called by Composer",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        700
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
     }
   ],
   "connections": {
@@ -1385,6 +1398,17 @@
         [
           {
             "node": "Loop sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When called by Composer": {
+      "main": [
+        [
+          {
+            "node": "Load settings",
             "type": "main",
             "index": 0
           }
