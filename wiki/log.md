@@ -96,3 +96,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ⚠️ The n8n AI gateway credits are used up ("Payment required"). AI steps fail safely until topped up or replaced with Stellan's own OpenAI and Gemini keys
 - → Stellan: restore AI credits; approve publishing Error Alerts, Reply Monitor, Composer, Follow-ups and Weekly Report; republish the Prospector; stay in DRAFT_ONLY until about 20 drafts look right
 
+
+## [2026-10-12] edit | Outreach system: Stellan's setup checked, fixes applied
+- Stellan added his own OpenAI and Gemini keys, published Error Alerts, Reply Monitor and Weekly Report, republished the Prospector (now on a smaller Claude model), and changed settings (send_mode SEND, paused "True", 10 per window, 20 per day)
+- ~ Composer, Follow-ups and Reply Monitor now use Stellan's own AI keys. Error Alerts is set as the error workflow on Composer, Sender v2, Reply Monitor and Follow-ups. Reply Monitor republished
+- ~ Settings now read true/false case-insensitively (before, "True" did not pause anything). Sender v2 caps each run so sends plus spacing stay under n8n's 180-second limit (4 per run at 20 s spacing)
+- ⚠️ The Weekly Report's switch to his own Gemini key was declined, so it still uses the AI gateway credits
+- → Stellan: confirm the intended mode (paused plus SEND conflict); Composer and Follow-ups are still unpublished
