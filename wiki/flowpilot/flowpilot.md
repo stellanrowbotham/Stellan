@@ -16,8 +16,9 @@ FlowPilot Automation, Stellan's AI automations business for local small business
 - **Offer:** instant inquiry replies for home-service businesses in southwestern Ontario. Setups **start at $300** (decided 2026-10-12): $300 / $600 / $1,000, plus an optional $149/month care plan. ([[src-flowpilot-website]])
 - **Website:** the Manus site is live, but **its demo form is a stub and captures no leads**. Its CTA goes to the older request page. ([[src-flowpilot-website]], [[src-flowpilot-request-page]])
 - **Growth plan:** the [[growth-engine]] (inbound-first, AI agents + n8n + CRM) started 2026-10-12. Phases 1–2 are built and tested locally and not yet deployed. *(Stellan, 2026-10-12)*
+- **AI outreach in n8n:** Prospector → Composer (AI writer plus an independent AI critic) → Gmail drafts for Stellan, with reply monitoring, follow-ups and a weekly report. Built 2026-10-12 and **not running yet**: the workflows are unpublished and the n8n AI credits are used up. Mode is DRAFT_ONLY ([[growth-engine]]) *(synthesis)*.
 - **Cold outreach:** [[ace]] emailed 69 businesses (2026-09-13 to 09-15) with no customers so far *(Stellan, 2026-10-12)* ([[src-ace-outreach-log]]).
-- **Health:** the n8n workflow's last known run was 2026-09-30, and the claude.ai n8n connector is still failing (2026-10-12). ([[src-command-centre]])
+- **Health:** the n8n workflow's last known run was 2026-09-30, and the claude.ai "n8n" connector is still failing, while the "N8N" connector works (2026-10-12). ([[src-command-centre]])
 
 ## What FlowPilot sells
 A simple system that replies to new inquiries instantly, texts the owner the details, keeps one list of inquiries, and reminds them to follow up. It works with the tools the business already uses, and the owner approves every message. ([[src-flowpilot-website]]) The older request page frames it as a free "automation plan" for any small business ([[src-flowpilot-request-page]]).

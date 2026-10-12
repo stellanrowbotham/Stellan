@@ -23,6 +23,8 @@ The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead cap
 - **Biggest finding:** the live site's demo form never sends anything (it's a stub), so the site captures no leads today ([[src-flowpilot-website]]). Connecting it is the first, cheapest fix *(synthesis)*.
 - **Database guarantees:** the send gate checks suppression, consent for the message's purpose, the CASL sender block and unsubscribe link, and human approval. The suppression list and consent records can't be edited or deleted. An audit or demo request never becomes marketing consent *(synthesis, tested in `growth-engine/supabase/tests`)*.
 - **Tests (2026-10-12):** 6 SQL suites and 22 API tests pass, including an HTTP end-to-end run against a local database *(synthesis)*.
+- **n8n outreach system (2026-10-12):** Prospector → Composer (AI research, writer and a separate AI critic that scores six areas, at most 2 rewrites, compliance overrides the score) → Gmail **draft** for Stellan → Sender v2 (10:15 and 13:15, atomic claim, daily cap) only once `send_mode` = SEND. It also has a Reply Monitor (11 reply types, auto-suppression), Follow-ups (4 then 7 business days, max 2, stop on reply), a Weekly Report and Error Alerts. Full write-up: `growth-engine/docs/outreach-system.md` *(synthesis)*.
+- **Not running yet:** the new workflows are unpublished and the n8n AI credits are used up, so AI steps fail safely (leads stay NEW) *(synthesis)*.
 - **Accounts needed:** Supabase (Canada region), n8n access, an LLM API key, a search API, a transactional email provider with a domain, Cal.com, and GA4/Search Console. The full list is in `growth-engine/docs/phase-1-plan.md` *(synthesis)*.
 
 ## Tensions & contradictions
@@ -40,3 +42,4 @@ The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead cap
 - 2026-10-12: Brief received. Phase 1 (inspection and plan) and Phase 2 (database, CRM, lead API, consent) built and tested locally *(Stellan, 2026-10-12)*.
 - 2026-10-12: First agent, **FlowPilot Prospector**, built in n8n as a draft. It does weekday prospecting into a review table and never contacts anyone. It's waiting on a model credential before it can be tested *(synthesis)*.
 - 2026-10-12: **Outreach sender live** in n8n. Weekdays 10:15, it sends only emails Stellan has approved, with a domain check, a cap of 10 per run, a CASL footer and no double sends. The test send succeeded *(synthesis)*.
+- 2026-10-12: **AI acquisition system built in n8n** (Composer with an independent critic, Sender v2, Reply Monitor, Follow-ups, Weekly Report, Error Alerts). Mode is DRAFT_ONLY. Sender v1 was unpublished. Tested with simulated Gmail and AI, plus offline unit tests; the Reply Monitor and live follow-ups are untested *(synthesis)*.

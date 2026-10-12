@@ -1,0 +1,1403 @@
+{
+  "name": "FlowPilot Outreach Sender v2",
+  "nodes": [
+    {
+      "id": "08cff46d-a5d7-4cbb-879c-6b4f92988762",
+      "name": "Weekdays 10:15",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        992
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 15 10 * * 1-5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "74244c23-ba55-421e-a35f-f48a8d89f27b",
+      "name": "Load settings",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1200
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "cAq02hDHOku6FmYq",
+          "cachedResultName": "FlowPilot Settings"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d84a7c74-6e33-406f-8228-a89b82e04bb2",
+      "name": "Weekdays 13:15",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        1184
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 15 13 * * 1-5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "06386044-4ab8-430e-94ef-e7edf1faaee1",
+      "name": "Run now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1376
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "4f4394e6-f121-4985-b82a-122a82d5319f",
+      "name": "Load leads",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        1200
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "1aecdac0-8533-4c8f-9ef1-9b25c785196b",
+      "name": "Load suppression",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        1200
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rATMs0pgTdK3Kp1b",
+          "cachedResultName": "FlowPilot Suppression"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "9bd3a3f0-988f-43e3-8428-5b534142c3e8",
+      "name": "Plan sending batch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        1200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const S = {};\nfor (const i of $('Load settings').all()) { if (i.json.key) S[i.json.key] = String(i.json.value == null ? '' : i.json.value).trim(); }\nlet trig = 'unknown';\nfor (const n of ['Weekdays 10:15', 'Weekdays 13:15', 'Run now']) { try { if ($(n).isExecuted) { trig = n; break; } } catch (e) {} }\nconst exec = $execution.id;\nconst halt = reason => [{ json: { action: 'halt', reason: reason, trigger: trig } }];\nconst now = $now.setZone('America/Toronto');\nconst leads = $('Load leads').all().map(i => i.json).filter(r => r && r.id);\nconst sup = $('Load suppression').all().map(i => i.json);\nconst supEmails = new Set(sup.map(s => String(s.email || '').trim().toLowerCase()).filter(Boolean));\nconst supDomains = new Set(sup.map(s => String(s.domain || '').trim().toLowerCase()).filter(Boolean));\nconst up = s => String(s || '').toUpperCase();\nconst out = [];\nfor (const r of leads) { if (up(r.status) === 'SENDING' && r.claimed_at && now.diff(DateTime.fromISO(r.claimed_at), 'minutes').minutes > 15) out.push({ json: { action: 'stale', lead_id: r.id, claim_token: r.claim_token || '', trigger: trig, reason: 'Send outcome unknown (row stuck in SENDING since ' + r.claimed_at + '). Check the Gmail Sent folder before re-approving.' } }); }\nif (S.paused === 'true') return out.length ? out : halt('paused');\nif (up(S.send_mode) !== 'SEND') return out.length ? out : halt('send_mode is ' + (S.send_mode || 'unset') + ': nothing is sent automatically');\nif (now.weekday > 5 || now.hour < 8 || now.hour >= 18) return out.length ? out : halt('outside sending hours (weekdays 8:00-18:00 Toronto)');\nconst bounceLimit = parseInt(S.bounce_pause_threshold || '2', 10);\nconst bounces = leads.filter(r => up(r.status) === 'BOUNCED' && r.last_status_at && now.diff(DateTime.fromISO(r.last_status_at), 'days').days <= 7).length;\nif (bounces >= bounceLimit) return out.length ? out : halt('auto-paused: ' + bounces + ' bounces in the last 7 days (threshold ' + bounceLimit + ')');\nconst startOfDay = now.startOf('day');\nconst sentToday = leads.filter(r => r.sent_at && DateTime.fromISO(r.sent_at) >= startOfDay).length;\nconst inFlight = leads.filter(r => up(r.status) === 'SENDING').length;\nconst daily = parseInt(S.daily_send_limit || '6', 10);\nconst perWindow = parseInt(S.batch_size_per_window || '3', 10);\nlet room = Math.max(0, Math.min(perWindow, daily - sentToday - inFlight));\nconst EMAIL_RE = /^[^\\s@]+@([^\\s@]+\\.[a-z]{2,})$/i;\nfunction addBusinessDays(dt, n) { let d = dt; let added = 0; while (added < n) { d = d.plus({ days: 1 }); if (d.weekday <= 5) added++; } return d.set({ hour: 9, minute: 30, second: 0, millisecond: 0 }); }\nconst fu1 = parseInt(S.followup_1_business_days || '4', 10);\nfunction checks(subject, body) {\n  const o = []; const words = body.split(/\\s+/).filter(Boolean).length;\n  if (words < 40 || words > 170) o.push('body is ' + words + ' words');\n  if (/https?:\\/\\/|www\\./i.test(body)) o.push('body contains a link');\n  if (!/Stellan Rowbotham/.test(body)) o.push('signature missing');\n  if (/^(re|fwd?):/i.test(subject.trim()) || !subject.trim()) o.push('subject missing or misleading');\n  const money = body.match(/\\$\\s?\\d[\\d,]*/g) || [];\n  for (const mm of money) { if (!['$300','$600','$1,000','$1000','$149'].includes(mm.replace(/\\s/g, ''))) o.push('unapproved money figure ' + mm); }\n  if (/guarantee|testimonial|case stud|our clients/i.test(body)) o.push('unsupported-claim wording');\n  return o;\n}\nconst seen = new Set();\nconst approved = leads.filter(r => up(r.status) === 'APPROVED').sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));\nfor (const r of approved) {\n  const email = String(r.public_email || '').trim().toLowerCase();\n  const m = email.match(EMAIL_RE);\n  let reason = ''; let next = 'SKIPPED';\n  const subject = String(r.email_subject || ''); const body = String(r.email_body || '');\n  if (!r.business_name || !subject || !body || !email) { reason = 'Missing required field (business name, email, subject or body).'; next = 'NEEDS_REVIEW'; }\n  else if (!m) { reason = 'Email address syntax is not valid.'; }\n  else if (r.gmail_message_id || r.sent_at) { reason = 'Already contacted (a first-contact email was sent before).'; }\n  else if (leads.some(o => o.id !== r.id && String(o.public_email || '').trim().toLowerCase() === email && (o.gmail_message_id || o.sent_at || ['SENDING','SENT'].includes(up(o.status))))) { reason = 'Duplicate: this address was already contacted through another lead.'; }\n  else if (seen.has(email)) { reason = 'Same address twice in this batch.'; }\n  else if (supEmails.has(email) || supDomains.has(m[1])) { reason = 'Address or domain is on the suppression list.'; next = 'SUPPRESSED'; }\n  else if (r.no_solicitation_notice === true) { reason = 'Website asks not to be solicited.'; next = 'SUPPRESSED'; }\n  else if (!r.contact_basis || !r.contact_basis_evidence) { reason = 'Contact basis or its evidence is not recorded; compliance uncertain.'; next = 'NEEDS_REVIEW'; }\n  else if (!['APPROVE', 'HUMAN_APPROVED'].includes(up(r.ai_decision))) { reason = 'Email was not approved by the AI critic. Edit it and set ai_decision to HUMAN_APPROVED to send anyway.'; next = 'NEEDS_REVIEW'; }\n  else { const c = checks(subject, body); if (c.length) { reason = 'Email failed final checks: ' + c.join('; '); next = 'NEEDS_REVIEW'; } }\n  if (reason) { out.push({ json: { action: 'skip', lead_id: r.id, next_status: next, reason: reason, trigger: trig } }); continue; }\n  if (room <= 0) continue;\n  room--; seen.add(email);\n  out.push({ json: { action: 'send', lead_id: r.id, claim_token: exec + '-' + r.id, to: email, domain: m[1], subject: subject.trim(), body: body.trim(), draft_id: r.gmail_draft_id || '', campaign_id: r.campaign_id || S.campaign_id || '', followup_at: addBusinessDays(now, fu1).toISO(), dry_run: S.dry_run === 'true', spacing: Math.max(0, parseInt(S.spacing_seconds || '20', 10) || 0), trigger: trig } });\n}\nif (!out.length) return halt(approved.length ? 'daily or per-window limit reached (' + sentToday + ' sent today)' : 'no APPROVED leads');\nreturn out;\n"
+      }
+    },
+    {
+      "id": "39e2b093-abb8-4598-bb27-c0d97a042593",
+      "name": "Route by action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        1168
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "send",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "send"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "skip",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "skip"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "stale",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "stale"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "halt",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "halt"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "3757f520-a821-4ee7-a809-2554d141a359",
+      "name": "Claim lead (only if still APPROVED)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        528
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "APPROVED"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "SENDING",
+            "claim_token": "={{ $('Loop sends').first().json.claim_token }}",
+            "claimed_at": "={{ $now.toISO() }}",
+            "campaign_id": "={{ $('Loop sends').first().json.campaign_id }}",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c048859a-50d0-4462-bc70-da7b53b3ad32",
+      "name": "Claimed by this run?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        528
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.claim_token }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "34041c4f-656f-4200-89ce-2157f3140612",
+      "name": "MX lookup",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2016,
+        432
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://dns.google/resolve?name={{ encodeURIComponent($('Loop sends').first().json.domain) }}&type=MX",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "5cfdb70a-156d-4403-9730-1420ad7915ac",
+      "name": "Classify MX result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        432
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const j = $input.first().json || {};\nlet result = 'transient'; let detail = '';\nif (j.error) { detail = 'DNS lookup request failed (temporary): ' + String(j.error.message || j.error).slice(0, 200); }\nelse if (j.Status === 0) {\n  const mx = (j.Answer || []).filter(a => a.type === 15);\n  const nullMx = mx.length === 1 && /^0\\s+\\.$/.test(String(mx[0].data || '').trim());\n  if (mx.length && !nullMx) { result = 'ok'; detail = 'MX found: ' + mx.map(a => a.data).slice(0, 2).join(', '); }\n  else if (nullMx) { result = 'invalid'; detail = 'Domain publishes a null MX: it does not accept email.'; }\n  else { result = 'invalid'; detail = 'Domain exists but publishes no MX record (confirmed by DNS).'; }\n}\nelse if (j.Status === 3) { result = 'invalid'; detail = 'Domain does not exist (NXDOMAIN, confirmed by DNS).'; }\nelse { detail = 'DNS answered with status ' + j.Status + ' (temporary); released back to APPROVED for the next window.'; }\nreturn [{ json: { mx_result: result, mx_detail: detail } }];\n"
+      }
+    },
+    {
+      "id": "76ab1bc6-d130-4e1e-a175-6c225367c7b4",
+      "name": "Log not claimed (another run has it)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2016,
+        768
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "X5TIQGCixIj0JjOh",
+          "cachedResultName": "FlowPilot Events"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "={{ $now.toISO() }}",
+            "lead_id": "={{ $('Loop sends').first().json.lead_id }}",
+            "workflow": "sender_v2",
+            "trigger_name": "={{ $('Loop sends').first().json.trigger }}",
+            "execution_id": "={{ $execution.id }}",
+            "event": "send_skipped_not_claimed",
+            "detail": "Row was no longer APPROVED when this run tried to claim it (another run or a status change got there first)."
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "c22b567b-4612-46dd-a55a-8d1ddec96b0b",
+      "name": "Loop sends",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1344,
+        816
+      ],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+    {
+      "id": "7ed53955-68aa-4094-865f-17ec32911b09",
+      "name": "Mark skipped (failed checks)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1136
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "APPROVED"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.next_status }}",
+            "failure_reason": "={{ $json.reason }}",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c253d837-2745-4391-b220-88e20b3a03bd",
+      "name": "Log planning result",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        1296
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "X5TIQGCixIj0JjOh",
+          "cachedResultName": "FlowPilot Events"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "={{ $now.toISO() }}",
+            "lead_id": "={{ $('Plan sending batch').item.json.lead_id || 0 }}",
+            "workflow": "sender_v2",
+            "trigger_name": "={{ $('Plan sending batch').item.json.trigger }}",
+            "execution_id": "={{ $execution.id }}",
+            "event": "={{ 'plan_' + $('Plan sending batch').item.json.action + ($('Plan sending batch').item.json.next_status ? '_' + $('Plan sending batch').item.json.next_status : '') }}",
+            "detail": "={{ $('Plan sending batch').item.json.reason || '' }}"
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "71a9fdf1-c80a-4ace-ab62-72f59d499075",
+      "name": "Move stuck SENDING row to review",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1328
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "NEEDS_REVIEW",
+            "failure_reason": "={{ $json.reason }}",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "856e16d0-53c2-4a40-a952-8f1bf5eabdee",
+      "name": "Mail server OK?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2464,
+        416
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "ok",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mx_result }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "ok"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "invalid",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mx_result }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "invalid"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "transient",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mx_result }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "transient"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "38dc6c8b-4ce0-4b30-ac3e-864d120dc608",
+      "name": "Dry run?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2688,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Loop sends').first().json.dry_run }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "f58596de-03f8-4bb7-a8dd-42ca2269f30f",
+      "name": "Release to APPROVED (dry run, nothing sent)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            },
+            {
+              "keyName": "claim_token",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "APPROVED",
+            "claim_token": "",
+            "failure_reason": "={{ 'Dry run ' + $now.toISO() + ': all checks passed; this email would have been sent.' }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "92ac4d87-4bbb-4422-965c-2aebc94bcdbe",
+      "name": "Send email (Gmail)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2912,
+        288
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $('Loop sends').first().json.to }}",
+        "subject": "={{ $('Loop sends').first().json.subject }}",
+        "emailType": "text",
+        "message": "={{ $('Loop sends').first().json.body + '\\n\\n--\\nStellan Rowbotham, FlowPilot Automation\\nstellanrowbotham@gmail.com | https://flowpilot-rob9iwxx.manus.space\\nBusiness information: https://project28751.websitepublisher.ai/privacy.html\\nI found your business email on your website. If you would rather not hear from me, reply \"stop\" and I will not contact you again.' }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Stellan Rowbotham"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "webhookId": "9ec3c2f8-5160-4699-ad76-7b50079985ef",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Zbv34QnLPsA48N3a",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "id": "a5c9896c-5dcb-4237-9a68-b1acb1535f0c",
+      "name": "Mark sent",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3136,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            },
+            {
+              "keyName": "claim_token",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "SENT",
+            "sent_at": "={{ $now.toISO() }}",
+            "gmail_message_id": "={{ $json.id }}",
+            "gmail_thread_id": "={{ $json.threadId }}",
+            "send_result": "={{ 'sent by ' + $('Loop sends').first().json.trigger + ', execution ' + $execution.id + ', Gmail id ' + $json.id }}",
+            "next_followup_at": "={{ $('Loop sends').first().json.followup_at }}",
+            "followup_count": 0,
+            "failure_reason": "",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "dd68cfed-f2d0-4227-ab9b-8f2944819141",
+      "name": "Delete the review draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3360,
+        192
+      ],
+      "parameters": {
+        "resource": "draft",
+        "operation": "delete",
+        "messageId": "={{ $('Loop sends').first().json.draft_id || 'none' }}"
+      },
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "webhookId": "ad1210ad-b4ab-4b61-bff5-614d6bb7e484",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Zbv34QnLPsA48N3a",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "id": "1c9b3810-c18d-429c-9332-086463c4f00f",
+      "name": "Space out sends",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        192
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": "={{ $('Loop sends').first().json.spacing }}",
+        "unit": "seconds"
+      },
+      "webhookId": "44c604c1-4340-41ca-abfd-4aad3ec502be"
+    },
+    {
+      "id": "7d018eb0-3bb1-4b43-892a-6156598281ca",
+      "name": "Mark skipped (no mail server)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        576
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            },
+            {
+              "keyName": "claim_token",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "SKIPPED",
+            "failure_reason": "={{ $json.mx_detail }}",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "75f20d49-b364-4601-bced-e7a40d65585d",
+      "name": "Release to APPROVED (temporary DNS error)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        768
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            },
+            {
+              "keyName": "claim_token",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "APPROVED",
+            "claim_token": "",
+            "failure_reason": "={{ $json.mx_detail }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "a0c725ac-e044-464e-8785-527a4f381d3f",
+      "name": "Mark failed (Gmail error)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        384
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8W5NrezdfNoVI3g2",
+          "cachedResultName": "FlowPilot Leads"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.lead_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "SENDING"
+            },
+            {
+              "keyName": "claim_token",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop sends').first().json.claim_token }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "FAILED",
+            "send_result": "={{ 'Gmail error: ' + String($json.error?.message || $json.error || 'unknown').slice(0, 300) }}",
+            "failure_reason": "Gmail returned an error. Check the Gmail Sent folder before re-approving; it is never retried automatically.",
+            "last_status_at": "={{ $now.toISO() }}"
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "532bb038-d1dd-40bd-9277-f29c8cf8dccf",
+      "name": "Log send result",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3808,
+        336
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "X5TIQGCixIj0JjOh",
+          "cachedResultName": "FlowPilot Events"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "={{ $now.toISO() }}",
+            "lead_id": "={{ $('Loop sends').first().json.lead_id }}",
+            "campaign_id": "={{ $('Loop sends').first().json.campaign_id }}",
+            "workflow": "sender_v2",
+            "trigger_name": "={{ $('Loop sends').first().json.trigger }}",
+            "execution_id": "={{ $execution.id }}",
+            "event": "={{ 'send_' + ($json.status || 'not_claimed_or_unchanged') }}",
+            "detail": "={{ String($json.send_result || $json.failure_reason || \"\").slice(0, 500) }}"
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "1f428709-436b-4ddb-aaab-66eeb51d4084",
+      "name": "Log sent",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2200,
+        -100
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "={{ $now.toISO() }}",
+            "campaign_id": "={{ $('Loop sends').first().json.campaign_id }}",
+            "detail": "={{ String($json.send_result || $json.failure_reason || '').slice(0, 500) }}",
+            "event": "={{ 'send_' + ($json.status || 'UNKNOWN_check_row') }}",
+            "execution_id": "={{ $execution.id }}",
+            "lead_id": "={{ $('Loop sends').first().json.lead_id }}",
+            "trigger_name": "={{ $('Loop sends').first().json.trigger }}",
+            "workflow": "sender_v2"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "cachedResultName": "FlowPilot Events",
+          "mode": "id",
+          "value": "X5TIQGCixIj0JjOh"
+        },
+        "operation": "insert",
+        "resource": "row"
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Weekdays 10:15": {
+      "main": [
+        [
+          {
+            "node": "Load settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load settings": {
+      "main": [
+        [
+          {
+            "node": "Load leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekdays 13:15": {
+      "main": [
+        [
+          {
+            "node": "Load settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run now": {
+      "main": [
+        [
+          {
+            "node": "Load settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load leads": {
+      "main": [
+        [
+          {
+            "node": "Load suppression",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load suppression": {
+      "main": [
+        [
+          {
+            "node": "Plan sending batch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan sending batch": {
+      "main": [
+        [
+          {
+            "node": "Route by action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by action": {
+      "main": [
+        [
+          {
+            "node": "Loop sends",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark skipped (failed checks)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Move stuck SENDING row to review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log planning result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim lead (only if still APPROVED)": {
+      "main": [
+        [
+          {
+            "node": "Claimed by this run?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claimed by this run?": {
+      "main": [
+        [
+          {
+            "node": "MX lookup",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log not claimed (another run has it)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MX lookup": {
+      "main": [
+        [
+          {
+            "node": "Classify MX result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Classify MX result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify MX result": {
+      "main": [
+        [
+          {
+            "node": "Mail server OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log not claimed (another run has it)": {
+      "main": [
+        [
+          {
+            "node": "Loop sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop sends": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Claim lead (only if still APPROVED)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark skipped (failed checks)": {
+      "main": [
+        [
+          {
+            "node": "Log planning result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move stuck SENDING row to review": {
+      "main": [
+        [
+          {
+            "node": "Log planning result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail server OK?": {
+      "main": [
+        [
+          {
+            "node": "Dry run?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark skipped (no mail server)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Release to APPROVED (temporary DNS error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dry run?": {
+      "main": [
+        [
+          {
+            "node": "Release to APPROVED (dry run, nothing sent)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send email (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Release to APPROVED (dry run, nothing sent)": {
+      "main": [
+        [
+          {
+            "node": "Log send result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send email (Gmail)": {
+      "main": [
+        [
+          {
+            "node": "Mark sent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark failed (Gmail error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete the review draft": {
+      "main": [
+        [
+          {
+            "node": "Space out sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark skipped (no mail server)": {
+      "main": [
+        [
+          {
+            "node": "Log send result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Release to APPROVED (temporary DNS error)": {
+      "main": [
+        [
+          {
+            "node": "Log send result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark failed (Gmail error)": {
+      "main": [
+        [
+          {
+            "node": "Log send result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log send result": {
+      "main": [
+        [
+          {
+            "node": "Loop sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark sent": {
+      "main": [
+        [
+          {
+            "node": "Log sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log sent": {
+      "main": [
+        [
+          {
+            "node": "Delete the review draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Space out sends": {
+      "main": [
+        [
+          {
+            "node": "Loop sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "exportedFrom": "rowbs.app.n8n.cloud",
+    "exportedAt": "2026-10-12",
+    "workflowId": "ewY30DPW3LnvGdNz"
+  }
+}

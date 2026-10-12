@@ -1,0 +1,207 @@
+{
+  "name": "FlowPilot Prospector",
+  "model": "anthropic/claude-opus-5-5",
+  "tools": [
+    {
+      "type": "node",
+      "name": "search_canada",
+      "description": "Search the web restricted to Canadian results. Prefer this for finding home-service businesses and referral partners in southwestern Ontario towns.",
+      "node": {
+        "nodeType": "@brave/n8n-nodes-brave-search.braveSearchTool",
+        "nodeTypeVersion": 1.1,
+        "nodeParameters": {
+          "additionalParameters": {
+            "country": "CA",
+            "search_lang": "en",
+            "ui_lang": "en-CA"
+          },
+          "count": 10,
+          "operation": "web",
+          "query": "={{ $fromAI('query', 'Search query, e.g. landscaping company Guelph Ontario', 'string') }}"
+        },
+        "credentials": {
+          "braveSearchApi": {
+            "id": null,
+            "name": "Gateway credits",
+            "__aiGatewayManaged": true
+          }
+        }
+      }
+    },
+    {
+      "type": "node",
+      "name": "read_website",
+      "description": "Read one public web page as markdown, with its links. Use it on a business's homepage and its contact or quote page.",
+      "node": {
+        "nodeType": "@mendable/n8n-nodes-firecrawl.firecrawlTool",
+        "nodeTypeVersion": 1,
+        "nodeParameters": {
+          "operation": "scrape",
+          "resource": "Scraping",
+          "scrapeOptions": {
+            "options": {
+              "blockAds": true,
+              "formats": {
+                "format": [
+                  {
+                    "type": "markdown"
+                  },
+                  {
+                    "type": "links"
+                  }
+                ]
+              }
+            }
+          },
+          "url": "={{ $fromAI('url', 'Full https URL of the public page to read', 'string') }}"
+        },
+        "credentials": {
+          "firecrawlApi": {
+            "id": null,
+            "name": "Gateway credits",
+            "__aiGatewayManaged": true
+          }
+        }
+      }
+    },
+    {
+      "type": "node",
+      "name": "get_prospects",
+      "description": "Read rows from the FlowPilot Leads table (the central lead database). Use it before saving to avoid duplicate domains, and to answer Stellan's questions about leads, statuses, replies and follow-ups.",
+      "node": {
+        "nodeType": "n8n-nodes-base.dataTableTool",
+        "nodeTypeVersion": 1.1,
+        "nodeParameters": {
+          "dataTableId": {
+            "__rl": true,
+            "cachedResultName": "FlowPilot Leads",
+            "mode": "id",
+            "value": "8W5NrezdfNoVI3g2"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        }
+      }
+    },
+    {
+      "type": "node",
+      "name": "save_prospect",
+      "description": "Add ONE new prospect or partner to the FlowPilot Leads table as status NEW (the Composer researches it, writes and AI-checks the email, and saves a Gmail draft for Stellan). Only for domains not already in the table: check get_prospects first. It never updates existing rows.",
+      "node": {
+        "nodeType": "n8n-nodes-base.dataTableTool",
+        "nodeTypeVersion": 1.1,
+        "nodeParameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "business_name": "={{ $fromAI('business_name', 'Business name as shown on its website', 'string') }}",
+              "category": "={{ $fromAI('category', 'e.g. landscaping, roofing, hvac, web_designer', 'string') }}",
+              "city": "={{ $fromAI('city', 'Main town served', 'string') }}",
+              "could_not_verify": "={{ $fromAI('could_not_verify', 'What cannot be known from outside', 'string') }}",
+              "domain": "={{ $fromAI('domain', 'lowercase hostname without www, e.g. example.ca', 'string') }}",
+              "draft_note": "={{ $fromAI('draft_note', 'Short note for Stellan; never sent automatically', 'string') }}",
+              "email_source_url": "={{ $fromAI('email_source_url', 'URL of the page on its own website where public_email is printed, or empty', 'string') }}",
+              "findings": "={{ $fromAI('findings', 'Bulleted verified findings, each with its page URL', 'string') }}",
+              "followup_count": 0,
+              "found_on": "={{ $fromAI('found_on', 'Today in YYYY-MM-DD', 'string') }}",
+              "found_via": "={{ $fromAI('found_via', 'Search query and page URL where it was found', 'string') }}",
+              "kind": "={{ $fromAI('kind', 'prospect or partner', 'string') }}",
+              "no_solicitation_notice": "={{ $fromAI('no_solicitation_notice', 'true if the site says no solicitations or no sales emails', 'boolean') }}",
+              "public_email": "={{ $fromAI('public_email', 'Business email printed on its own website, copied exactly, or empty', 'string') }}",
+              "public_phone": "={{ $fromAI('public_phone', 'Publicly listed business phone, or empty', 'string') }}",
+              "recommended_action": "={{ $fromAI('recommended_action', 'offer_free_inquiry_check, partner_intro, monitor or not_a_fit', 'string') }}",
+              "rewrite_count": 0,
+              "score": "={{ $fromAI('score', 'Total score 0-100, the sum of the breakdown', 'number') }}",
+              "score_breakdown": "={{ $fromAI('score_breakdown', 'e.g. target_fit 24/30, observable_opportunity 20/30, service_area 15/15, suitability 10/15, evidence_quality 8/10', 'string') }}",
+              "status": "NEW",
+              "website": "={{ $fromAI('website', 'Homepage URL', 'string') }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "cachedResultName": "FlowPilot Leads",
+            "mode": "id",
+            "value": "8W5NrezdfNoVI3g2"
+          },
+          "operation": "insert",
+          "resource": "row"
+        }
+      }
+    },
+    {
+      "type": "node",
+      "name": "Gmail",
+      "node": {
+        "nodeType": "n8n-nodes-base.gmailTool",
+        "nodeTypeVersion": 2.2,
+        "nodeParameters": {
+          "descriptionType": "auto",
+          "authentication": "oAuth2",
+          "resource": "message",
+          "operation": "send",
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+          "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+          "emailType": "html",
+          "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+          "options": {}
+        },
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "Zbv34QnLPsA48N3a",
+            "name": "Gmail account"
+          }
+        }
+      },
+      "requireApproval": true
+    },
+    {
+      "type": "node",
+      "name": "set_status",
+      "description": "Only when Stellan explicitly asks in chat: change a lead's status in the FlowPilot Leads table and optionally Stellan's notes, matched by domain. Allowed statuses: NEEDS_REVIEW, SKIPPED, SUPPRESSED, MEETING_BOOKED, CUSTOMER. Never set APPROVED, SENT or SENDING; the Composer and Sender manage those.",
+      "node": {
+        "nodeType": "n8n-nodes-base.dataTableTool",
+        "nodeTypeVersion": 1.1,
+        "nodeParameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $fromAI('status', 'NEEDS_REVIEW, SKIPPED, SUPPRESSED, MEETING_BOOKED or CUSTOMER', 'string') }}",
+              "stellan_notes": "={{ $fromAI('stellan_notes', 'Optional note from Stellan, or empty', 'string') }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "cachedResultName": "FlowPilot Leads",
+            "mode": "id",
+            "value": "8W5NrezdfNoVI3g2"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "domain",
+                "keyValue": "={{ $fromAI('domain', 'lowercase hostname without www', 'string') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "update",
+          "resource": "row"
+        }
+      },
+      "requireApproval": true
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_MtZfP8z2sVLc3DrO",
+      "name": "Weekday prospecting run",
+      "objective": "Do today's prospecting run as described in your instructions, with these current rules taking priority over anything older in them: the table is now FlowPilot Leads (get_prospects and save_prospect use it); new rows are saved with status NEW; record email_source_url (the page on the business's own site where public_email is printed). First read the table with get_prospects, then find and research up to 8 new home-service prospects and 2 new referral partners in the target towns (rotate towns and segments, preferring ones least represented), and save each new domain once with evidence, the v1 score and a short draft_note. Do NOT write outreach emails: the FlowPilot Composer workflow researches each NEW lead, writes the email, has an independent AI critic check it, and saves a Gmail draft for Stellan. Do NOT send anything, do NOT use the Gmail tool, and do NOT change any status. End with a short summary: number saved, the top 3 by score, and any problems.",
+      "cronExpression": "37 9 * * 1-5",
+      "timezone": "America/Toronto",
+      "enabled": true
+    }
+  ],
+  "note": "Agent config export; the instructions field is omitted because it contains Stellan's pasted ACE operating document. Draft updated 2026-10-12 to use FlowPilot Leads; the published version may lag until republished."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "flowpilot-n8n-code-tests",
+  "private": true,
+  "description": "Offline tests for Code-node logic in the exported n8n workflows",
+  "scripts": { "test": "node followups.test.js" },
+  "devDependencies": { "luxon": "3.5.0" }
+}

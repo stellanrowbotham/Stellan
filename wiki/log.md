@@ -86,3 +86,13 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ Prospector agent (republished): the morning run now writes emails; + `set_status` (needs confirmation); Stellan's direct Gmail tool now needs per-send approval
 - → Stellan approves rows each day; the sender emails them at 10:15. Replies and "stop" requests are handled by Stellan (mark them `do_not_contact`)
 
+## [2026-10-12] edit | AI acquisition system in n8n (Composer, critic, Sender v2, replies, follow-ups, report)
+- Stellan's brief "Build My AI-Powered Customer Acquisition System in n8n". Built in n8n cloud; details in `growth-engine/docs/outreach-system.md`
+- + n8n data tables: FlowPilot Leads (central lead DB, uppercase statuses), Settings (switches), Suppression, Events (log). The 4 real prospects were migrated (names stay in n8n only)
+- + workflows (all unpublished): Composer (AI research → writer → independent critic, max 2 rewrites → Gmail draft), Outreach Sender v2 (10:15 and 13:15, shared queue, atomic claim, daily cap, spacing, transient vs confirmed DNS), Reply Monitor (11 categories, auto-suppress, reply drafts, alerts), Follow-ups (sync of hand-sent drafts, 4 then 7 business days, max 2), Weekly Report, Error Alerts
+- ~ Sender v1 unpublished (it read the old table). The Prospector draft now writes NEW rows to FlowPilot Leads and no longer writes emails; its published version still uses the old table until republished
+- + `growth-engine/docs/outreach-system.md`, `growth-engine/docs/prompts.md`, `growth-engine/n8n/workflows/*.json`, `growth-engine/n8n/tests/` (32 offline checks pass)
+- Tests: Sender v2 cases A–H and a race test pass (Gmail and DNS simulated); live Composer run checked MX and research, and critic 1 rejected one draft (72/100); the weekly report ran on real tables. Untested: Reply Monitor, NXDOMAIN and DNS outage in Sender v2, Gmail errors, live follow-ups, the error workflow, real schedule times
+- ⚠️ The n8n AI gateway credits are used up ("Payment required"). AI steps fail safely until topped up or replaced with Stellan's own OpenAI and Gemini keys
+- → Stellan: restore AI credits; approve publishing Error Alerts, Reply Monitor, Composer, Follow-ups and Weekly Report; republish the Prospector; stay in DRAFT_ONLY until about 20 drafts look right
+
