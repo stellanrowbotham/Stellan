@@ -26,7 +26,7 @@ The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead cap
 - **Accounts needed:** Supabase (Canada region), n8n access, an LLM API key, a search API, a transactional email provider with a domain, Cal.com, and GA4/Search Console. The full list is in `growth-engine/docs/phase-1-plan.md` *(synthesis)*.
 
 ## Tensions & contradictions
-- ⚠️ The site says "from $600" in the hero and FAQ, but the Instant Reply card says "from $300" ([[src-flowpilot-website]]). Stellan's brief says $300 *(Stellan, 2026-10-12)*. Status: open.
+- ⚠️ The site says "from $600" in the hero and FAQ, but the Instant Reply card says "from $300" ([[src-flowpilot-website]]). Stellan's brief says $300 *(Stellan, 2026-10-12)*. Status: resolved 2026-10-12, $300 ([[decision-2026-10-12-floor-price-300]]).
 - ⚠️ The site's response-time statistics have no source ([[src-flowpilot-website]]). The brief rules out unsupported claims *(Stellan, 2026-10-12)*. Status: open.
 - ⚠️ The [[src-flowpilot-request-page|request page]] uses the old positioning and branding. Recommendation: retire it once the site form is live *(synthesis)*. Status: open.
 

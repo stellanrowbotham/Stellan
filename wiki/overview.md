@@ -34,7 +34,7 @@ Home page. This is the big picture across everything Stellan is working on, kept
 *(Set at the first morning check-in.)*
 
 ## Top open loops
-- Deploy the [[growth-engine]]: needs a Supabase project, n8n access, and the floor price and mailing address decisions
+- Deploy the [[growth-engine]]: needs a Supabase project, a model credential for the Prospector agent, and the mailing address decision
 - The FlowPilot site's demo form doesn't send (it's a stub), so connect it to the lead API
 - n8n connector down, so the FlowPilot workflow is unchecked
 - Investing Apprentice blocked on data sources

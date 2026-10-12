@@ -59,3 +59,9 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ [[growth-engine]], `growth-engine/n8n/README.md`
 - → Stellan: pick a model credential in the agent editor; then test run and publish
 
+## [2026-10-12] edit | Decision: starting price is $300
+- Stellan chose $300 as FlowPilot's floor price (Instant Reply)
+- + [[decision-2026-10-12-floor-price-300]]
+- ~ [[flowpilot]] (contradiction resolved, open question removed), [[growth-engine]], [[src-flowpilot-website]], [[overview]], [[index]], `growth-engine/docs/phase-1-plan.md`, `growth-engine/website/manus-integration.md` (prompt item 8 fixes the site's "$600" copy)
+- → The site's hero, meta and FAQ still say $600 until the Manus prompt is applied
+

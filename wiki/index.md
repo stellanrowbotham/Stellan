@@ -10,7 +10,7 @@ updated: 2026-10-12
 # Index
 Catalog of every page in Stellan's Brain. Claude reads this first on every query and updates it on every operation.
 
-**Totals:** 5 hubs · 2 entities · 0 daily pages · 4 sources · last updated 2026-10-12
+**Totals:** 5 hubs · 2 entities · 1 decision · 0 daily pages · 4 sources · last updated 2026-10-12
 
 ## Home
 - [[overview]]: Stellan's Brain home page, with all three sections, this week's focus, and open loops
@@ -23,6 +23,7 @@ Catalog of every page in Stellan's Brain. Claude reads this first on every query
 ## FlowPilot
 - [[ace]]: FlowPilot's outreach agent in Claude chats; 69 businesses emailed (Sep 13–15) · 3 sources
 - [[flowpilot]]: hub for FlowPilot Automation: instant inquiry replies for home-service businesses ($300/$600/$1,000 + $149/mo care), ACE outreach, Growth Engine
+- [[decision-2026-10-12-floor-price-300]]: decision that setups start at $300 (Instant Reply); the site's "from $600" copy is to be fixed
 - [[growth-engine]]: inbound customer acquisition system (agents + n8n + Supabase CRM); Phases 1–2 built, not deployed · 3 sources
 
 ## Daily

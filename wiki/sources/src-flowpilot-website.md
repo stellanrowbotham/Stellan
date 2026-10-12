@@ -30,7 +30,7 @@ FlowPilot's main site positions it as **instant inquiry replies for home-service
 
 ## How it connects
 - ⚠️ **Positioning differs from the [[src-flowpilot-request-page|request page]]**, which offers a free "automation plan" for any small business. The site focuses on home-service inquiry replies. Status: open. The [[growth-engine]] plan recommends retiring the request page.
-- ⚠️ **Floor price:** $300 on the pricing card, but "from $600" in the hero and FAQ. Status: open (question on [[flowpilot]]).
+- ⚠️ **Floor price:** $300 on the pricing card, but "from $600" in the hero and FAQ. Status: resolved 2026-10-12, $300 ([[decision-2026-10-12-floor-price-300]]).
 - The [[growth-engine]] connects this site's forms to a real lead API.
 
 ## Pages touched by this ingest

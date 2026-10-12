@@ -47,6 +47,10 @@ this project can reach. So the change is made in Manus, by pasting the prompt be
 >    sold or shared."
 > 6. Checkboxes must never be pre-ticked, and the follow-up checkbox must not be required to submit.
 > 7. Don't add any analytics or tracking scripts in this change.
+> 8. **Pricing copy:** setups start at $300. Change "Flat pricing from $600" in the hero and the
+>    page's meta/OG description to "Flat pricing from $300", and change the FAQ answer "Setups start at
+>    $600…" to "Setups start at $300, with an optional care plan at $149/month…". Leave the pricing cards
+>    as they are.
 
 ## After Manus publishes
 
@@ -61,7 +65,7 @@ this project can reach. So the change is made in Manus, by pasting the prompt be
 
 | Where | What it says | Issue |
 |---|---|---|
-| Hero, meta description, FAQ | "Flat pricing from $600" / "Setups start at $600" | The pricing card says **Instant Reply from $300**. Pick one floor price everywhere. |
+| Hero, meta description, FAQ | "Flat pricing from $600" / "Setups start at $600" | **Decided 2026-10-12: $300.** Fixed by item 8 of the prompt above. |
 | Problem section | "…of home-service companies didn't reply to a website inquiry within 5 minutes. 40% still hadn't replied 5 days later." and "nearly 7 times more likely…" | No source is shown. These need a citation on the page, or they should come out. |
 | Calculator | "How much are slow replies costing you?" with "% of inquiries lost to slow or missed replies" | It's labelled "not a guarantee", which is good. The default percentage it uses needs a source or should be left blank for the visitor to fill in. |
 | Pricing | "first 5 local businesses at 50% off setup, in exchange for an honest review" | Fine as an offer. Reviews must be honest and unconditional (Competition Bureau guidance on incentivized reviews). Is this offer still open, and how many spots are left? |

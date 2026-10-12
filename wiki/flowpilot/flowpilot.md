@@ -13,7 +13,7 @@ sources: [src-flowpilot-website, src-flowpilot-request-page, src-ace-outreach-lo
 FlowPilot Automation, Stellan's AI automations business for local small businesses *(Stellan, 2026-10-10)* ([[src-flowpilot-request-page]]).
 
 ## Snapshot
-- **Offer:** instant inquiry replies for home-service businesses in southwestern Ontario. Setups run $300 / $600 / $1,000, plus an optional $149/month care plan. ([[src-flowpilot-website]])
+- **Offer:** instant inquiry replies for home-service businesses in southwestern Ontario. Setups **start at $300** (decided 2026-10-12): $300 / $600 / $1,000, plus an optional $149/month care plan. ([[src-flowpilot-website]])
 - **Website:** the Manus site is live, but **its demo form is a stub and captures no leads**. Its CTA goes to the older request page. ([[src-flowpilot-website]], [[src-flowpilot-request-page]])
 - **Growth plan:** the [[growth-engine]] (inbound-first, AI agents + n8n + CRM) started 2026-10-12. Phases 1–2 are built and tested locally and not yet deployed. *(Stellan, 2026-10-12)*
 - **Cold outreach:** [[ace]] emailed 69 businesses (2026-09-13 to 09-15) with no customers so far *(Stellan, 2026-10-12)* ([[src-ace-outreach-log]]).
@@ -32,7 +32,7 @@ A simple system that replies to new inquiries instantly, texts the owner the det
 | Launch offer: first 5 businesses | 50% off setup for an honest review | [[src-flowpilot-website]] |
 | Guarantee | fix free or refund setup within 14 days of launch | [[src-flowpilot-website]] |
 
-⚠️ The hero and FAQ say "from $600", but the Instant Reply card says $300 ([[src-flowpilot-website]]). Status: open.
+⚠️ The hero and FAQ say "from $600", but the Instant Reply card says $300 ([[src-flowpilot-website]]). Status: **resolved 2026-10-12, starting price is $300** ([[decision-2026-10-12-floor-price-300]]). The site copy still needs updating.
 
 ## Clients & pipeline
 | Stage | Count | Notes |
@@ -63,7 +63,7 @@ A simple system that replies to new inquiries instantly, texts the owner the det
 
 ## Open questions
 1. Have any of the 69 businesses replied or booked a call?
-2. Which floor price is right: $300 (pricing card) or $600 (hero/FAQ)? Are the 50%-off launch offer and the 14-day guarantee current?
+2. Are the 50%-off launch offer and the 14-day guarantee current?
 3. What mailing address should go in commercial emails (CASL)? A PO box is fine.
 4. Do you have a domain for FlowPilot email, and sources for the site's response-time statistics?
 5. Can you create the Supabase project (Canada region) and reconnect the n8n connector so the [[growth-engine]] can be deployed?
@@ -72,5 +72,6 @@ A simple system that replies to new inquiries instantly, texts the owner the det
 ## Pages
 - [[ace]]: outreach agent
 - [[growth-engine]]: the inbound customer acquisition system (Phases 1–2 built)
+- Decisions: [[decision-2026-10-12-floor-price-300]]
 - Sources: [[src-flowpilot-website]] · [[src-flowpilot-request-page]] · [[src-ace-outreach-log]] · [[src-command-centre]]
 - Related: [[connected-apps]] · [[investing-apprentice]] · [[daily-run-through]] · [[overview]]

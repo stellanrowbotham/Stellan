@@ -106,8 +106,8 @@ invalid-AI-output queue) · `ai_usage` · `spending_limits` · `rate_limits` · 
    **private** repo `flowpilot-growth-engine`? (Recommended. I'd move `growth-engine/` there.)
 
 **Business decisions (they set what the assistant may say):**
-4. **Floor price:** $300 (Instant Reply card) or $600 (hero/FAQ)? Are the 50%-off "first 5" offer and
-   the 14-day fix-or-refund guarantee current?
+4. ~~Floor price~~ **Decided 2026-10-12: $300.** Are the 50%-off "first 5" offer and the 14-day
+   fix-or-refund guarantee current?
 5. **Mailing address for CASL:** every commercial email must show a physical mailing address (a PO box
    or virtual mailbox is fine). What should it be?
 6. **Sending domain:** do you own a domain for FlowPilot email (rather than gmail.com)? Commercial
