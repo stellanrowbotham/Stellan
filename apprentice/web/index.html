@@ -43,6 +43,10 @@ section.panel { display: grid; gap: 16px; padding-block: 16px }
 .up { color: var(--up) } .down { color: var(--down) }
 .pill { display: inline-block; font: 700 .7rem var(--body); letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
 .pill.ok { color: var(--up) } .pill.bad { color: var(--down) } .pill.warn { color: var(--warn) } .pill.info { color: var(--muted) } .pill.exp { color: var(--accent) }
+.hero { display: grid; gap: 4px; padding: 18px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface) }
+.hero .big { font: 700 clamp(2rem, 7vw, 3rem)/1.05 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em }
+.hero .row2 { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .95rem }
+.hero .row2 b { font-family: var(--mono) }
 .banner { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 6px }
 .scroll { overflow-x: auto }
 table { border-collapse: collapse; width: 100%; font-size: .88rem }
@@ -185,6 +189,21 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
     const lvl = o.level || 1;
     p.replaceChildren(
       (o.levelsEnabled !== false && lvl < 2) ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place pretend trades until it earns Level 2 and you approve.") : null,
+      h("div", {class: "hero"},
+        h("span", {class: "kpi"}, h("span", {class: "label"}, "If this were real money, you'd have " + (o.totalPnl > 0 ? "made" : o.totalPnl < 0 ? "lost" : "made"))),
+        h("span", {class: "big " + cls(o.totalPnl)}, money(o.totalPnl, true)),
+        h("div", {class: "row2"},
+          h("span", {}, "Today: ", h("b", {class: cls(o.dayPnl)}, money(o.dayPnl, true)), " (" + pct(o.dayReturnPct) + ")"),
+          h("span", {}, "Account: ", h("b", {}, money(o.equity)), " of " + money(o.startingBalance) + " start"),
+          h("span", {}, "Sold so far: ", h("b", {class: cls(o.realized)}, money(o.realized, true))),
+          h("span", {}, "Still holding: ", h("b", {class: cls(o.unrealized)}, money(o.unrealized, true)))),
+        h("span", {class: "meta"}, "Pretend money with real market prices, after fees. Gains on things still held change as prices move.")),
+      card("Today's buys and sells", (o.todayActivity || []).length ? table([
+        {t: "Time", v: r => when(r.at)}, {t: "", v: r => pill(r.side === "buy" ? "bought" : "sold", r.side === "buy" ? "info" : "ok")},
+        {t: "Asset", v: r => r.symbol}, {t: "Units", r: 1, v: r => r.qty}, {t: "Price", r: 1, v: r => r.price},
+        {t: "Money", r: 1, v: r => money(r.cashCad, true), c: r => cls(r.cashCad)},
+        {t: "Profit", r: 1, v: r => r.pnl == null ? "–" : money(r.pnl, true), c: r => cls(r.pnl)}], o.todayActivity) :
+        empty("No pretend buys or sells yet today.")),
       h("div", {class: "kpis"},
         kpi("Pretend account", money(o.equity), "started at " + money(o.startingBalance)),
         kpi("Total return", pct(o.totalReturnPct), money((o.equity || 0) - (o.startingBalance || 0), true), cls(o.totalReturnPct)),
@@ -202,7 +221,8 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         {t: "Units", r: 1, v: r => r.qty},
         {t: "Bought at", r: 1, v: r => r.entry},
         {t: "Stop / target", r: 1, v: r => r.stop + " / " + r.target},
-        {t: "Gain/loss", r: 1, v: r => money(r.unrealized, true), c: r => cls(r.unrealized)},
+        {t: "Worth now", r: 1, v: r => money(r.valueCad)},
+        {t: "Gain/loss", r: 1, v: r => money(r.unrealized, true) + (r.unrealizedPct != null ? " (" + pct(r.unrealizedPct) + ")" : ""), c: r => cls(r.unrealized)},
         {t: "Since", v: r => when(r.openedAt)}], o.positions) : empty("No open positions.")),
       card("Latest market headlines", (o.headlines || []).length ? h("ul", {class: "plain"}, o.headlines.map(x =>
         h("li", {}, h("a", {href: x.url}, x.title), h("div", {class: "meta"}, x.source + " · " + when(x.publishedAt) + (x.syndicated ? " · repost of an earlier story" : ""))))) :

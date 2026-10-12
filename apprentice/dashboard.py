@@ -35,6 +35,11 @@ def export(settings, broker, now, health_issues=()):
     closed = [t for t in trades.values() if t["status"] == "closed"]
     open_t = [t for t in trades.values() if t["status"] == "open"]
     unreal = port.unrealized(marks)
+    from .risk import halt_state
+    _, _, hs = halt_state(vals, equity, now, settings)
+    today_et = now.astimezone(ET).date()
+    fills_today = [f for f in L("fills") if parse_ts(f["filled_at"]).astimezone(ET).date() == today_et]
+    closed_today = [t for t in closed if parse_ts(t["exit"]["exit_at"]).astimezone(ET).date() == today_et]
     evals = L("evaluations")
     last_eval = evals[-1] if evals else None
     sc_rows = L("scorecard")
@@ -66,11 +71,22 @@ def export(settings, broker, now, health_issues=()):
             "maxDrawdownPct": _r(metrics.max_drawdown([start] + [v["equity"] for v in vals])),
             "riskAdjusted": metrics.risk_adjusted(vals), "equityCurve": curve, "benchmarkLabel": settings["benchmarks"]["CA_STOCK"]["label"],
             "unmarked": unmarked,
+            "totalPnl": _r(equity - start, 2), "dayPnl": _r(equity - hs["start_of_day"], 2),
+            "startOfDayEquity": _r(hs["start_of_day"], 2),
+            "todayActivity": [{"at": f["filled_at"], "symbol": f["symbol"], "side": f["side"], "qty": f["qty"],
+                               "price": _r(f["price"]), "cashCad": _r(f["cash_delta_cad"], 2), "feesCad": _r(f["fees_cad"], 2),
+                               "reason": f.get("reason"),
+                               "pnl": next((_r(t["exit"]["realized_pnl_cad"], 2) for t in closed_today
+                                            if t["trade_id"] == f["trade_id"] and f["side"] == "sell"), None)} for f in fills_today],
             "positions": [{"tradeId": t["trade_id"], "symbol": t["symbol"], "strategy": t["strategy"], "experiment": t.get("experiment"),
                            "qty": port.positions[t["trade_id"]].qty if t["trade_id"] in port.positions else None,
                            "entry": _r(t["entry"]["entry_price"]), "stop": t["stop_price"], "target": t["target_price"],
                            "costBasis": _r(port.positions[t["trade_id"]].cost_basis_cad, 2) if t["trade_id"] in port.positions else None,
-                           "unrealized": _r(unreal.get(t["trade_id"]), 2), "openedAt": t["entry"]["opened_at"]} for t in open_t],
+                           "unrealized": _r(unreal.get(t["trade_id"]), 2), "openedAt": t["entry"]["opened_at"],
+                           "markCad": _r(marks.get(t["symbol"])),
+                           "valueCad": _r(marks[t["symbol"]] * port.positions[t["trade_id"]].qty, 2) if t["symbol"] in marks and t["trade_id"] in port.positions else None,
+                           "unrealizedPct": _r(unreal[t["trade_id"]] / port.positions[t["trade_id"]].cost_basis_cad) if unreal.get(t["trade_id"]) is not None and t["trade_id"] in port.positions else None}
+                          for t in open_t],
             "headlines": [{"title": h["title"], "url": h["url"], "source": h["source_id"], "publishedAt": h.get("published_at"),
                            "syndicated": bool(h.get("syndicated_from"))} for h in heads[:15]],
             "promotion": last_eval, "health": list(health_issues),
