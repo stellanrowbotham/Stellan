@@ -3,10 +3,11 @@
   "version": 1,
   "agent": {
     "name": "Investing Apprentice",
-    "level": 2,
+    "level": 5,
     "home_currency": "CAD",
     "timezone": "America/Toronto",
-    "level_note": "Level 2 (paper trading) approved directly by Stellan on 2026-10-10: 'I am training you not me'. Level 1 forecast-only stage skipped at his request."
+    "level_note": "Levels turned OFF by Stellan on 2026-10-12: 'drop the level thing, it should all be already unlocked'. Everything simulated is unlocked; risk limits still apply; real money is never possible.",
+    "levels_enabled": false
   },
   "live_trading": {
     "enabled": false,
@@ -40,7 +41,7 @@
   "strategies": {
     "swing": {
       "enabled": true,
-      "min_level": 2,
+      "min_level": 1,
       "label": "Swing (days to weeks)",
       "holding_days": [
         2,
@@ -57,7 +58,7 @@
     },
     "long_term": {
       "enabled": true,
-      "min_level": 2,
+      "min_level": 1,
       "label": "Long-term (months+)",
       "holding_days": [
         60,
@@ -74,7 +75,7 @@
     },
     "day_experiment": {
       "enabled": true,
-      "min_level": 2,
+      "min_level": 1,
       "label": "EXPERIMENT: hourly day-trading test (not real day trading: checks only once an hour on free, possibly delayed data)",
       "experiment": true,
       "holding_days": [
@@ -133,7 +134,7 @@
       "catalyst": 10,
       "freshness": 5
     },
-    "min_total_score": 65,
+    "min_total_score": 55,
     "min_reward_risk": 2.0,
     "min_independent_sources": 2,
     "require_primary_or_licensed_source": true
@@ -180,7 +181,8 @@
     "demotion": {
       "drawdown_pct": 0.15,
       "integrity_violation": true,
-      "rolling_brier_worse_than": 0.3
+      "rolling_brier_worse_than": 0.3,
+      "enabled": false
     }
   },
   "scorecard": {

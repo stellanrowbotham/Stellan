@@ -1,6 +1,6 @@
 """Concrete provider adapters. Keys come from environment variables only and are never logged
 (URLs are cut at '?' before they go into any error message)."""
-import time
+import time as _time
 import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, time, timezone
@@ -140,7 +140,7 @@ def alpha_vantage_quotes(assets, daily_limit=25):
     errs = []
     for i, a in enumerate(assets):
         if i:
-            time.sleep(1.5)  # free tier allows about 1 request per second
+            _time.sleep(1.5)  # free tier allows about 1 request per second
         if not budget_ok("alpha_vantage", daily_limit):
             errs.append("daily budget used up")
             break

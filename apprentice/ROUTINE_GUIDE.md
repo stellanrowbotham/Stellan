@@ -86,8 +86,12 @@ tied to a real price record:
 `python3 -m apprentice forecast-add /tmp/forecasts.json`. Horizons: `1h`, `4h`, `1d`, `5d`, `20d`, `60d`.
 Probability is between 0.50 and 0.95. Being honest about uncertainty scores better than overconfidence.
 
-## 5. Trade proposals (Level 2+ only)
-Check `status`. At **Level 1, do not propose trades.** From Level 2:
+## 5. Trade proposals (always unlocked)
+**Levels are turned off** (Stellan, 2026-10-12): all pretend trading is unlocked, and there are no
+promotions or demotions. The risk limits still apply, and real money is never possible.
+**When a candidate passes every report gate, you MUST propose it** (up to 2 per run). Stellan wants the
+apprentice to actually make pretend trades and make or lose money from them, so holding back a passing
+idea is a mistake. Propose like this:
 ```json
 [{"symbol": "BCE", "strategy": "swing", "stop_price": 39.2, "target_price": 42.0, "max_holding_days": 20,
   "evidence_ids": ["r-…", "q-…"], "forecast_id": "fc-…", "thesis": "…", "invalidation": "…",
@@ -106,8 +110,8 @@ believe it will make a profit, pretend-buy it within the budget. **You are the o
    yet. Prefer TSX names and assets priced under about $100, since whole shares only fit the $100
    position cap. Add them with `python3 -m apprentice watch add SYMBOL "why"`. Then collect.
 2. Research each one and the existing watchlist. Score them honestly using the report fields.
-3. Propose **at most 2** buys, and only for candidates that pass every report gate (score, reward:risk
-   of 2 or more, 2 or more independent sources). The risk engine sizes them. Outside market hours a
+3. Propose **at most 2** buys: every candidate that passes all report gates (score, reward:risk of 2 or
+   more, 2 or more independent sources) **must** be proposed, best first. The risk engine sizes them. Outside market hours a
    stock order waits and fills at the next run during market hours, at the real price then. Crypto
    fills any time.
 4. If nothing passes, record "No trade" with the reasons. Skipping is better than a weak buy.

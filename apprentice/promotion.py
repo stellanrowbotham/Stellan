@@ -30,7 +30,7 @@ def evaluate(settings, broker, now, write=True):
     reviews = {r["trade_id"]: r for r in L("reviews")}
     vals = L("valuations")
     crit = []
-    if rules.get("to") is None:
+    if rules.get("to") is None and settings["agent"].get("levels_enabled", True):
         crit.append(_crit("top_level", "-", level, False, "Level 5 is the top. It never unlocks real money."))
     if "min_trading_days" in rules:
         crit.append(_crit("observation_period", f">= {rules['min_trading_days']} trading days", days,
@@ -95,6 +95,8 @@ def evaluate(settings, broker, now, write=True):
         regimes = {("up" if v[-1] >= v[0] else "down") for v in months.values() if len(v) > 1}
         crit.append(_crit("market_regimes", f">= {rules['min_market_regimes']}", len(regimes), len(regimes) >= rules["min_market_regimes"],
                           "Distinct up/down months the agent traded through."))
+    if not settings["agent"].get("levels_enabled", True):
+        crit = [_crit("levels", "-", "off", True, "Levels are turned off by Stellan: everything simulated is unlocked. Results are still tracked.")]
     eligible = bool(crit) and all(c["passed"] for c in crit) and rules.get("to") is not None
     demotion = _demotion_checks(settings, level, sc, fstats)
     result = {"id": new_id("ev"), "at": iso(now), "level": level, "level_name": NAMES[level],
@@ -115,6 +117,8 @@ def evaluate(settings, broker, now, write=True):
 def _demotion_checks(settings, level, sc, fstats):
     d = settings["promotion"]["demotion"]
     flags = []
+    if not d.get("enabled", True):
+        return flags
     if d.get("integrity_violation") and sc["integrity_violations"] > 0:
         flags.append({"code": "integrity", "demote": True, "detail": f"{sc['integrity_violations']} integrity violation(s): promotion blocked, supervised level."})
     b = fstats.get("brier_last30")

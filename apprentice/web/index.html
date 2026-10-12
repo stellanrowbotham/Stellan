@@ -184,19 +184,19 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
     if (!o) return;
     const lvl = o.level || 1;
     p.replaceChildren(
-      lvl < 2 ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place pretend trades until it earns Level 2 and you approve.") : null,
+      (o.levelsEnabled !== false && lvl < 2) ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place pretend trades until it earns Level 2 and you approve.") : null,
       h("div", {class: "kpis"},
         kpi("Pretend account", money(o.equity), "started at " + money(o.startingBalance)),
         kpi("Total return", pct(o.totalReturnPct), money((o.equity || 0) - (o.startingBalance || 0), true), cls(o.totalReturnPct)),
         kpi("Today", pct(o.dayReturnPct), "since yesterday's close", cls(o.dayReturnPct)),
         kpi("Cash", money(o.cash), (o.positions || []).length + " open position(s)"),
         kpi("Biggest drop", pct(o.maxDrawdownPct), "from a high point", o.maxDrawdownPct < 0 ? "down" : ""),
-        kpi("Level", String(lvl), o.levelName)),
+        o.levelsEnabled === false ? kpi("Levels", "Off", "everything unlocked") : kpi("Level", String(lvl), o.levelName)),
       h("div", {class: "grid"},
         card("Account value", equityChart(o.equityCurve, o.startingBalance, o.benchmarkLabel),
           h("p", {class: "meta"}, "Week " + pct(o.weekReturnPct) + " · Month " + pct(o.monthReturnPct) + " · " +
             (o.riskAdjusted && o.riskAdjusted.available ? "Sharpe " + (o.riskAdjusted.sharpe ?? 0).toFixed(2) + ", Sortino " + (o.riskAdjusted.sortino ?? 0).toFixed(2) : "Risk-adjusted stats: " + ((o.riskAdjusted || {}).reason || "not enough data")))),
-        card("Promotion progress", promoMini(o.promotion))),
+        o.levelsEnabled === false ? card("Trading permissions", h("p", {}, "Levels are turned off, so pretend trading is fully unlocked. The safety limits still apply: at most $100 per position, at most $10 lost per trade, and a stop-loss on every buy."), h("p", {class: "meta"}, "Real money is never possible.")) : card("Promotion progress", promoMini(o.promotion))),
       card("Open positions", (o.positions || []).length ? table([
         {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)},
         {t: "Units", r: 1, v: r => r.qty},
@@ -346,6 +346,15 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
     if (!g) return;
     const lvl = g.level || 1, names = g.levels || {};
     const ev = g.latest, sc = g.scorecard || {};
+    if (g.levelsEnabled === false) {
+      const sc0 = g.scorecard || {};
+      p.replaceChildren(
+        card("Levels are off", h("p", {}, "You turned the level system off, so everything is unlocked. The scorecard below still tracks careful work and mistakes.")),
+        h("div", {class: "kpis"}, kpi("Scorecard points", String(sc0.points ?? 0)), kpi("Integrity issues", String(sc0.integrity_violations ?? 0), "made-up or mistimed facts", (sc0.integrity_violations || 0) > 0 ? "down" : ""), kpi("Risk-rule attempts", String(sc0.risk_violations ?? 0), "all were blocked")),
+        card("Rewards and penalties", (g.events || []).length ? table([{t: "When", v: r => when(r.recorded_at)}, {t: "What", v: r => r.kind.replaceAll("_", " ")},
+          {t: "Points", r: 1, v: r => (r.points > 0 ? "+" : "") + r.points, c: r => cls(r.points)}, {t: "Why", v: r => r.reason}], g.events.slice(0, 80)) : empty("Nothing yet.")));
+      return;
+    }
     p.replaceChildren(
       card("The ladder", h("div", {class: "ladder"}, [1, 2, 3, 4, 5].map(n => h("div", {class: "rung " + (n < lvl ? "done" : n === lvl ? "now" : "")}, h("b", {}, n), names[n] || ""))),
         h("p", {class: "meta"}, "Promotions need every requirement met and your approval. Level 5 never unlocks real money.")),
@@ -373,7 +382,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
       !s.approved ? h("div", {class: "banner"}, h("b", {}, "Settings changed without approval. "), "All pretend trading is locked until Stellan approves.") : null,
       card("Permissions", h("ul", {class: "plain"},
         h("li", {}, pill("off", "bad"), " Real-money trading: there is no code for it, and simulated success never unlocks it."),
-        h("li", {}, pill(perms.canPlaceSimulatedTrades ? "on" : "off", perms.canPlaceSimulatedTrades ? "ok" : "info"), " Pretend trades (Level 2 and up)"),
+        h("li", {}, pill(perms.canPlaceSimulatedTrades ? "on" : "off", perms.canPlaceSimulatedTrades ? "ok" : "info"), " Pretend trades"),
         h("li", {}, pill("off", "bad"), " Changing its own rules, limits or level"),
         h("li", {}, pill("on", "ok"), " Email reports, to Stellan only"))),
       h("div", {class: "grid"},

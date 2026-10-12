@@ -33,6 +33,9 @@ The levels come from [[src-stellan-investing-apprentice-brief]]. The numbers are
 ## Evidence & claims
 - The agent must never be promoted solely because of a high short-term return ([[src-stellan-investing-apprentice-brief]]).
 
+## Status
+- **Turned off on 2026-10-12** by Stellan: "drop the level thing, it should all be already unlocked." The code keeps the system but ignores it while `levels_enabled` is false. The table below is kept for reference *(Stellan, 2026-10-12)*.
+
 ## Tensions & contradictions
 - ⚠️ On 2026-10-10 Stellan skipped Level 1 and approved Level 2 directly, so the forecast-accuracy check that was meant to come before pretend trading did not happen *(Stellan, 2026-10-10)*. Status: accepted by Stellan. Forecasts are still recorded and scored alongside trades *(synthesis)*.
 - ⚠️ With $1,000 and a 10% position limit, Level 2's 30 closed trades could take several months. Status: open. The threshold might need lowering, or the observation period counted in trades rather than days *(synthesis)*.

@@ -56,6 +56,7 @@ def export(settings, broker, now, health_issues=()):
     docs = {
         "overview": {
             "updatedAt": iso(now), "level": level, "levelName": NAMES[level],
+            "levelsEnabled": settings["agent"].get("levels_enabled", True),
             "startingBalance": start, "cash": _r(port.cash, 2), "equity": _r(equity, 2),
             "totalReturnPct": _r(equity / start - 1), "realized": _r(port.realized_total, 2),
             "unrealized": _r(sum(v for v in unreal.values() if v is not None), 2),
@@ -102,6 +103,7 @@ def export(settings, broker, now, health_issues=()):
         },
         "progression": {
             "updatedAt": iso(now), "level": level, "levelName": NAMES[level], "levels": NAMES,
+            "levelsEnabled": settings["agent"].get("levels_enabled", True),
             "latest": last_eval, "history": [{k: e.get(k) for k in ("at", "level", "eligible", "note")} for e in evals[-60:]][::-1],
             "scorecard": scorecard.totals(sc_rows), "events": sc_rows[-LIMIT:][::-1], "levelEvents": L("level_events")[::-1],
         },
@@ -109,7 +111,7 @@ def export(settings, broker, now, health_issues=()):
             "updatedAt": iso(now), "approved": settings.approved, "account": settings["account"], "risk": settings["risk"],
             "strategies": settings["strategies"], "costs": settings["costs"], "benchmarks": settings["benchmarks"],
             "schedule": settings["schedule"], "notifications": settings["notifications"], "promotionRules": settings["promotion"],
-            "permissions": {"liveTrading": False, "canPlaceSimulatedTrades": level >= 2, "canEditOwnRules": False,
+            "permissions": {"liveTrading": False, "canPlaceSimulatedTrades": (not settings["agent"].get("levels_enabled", True)) or level >= 2, "canEditOwnRules": False,
                             "canSendEmailTo": "Stellan only"},
             "universe": settings.universe, "sources": source_status(settings, broker.dir),
         },

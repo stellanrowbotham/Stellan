@@ -18,9 +18,11 @@ T0 = et(2026, 10, 13, 10, 0)
 
 class Base(unittest.TestCase):
     level = 2
+    levels_on = False
 
     def setUp(self):
-        self.env = Env(level=self.level)
+        over = {"agent.levels_enabled": True, "promotion.demotion.enabled": True} if self.levels_on else {}
+        self.env = Env(level=self.level, **over)
         self.s = self.env.settings()
         self.b = PaperBroker(self.s, self.env.ledger)
 
@@ -122,6 +124,7 @@ class ReviewTests(Base):
 
 class PromotionTests(Base):
     level = 1
+    levels_on = True
 
     def test_level1_explains_each_failure(self):
         ev = promotion.evaluate(self.s, self.b, T0)
@@ -153,6 +156,7 @@ class PromotionTests(Base):
 
 
 class DemotionTests(Base):
+    levels_on = True
     def test_drawdown_demotes_and_stops_trading(self):
         self.env.L("valuations").append({"at": iso(T0 - timedelta(days=2)), "equity": 1000.0, "cash": 1000.0}, now=T0)
         self.env.L("fills").append({"trade_id": "tx", "symbol": "BCE", "side": "buy", "qty": 1, "cash_delta_cad": -300.0, "fees_cad": 0,
@@ -244,6 +248,18 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual((by["XBTCAD"]["bid"], by["XBTCAD"]["ask"]), (90000.0, 90010.0))
         self.assertIn("DOGECAD", by)  # Kraken's XDG mapped back to our symbol
         self.assertIn("ADACAD", r.error)  # unlisted pair reported, not invented
+
+    def test_alpha_vantage_quote_parsing(self):
+        # regression: a shadowed `time` import crashed every stock collection on 2026-10-11/12
+        g = {"Global Quote": {"05. price": "101.5", "07. latest trading day": "2026-10-09", "08. previous close": "100", "06. volume": "5"}}
+        with mock.patch.dict("os.environ", {"ALPHAVANTAGE_API_KEY": "x"}), \
+             mock.patch.object(P, "http_json", return_value=g), mock.patch.object(P._time, "sleep"), \
+             mock.patch.object(P, "budget_ok", return_value=True), mock.patch.object(P, "spend"):
+            r = P.alpha_vantage_quotes([{"symbol": "RY", "exchange": "TSX", "asset_type": "stock", "currency": "CAD"},
+                                        {"symbol": "TD", "exchange": "TSX", "asset_type": "stock", "currency": "CAD"}])
+        self.assertEqual(r.status, "ok", r.error)
+        self.assertEqual(r.records[0]["price"], 101.5)
+        self.assertEqual(r.records[0]["data_ts"], "2026-10-09T20:00:00Z")
 
     def test_rss_parse(self):
         xml = b"""<rss><channel><item><title>Fictional headline</title><link>https://x.invalid/a</link>

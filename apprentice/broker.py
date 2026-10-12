@@ -312,6 +312,8 @@ class PaperBroker:
 
     def _maybe_demote(self, equity, now):
         from .settings import config_hash
+        if not self.settings["promotion"]["demotion"].get("enabled", True):
+            return
         vals = self.L["valuations"].read()
         peak = max([v["equity"] for v in vals] + [self.settings["account"]["starting_balance"]])
         dd = equity / peak - 1

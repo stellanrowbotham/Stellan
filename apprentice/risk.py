@@ -55,7 +55,9 @@ def check_entry(*, settings, level, proposal, asset, quote, usdcad, portfolio, m
         if strat and strat.get("enabled") else f"Strategy '{proposal.get('strategy')}' is unknown or disabled.")
     if not strat:
         return checks
-    add("level_permits_trading", level >= strat["min_level"],
+    levels_on = settings["agent"].get("levels_enabled", True)
+    add("level_permits_trading", (not levels_on) or level >= strat["min_level"],
+        "Levels are turned off: all simulated trading is unlocked." if not levels_on else
         f"Level {level} may trade this strategy (needs {strat['min_level']})." if level >= strat["min_level"] else
         f"Level {level} cannot place simulated trades yet (needs level {strat['min_level']}). Forecasts only.")
     add("long_only", proposal.get("side", "buy") == "buy" or not r["long_only"], "Long-only: buys to open.")

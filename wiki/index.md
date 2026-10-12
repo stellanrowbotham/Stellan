@@ -23,7 +23,7 @@ Catalog of every page in the wiki. The agent reads this first on every query and
 - [[six-pm-update]]: daily 5:51 PM; checks the other agents, plans tomorrow · 1 source
 - [[ace]]: on-demand cold outreach for the AI automation business (Claude chat) · 1 source
 - [[flowpilot]]: n8n workflow answering website inquiries; ⚠️ unchecked since n8n broke · 1 source
-- [[investing-apprentice]]: stock and crypto paper-trading apprentice, $1,000 CAD virtual; Level 2, pretend-buys every 4 h once data is connected · 1 source
+- [[investing-apprentice]]: stock and crypto paper-trading apprentice, $1,000 CAD virtual; levels off; hunts for pretend buys every 4 h with real prices · 1 source
 
 ## Investing knowledge
 - [[look-ahead-bias]]: accidentally using future info; why every record is timestamped · 1 source

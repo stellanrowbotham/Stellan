@@ -14,9 +14,11 @@ T0 = et(2026, 10, 13, 10, 0)  # Tuesday, TSX open
 
 class Base(unittest.TestCase):
     level = 2
+    levels_on = False
 
     def setUp(self):
-        self.env = Env(level=self.level)
+        over = {"agent.levels_enabled": True, "strategies.swing.min_level": 2, "promotion.demotion.enabled": True} if self.levels_on else {}
+        self.env = Env(level=self.level, **over)
         self.s = self.env.settings()
         self.b = PaperBroker(self.s, self.env.ledger)
 
@@ -29,6 +31,7 @@ class Base(unittest.TestCase):
 
 class LevelOneCannotTrade(Base):
     level = 1
+    levels_on = True
 
     def test_rejected_with_reason(self):
         self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
@@ -176,6 +179,15 @@ class QueueingAndExits(Base):
         r = self.b.propose(proposal("BCE", T0, self.ev(), stop=39.2, target=42), T0)
         self.assertFalse(r["accepted"])
         self.assertTrue(any(c["name"] == "daily_loss_halt" and not c["passed"] for c in r["checks"]))
+
+
+class LevelsOff(Base):
+    level = 1  # levels turned off: even level 1 trades
+
+    def test_unlocked(self):
+        self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
+        r = self.b.propose(proposal("BCE", T0, self.ev(), stop=39.2, target=42.0), T0)
+        self.assertTrue(r["accepted"], r.get("reasons"))
 
 
 class NoRealOrders(unittest.TestCase):

@@ -91,6 +91,7 @@ Live trading would be a separate module that doesn't exist. The paper broker has
 2. Email: **send to Stellan's own address only**.
 3. Day trading: **labelled hourly experiment**.
 4. Fee model: **Questrade** for stocks *(Stellan, 2026-10-10)*.
+6. 2026-10-12: **levels turned off entirely**. All pretend trading is unlocked, and passing ideas must be traded *(Stellan, 2026-10-12)*.
 5. Later the same day: **skip Level 1 and start pretend trading now**, with an opportunity scan every 4 hours *(Stellan, 2026-10-10)*.
 
 ## 10. What's still blocking (as of 2026-10-10)

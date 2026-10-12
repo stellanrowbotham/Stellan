@@ -48,3 +48,10 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Live data now flowing: Bank of Canada, Kraken (BTC, ETH, SOL, XRP, DOGE in CAD), CoinGecko, DefiLlama, Alpha Vantage, 7 news feeds
 - ⚠️ Twelve Data and Finnhub return 401 and FRED returns 400, meaning those keys are rejected by the providers; Stellan to re-enter them
 - ~ [[investing-apprentice]], [[agents-24-7]]
+
+## [2026-10-12] edit | Levels turned off; first-weekend fixes
+- Stellan: "have the agent make these fake trades and actually make or lose money and drop the level thing"
+- Config: levels off, demotions off, minimum candidate score 65 → 55; guide now requires buying any candidate that passes
+- Fixed: a shadowed `time` import (from the 2026-10-11 Alpha Vantage throttle) crashed every stock collection; regression test added
+- ~ [[investing-apprentice]], [[promotion-system]], [[investing-apprentice-plan]], [[overview]], [[index]]
+- ⚠️ Twelve Data and Finnhub keys still return 401, and the FRED key still returns 400
