@@ -103,3 +103,8 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ Settings now read true/false case-insensitively (before, "True" did not pause anything). Sender v2 caps each run so sends plus spacing stay under n8n's 180-second limit (4 per run at 20 s spacing)
 - ⚠️ The Weekly Report's switch to his own Gemini key was declined, so it still uses the AI gateway credits
 - → Stellan: confirm the intended mode (paused plus SEND conflict); Composer and Follow-ups are still unpublished
+
+## [2026-10-12] edit | Outreach system: auto-send mode approved
+- Stellan chose "Auto-send now"
+- ~ Published Composer, Follow-ups and Outreach Sender v2. The Prospector's search now uses Stellan's own Brave key (republished). Its model and page reader still use the AI gateway credits, which Stellan has not topped up
+- → Stellan: set `paused` to false in FlowPilot Settings (I can't edit table rows), then mark leads APPROVED to have them sent at 10:15 or 13:15
