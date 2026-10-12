@@ -115,3 +115,13 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ Composer: in SEND mode (not paused, not a dry run), AI-approved emails are set to APPROVED instead of NEEDS_REVIEW. When a run finishes, it starts Sender v2 at once, which sends them with all its checks (suppression, duplicates, MX, limits, sending hours on weekdays 8:00–18:00)
 - ~ Sender v2: + "When called by Composer" trigger. The 10:15 and 13:15 runs stay as a backup
 - → Stellan: set `paused` to false
+
+## [2026-10-12] edit | Outreach: why nothing has been sent yet
+- Stellan reported that nothing was sending. Checked live runs 18–26
+- `paused` was set to false at 14:08 Toronto. After that, every Composer run reached the AI steps, but none produced an approved email:
+  - Stellan's OpenAI key was rejected ("Authorization failed"), so the critics were moved to his Gemini key
+  - The Gemini preview model then returned "Service unavailable", "Model output doesn't fit required format" and "too many requests" errors. The stable `gemini-2.5-flash` model is "not found" for this key
+- ~ Composer: 1 lead per run, every 15 minutes on weekdays 9:00–16:45, with AI retries (4 tries, 5 s apart), so each run stays under the 180-second limit. The Reply Monitor's classifier and the Follow-ups critic now also run on Gemini
+- The critic worked once: it caught an unsupported "25 years" claim and rewrote the email
+- → Stellan: fix the OpenAI key (billing and a new key) or enable billing on the Google AI key. Free-tier limits block every AI step
+- Note: the workflow JSON exports in `growth-engine/n8n/workflows/` predate these model changes
