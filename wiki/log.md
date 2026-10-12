@@ -65,3 +65,9 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ [[flowpilot]] (contradiction resolved, open question removed), [[growth-engine]], [[src-flowpilot-website]], [[overview]], [[index]], `growth-engine/docs/phase-1-plan.md`, `growth-engine/website/manus-integration.md` (prompt item 8 fixes the site's "$600" copy)
 - → The site's hero, meta and FAQ still say $600 until the Manus prompt is applied
 
+## [2026-10-12] edit | Prospector: tool fix + first test run
+- Fixed a tool-name clash (n8n's built-in web search vs the agent's `web_search` tool). The agent's Canada-only search is now `search_canada`
+- Test run (Kitchener/Guelph, roofing and landscaping): saved 3 prospects (scores 76–86) and 1 web-designer partner (70), each with page-linked findings and a "could not verify" list. 2 of the 3 prospects have a business email printed on their own contact page. Names are kept in n8n only (public repo)
+- + table column `email_subject`, `email_source_url`. Columns for the sender (`sent_at`, `send_result`) and the sender workflow are waiting on Stellan's go-ahead, a Gmail connection in n8n, and a CASL mailing address
+- ⚠️ Drafts still offer a "free 15-minute inquiry review", while the ACE rules Stellan pasted into the agent say not to ask for a 15-minute call. Status: open
+
