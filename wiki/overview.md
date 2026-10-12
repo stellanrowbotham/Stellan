@@ -5,7 +5,7 @@ title: Stellan's Brain
 aliases: ["Home", "Second brain", "Overview"]
 tags: [home]
 created: 2026-10-01
-updated: 2026-10-10
+updated: 2026-10-12
 sources: []
 ---
 
@@ -16,7 +16,7 @@ Home page. This is the big picture across everything Stellan is working on, kept
 | Section | What it holds | Status |
 |---|---|---|
 | [[investing-apprentice\|AI Stock & Crypto Investing Apprentice]] | AI research and paper-trading agent with $1,000 CAD virtual money and a 5-level promotion ladder | Level 1; waiting on data sources |
-| [[flowpilot\|FlowPilot]] | AI automations for local small businesses: free automation plan, n8n intake, and [[ace]] cold outreach | 69 businesses emailed; n8n connector down |
+| [[flowpilot\|FlowPilot]] | Instant inquiry replies for home-service businesses in SW Ontario; building the [[growth-engine]] (inbound acquisition) | Growth Engine Phases 1–2 built; site's demo form captures no leads yet |
 | [[daily-run-through\|Daily Run-Through]] | Morning check-ins and end-of-day reviews that feed the other two sections | Ready; first check-in pending |
 
 ## The live app & agents
@@ -34,6 +34,8 @@ Home page. This is the big picture across everything Stellan is working on, kept
 *(Set at the first morning check-in.)*
 
 ## Top open loops
+- Deploy the [[growth-engine]]: needs a Supabase project, n8n access, and the floor price and mailing address decisions
+- The FlowPilot site's demo form doesn't send (it's a stub), so connect it to the lead API
 - n8n connector down, so the FlowPilot workflow is unchecked
 - Investing Apprentice blocked on data sources
 - Brain routines need the Gmail and Google Calendar connectors

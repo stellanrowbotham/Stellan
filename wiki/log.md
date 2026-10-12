@@ -42,3 +42,13 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-10-12] ingest | FlowPilot Growth Engine: Phase 1 inspection + Phase 2 build
+- Stellan asked for an autonomous, inbound-first customer acquisition system (7 agents, 9 n8n workflows, CRM, dashboard) with human approval and CASL compliance. Started Phases 1–2.
+- Read: the live FlowPilot website (now reachable from the cloud), the request page, and the existing FlowPilot and ACE pages
+- + `raw/flowpilot/2026-10-12-flowpilot-website.md`, [[src-flowpilot-website]], [[growth-engine]]
+- + `growth-engine/`: Phase 1 plan (`docs/phase-1-plan.md`), 8 Postgres migrations (CRM, consent, suppression, send gate, content, ops, RLS, least-privilege roles), 6 SQL test suites, a lead-intake and unsubscribe API with 22 tests, a Supabase Edge Function adapter, and the website kit for Manus
+- ~ [[flowpilot]] (Snapshot, offers & pricing, goals, tool stack, open questions), [[connected-apps]], [[overview]], [[index]]
+- ⚠️ The site's demo form is a stub (it never sends), so the site captures no leads
+- ⚠️ Floor price: $300 on the card vs "from $600" in the hero and FAQ. The site's statistics have no source
+- → Stellan: create the Supabase project, reconnect n8n, decide on the floor price and mailing address, and say whether to move `growth-engine/` to a private repo

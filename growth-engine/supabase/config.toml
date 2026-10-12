@@ -1,0 +1,9 @@
+# Supabase CLI project config (only the parts this project relies on).
+project_id = "flowpilot-growth-engine"
+
+[api]
+# Keep `growth` OUT of the exposed schemas until the dashboard is built (Phase 6) and reviewed.
+schemas = ["public"]
+
+[functions.growth-api]
+verify_jwt = false   # public website endpoint; the function validates, rate-limits and checks Origin itself

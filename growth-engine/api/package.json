@@ -1,0 +1,16 @@
+{
+  "name": "flowpilot-growth-api",
+  "private": true,
+  "version": "0.1.0",
+  "description": "FlowPilot Growth Engine public API: lead intake and unsubscribe.",
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "start": "node src/server.ts",
+    "test": "node --test --test-concurrency=1 \"test/*.test.ts\"",
+    "test:unit": "node --test test/validation.test.ts test/security.test.ts"
+  },
+  "dependencies": {
+    "postgres": "3.4.5"
+  }
+}
