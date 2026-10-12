@@ -52,3 +52,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ⚠️ The site's demo form is a stub (it never sends), so the site captures no leads
 - ⚠️ Floor price: $300 on the card vs "from $600" in the hero and FAQ. The site's statistics have no source
 - → Stellan: create the Supabase project, reconnect n8n, decide on the floor price and mailing address, and say whether to move `growth-engine/` to a private repo
+
+## [2026-10-12] edit | FlowPilot Prospector agent (n8n)
+- Stellan connected n8n and asked for an agent that gains customers
+- + n8n Agent "FlowPilot Prospector" (draft) with Brave search, Firecrawl reader, and the "FlowPilot Prospects" data table; weekday 7:37 AM task
+- ~ [[growth-engine]], `growth-engine/n8n/README.md`
+- → Stellan: pick a model credential in the agent editor; then test run and publish
+

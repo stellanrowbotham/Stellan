@@ -19,6 +19,7 @@ Stellan asked for it on 2026-10-12 because cold email (see [[ace]]) produced no 
 The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead capture, consent) and tested locally, but **not deployed**. Deployment is waiting on accounts (Supabase, a working n8n connection) and a few business decisions *(synthesis)*.
 
 ## Key facts
+- **First agent (2026-10-12):** FlowPilot Prospector in n8n finds and scores local home-service prospects and referral partners each weekday at 7:37 AM, with evidence and draft notes for Stellan to review. It has no sending tools *(synthesis)*.
 - **Biggest finding:** the live site's demo form never sends anything (it's a stub), so the site captures no leads today ([[src-flowpilot-website]]). Connecting it is the first, cheapest fix *(synthesis)*.
 - **Database guarantees:** the send gate checks suppression, consent for the message's purpose, the CASL sender block and unsubscribe link, and human approval. The suppression list and consent records can't be edited or deleted. An audit or demo request never becomes marketing consent *(synthesis, tested in `growth-engine/supabase/tests`)*.
 - **Tests (2026-10-12):** 6 SQL suites and 22 API tests pass, including an HTTP end-to-end run against a local database *(synthesis)*.
@@ -37,3 +38,4 @@ The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead cap
 
 ## Timeline
 - 2026-10-12: Brief received. Phase 1 (inspection and plan) and Phase 2 (database, CRM, lead API, consent) built and tested locally *(Stellan, 2026-10-12)*.
+- 2026-10-12: First agent, **FlowPilot Prospector**, built in n8n as a draft. It does weekday prospecting into a review table and never contacts anyone. It's waiting on a model credential before it can be tested *(synthesis)*.

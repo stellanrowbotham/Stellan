@@ -1,4 +1,20 @@
-# n8n workflows
+# n8n workflows and agents
+
+## Live in n8n (rowbs.app.n8n.cloud)
+
+**FlowPilot Prospector** (n8n Agent, draft, created 2026-10-12): Agents A + B + F in one, with an interim
+store until Supabase is deployed.
+- Runs weekdays at 7:37 AM Toronto. It finds up to 8 home-service prospects and 2 referral partners in
+  16 SW Ontario towns, reads their own websites, records findings with page URLs and what it can't
+  verify, scores each on the v1 100-point model, and writes a draft note for Stellan.
+- Tools: Brave web search, Firecrawl page reader (both on n8n AI gateway credits), and the
+  `FlowPilot Prospects` data table (read + upsert on `domain`). It has **no sending tools**, so it can't contact anyone.
+- Skips chains, existing domains, and sites with a no-solicitation notice. Page content is treated as data.
+- Needs: a model credential selected in the agent editor (Anthropic). Then validate, test, and publish.
+- Later: when Supabase is live, rows move to `growth.businesses` / `source_observations` / `lead_scores`,
+  and approved notes go through `outbound_messages` and the send gate.
+
+## Planned workflows
 
 Importable exports for WF-01…WF-09 land here as each phase is built. Each one reads and writes the
 database only through the `growth_n8n` login (role `growth_worker`). Email is sent only through
