@@ -55,3 +55,8 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Fixed: a shadowed `time` import (from the 2026-10-11 Alpha Vantage throttle) crashed every stock collection; regression test added
 - ~ [[investing-apprentice]], [[promotion-system]], [[investing-apprentice-plan]], [[overview]], [[index]]
 - ⚠️ Twelve Data and Finnhub keys still return 401, and the FRED key still returns 400
+
+## [2026-10-12] edit | Trade rules loosened
+- Stellan chose "Loosen a bit": minimum candidate score 55 → 45, reward:risk 2.0 → 1.5
+- Fixed: the live price record now counts as licensed evidence when scoring (crypto candidates wrongly failed the "official/licensed source" gate)
+- ~ [[investing-apprentice]] behaviour only; risk limits unchanged

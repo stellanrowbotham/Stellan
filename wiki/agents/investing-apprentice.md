@@ -19,7 +19,7 @@ Picture a new employee at an investing company. On day one they can't touch any 
 
 ## Key facts
 - Status: **built and scheduled on 2026-10-10.** Stellan moved it straight to **Level 2 (pretend trading)** the same day, skipping the forecast-only Level 1: "I am training you not me" *(Stellan, 2026-10-10)*.
-- **Levels turned off on 2026-10-12**: everything simulated is unlocked, with no promotions or demotions. Risk limits still apply, and a candidate that passes every check must be bought (minimum score lowered from 65 to 55) *(Stellan, 2026-10-12)*.
+- **Levels turned off on 2026-10-12**: everything simulated is unlocked, with no promotions or demotions. Risk limits still apply, and a candidate that passes every check must be bought (minimum score lowered from 65 to 55, then to 45 with a reward:risk of 1.5 or more on 2026-10-12) *(Stellan, 2026-10-12)*.
 - First live weekend (2026-10-10 to 2026-10-12): 0 trades. A code bug crashed stock collection, the Twelve Data, Finnhub and FRED keys were rejected, and the one Solana candidate that passed (2026-10-12 10:33 AM) wasn't proposed. All three are fixed or reported *(synthesis)*.
 - **Every 4 hours** it hunts for a new stock or crypto to buy, and pretend-buys up to 2 when they pass every check *(Stellan, 2026-10-10)*.
 - Original Level 1 start: Plan approved by Stellan the same day; see [[investing-apprentice-plan]] *(Stellan, 2026-10-10)*.

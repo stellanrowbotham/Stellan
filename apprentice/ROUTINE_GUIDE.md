@@ -110,7 +110,7 @@ believe it will make a profit, pretend-buy it within the budget. **You are the o
    yet. Prefer TSX names and assets priced under about $100, since whole shares only fit the $100
    position cap. Add them with `python3 -m apprentice watch add SYMBOL "why"`. Then collect.
 2. Research each one and the existing watchlist. Score them honestly using the report fields.
-3. Propose **at most 2** buys: every candidate that passes all report gates (score, reward:risk of 2 or
+3. Propose **at most 2** buys: every candidate that passes all report gates (score 45+, reward:risk of 1.5 or
    more, 2 or more independent sources) **must** be proposed, best first. The risk engine sizes them. Outside market hours a
    stock order waits and fills at the next run during market hours, at the real price then. Crypto
    fills any time.
