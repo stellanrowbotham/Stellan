@@ -79,3 +79,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - Mailing address: given by Stellan; it goes on the website's privacy page, which the email footer links to (CASL allows a link). It's not stored in this public repo
 - → The sender workflow (approved rows only, MX check, 10 per run, footer) and the `sent_at` column are still blocked by the session's Auto permission mode
 
+## [2026-10-12] edit | Outreach sender live
+- + n8n workflow "FlowPilot Outreach Sender" (published): weekdays 10:15, approved rows only, MX check, 10 per run, sending→sent/failed/skipped, CASL footer linking to the business-information page
+- + business-information/privacy page on the WebsitePublisher site (`/privacy.html`)
+- Test send to Stellan succeeded
+- ~ Prospector agent (republished): the morning run now writes emails; + `set_status` (needs confirmation); Stellan's direct Gmail tool now needs per-send approval
+- → Stellan approves rows each day; the sender emails them at 10:15. Replies and "stop" requests are handled by Stellan (mark them `do_not_contact`)
+

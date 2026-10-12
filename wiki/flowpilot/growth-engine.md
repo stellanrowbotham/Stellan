@@ -39,3 +39,4 @@ The build has 7 phases. **Phases 1–2 are done** (plan; database, CRM, lead cap
 ## Timeline
 - 2026-10-12: Brief received. Phase 1 (inspection and plan) and Phase 2 (database, CRM, lead API, consent) built and tested locally *(Stellan, 2026-10-12)*.
 - 2026-10-12: First agent, **FlowPilot Prospector**, built in n8n as a draft. It does weekday prospecting into a review table and never contacts anyone. It's waiting on a model credential before it can be tested *(synthesis)*.
+- 2026-10-12: **Outreach sender live** in n8n. Weekdays 10:15, it sends only emails Stellan has approved, with a domain check, a cap of 10 per run, a CASL footer and no double sends. The test send succeeded *(synthesis)*.

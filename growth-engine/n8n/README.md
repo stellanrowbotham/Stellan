@@ -14,6 +14,16 @@ store until Supabase is deployed.
 - Later: when Supabase is live, rows move to `growth.businesses` / `source_observations` / `lead_scores`,
   and approved notes go through `outbound_messages` and the send gate.
 
+**FlowPilot Outreach Sender** (n8n workflow `JYLp19AwhhrEpswo`, published 2026-10-12)
+- Runs weekdays at 10:15 Toronto (plus a manual "Run now"). It sends only rows Stellan has set to `status = approved`.
+- Checks: the address is valid and came from the business's own site, there's no no-solicitation notice, the row was never sent before, the email is written, no duplicate address in the run, and at most 10 per run.
+- Checks the email domain has a mail server (MX) via dns.google, then marks the row `sending` **before** the Gmail send, so a crash can't cause a double send.
+- Then `sent` (with the Gmail id and time), `send_failed`, or `skipped` with the reason.
+- Footer: name, business, email, website, a link to the business-information page (holds the CASL mailing address), and "reply stop".
+- Tested 2026-10-12: one test email to Stellan, sent and marked correctly.
+
+The Prospector also writes the emails (skill `write_outreach_email`, tool `save_email`). Stellan approves them in the table or in agent chat (`set_status`, which asks for confirmation). The agent's own Gmail tool needs per-send approval.
+
 ## Planned workflows
 
 Importable exports for WF-01…WF-09 land here as each phase is built. Each one reads and writes the
