@@ -272,6 +272,17 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(r.records[0]["price"], 101.5)
         self.assertEqual(r.records[0]["data_ts"], "2026-10-09T20:00:00Z")
 
+    def test_api_keys_never_stored_in_errors(self):
+        secret = "ABCD1234SECRETKEY"
+        msg = {"Information": f"Thank you for using Alpha Vantage! Our standard API rate limit is 25 requests per day. Your API key {secret} ..."}
+        with mock.patch.dict("os.environ", {"ALPHAVANTAGE_API_KEY": secret}), \
+             mock.patch.object(P, "http_json", return_value=msg), mock.patch.object(P._time, "sleep"), \
+             mock.patch.object(P, "budget_ok", return_value=True), mock.patch.object(P, "spend"):
+            r = P.alpha_vantage_quotes([{"symbol": "RY", "exchange": "TSX", "asset_type": "stock", "currency": "CAD"}])
+        self.assertNotIn(secret, r.error)
+        self.assertIn("[redacted]", r.error)
+        self.assertNotIn("zzz", pbase.redact("https://x.invalid/q?symbol=RY&apikey=zzz"))
+
     def test_rss_parse(self):
         xml = b"""<rss><channel><item><title>Fictional headline</title><link>https://x.invalid/a</link>
         <pubDate>Tue, 13 Oct 2026 13:00:00 GMT</pubDate></item></channel></rss>"""

@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from .ledger import Ledger, iso, new_id
 from .providers import sources as P
+from .providers.base import redact
 from .settings import PKG
 from .validate import cross_source_conflicts, quote_problems
 
@@ -29,7 +30,7 @@ def watchlist(settings, broker, ledger_dir=None):
 def _record(results, now, kw, scope):
     checks = Ledger("source_checks", **kw)
     for r in results:
-        checks.append({"source_id": r.source_id, "status": r.status, "error": r.error[:500], "calls": r.calls,
+        checks.append({"source_id": r.source_id, "status": r.status, "error": redact(r.error)[:500], "calls": r.calls,
                        "records": len(r.records), "scope": scope, "at": iso(now)}, now=now)
 
 
@@ -96,4 +97,4 @@ def run(settings, broker, now, scope=("crypto", "stocks", "macro", "news"), ledg
     summary = {r.source_id: r.status for r in results}
     HL.append({"level": "info" if any(r.ok for r in results) else "error", "what": "collect",
                "detail": f"scope={','.join(scope)} stored={stored} statuses={summary}"}, now=now)
-    return {"stored": stored, "statuses": summary, "errors": {r.source_id: r.error for r in results if r.error}}
+    return {"stored": stored, "statuses": summary, "errors": {r.source_id: redact(r.error) for r in results if r.error}}

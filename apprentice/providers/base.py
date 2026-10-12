@@ -21,6 +21,12 @@ class ProviderResult:
     error: str = ""
     calls: int = 0
 
+    def __post_init__(self):
+        self.error = redact(self.error)
+
+    def __setattr__(self, name, value):
+        object.__setattr__(self, name, redact(value) if name == "error" and isinstance(value, str) else value)
+
     @property
     def ok(self):
         return self.status in ("ok", "partial")
@@ -66,6 +72,23 @@ def http_json(url, headers=None, timeout=20):
         return json.loads(raw)
     except ValueError:
         raise FetchError("bad-response", f"non-JSON response from {url.split('?')[0]}")
+
+
+SECRET_ENV = ("TWELVEDATA_API_KEY", "ALPHAVANTAGE_API_KEY", "FINNHUB_API_KEY", "FRED_API_KEY",
+              "COINGECKO_DEMO_API_KEY", "MASSIVE_API_KEY", "FMP_API_KEY", "TIINGO_API_KEY")
+
+
+def redact(text):
+    """Remove any API key values (and apikey=/token= query values) from text before it is stored or logged.
+    Some providers echo the caller's key inside error messages."""
+    import re
+    if not text:
+        return text
+    for name in SECRET_ENV:
+        v = (os.environ.get(name) or "").strip()
+        if len(v) >= 6:
+            text = text.replace(v, "[redacted]")
+    return re.sub(r"(?i)(apikey|api_key|token|key)=([^&\s]+)", r"\1=[redacted]", text)
 
 
 def env_key(name):
