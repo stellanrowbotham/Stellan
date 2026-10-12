@@ -71,3 +71,11 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + table column `email_subject`, `email_source_url`. Columns for the sender (`sent_at`, `send_result`) and the sender workflow are waiting on Stellan's go-ahead, a Gmail connection in n8n, and a CASL mailing address
 - ⚠️ Drafts still offer a "free 15-minute inquiry review", while the ACE rules Stellan pasted into the agent say not to ask for a 15-minute call. Status: open
 
+## [2026-10-12] edit | Prospector writes ready-to-review emails
+- Stellan's call to action: "I could walk you through how I can improve your business on a 15-minute call, or I could show you over email". This replaces both the old "free 15-minute review" line and ACE's no-call rule for these emails
+- + agent skill `write_outreach_email` and tool `save_email` (writes `email_subject`, `email_body` and `email_source_url` only; nothing is sent)
+- + table columns `email_body`, `send_result`
+- First 2 emails written (both roofers with a business email printed on their own contact page). The agent left out a claim it couldn't verify
+- Mailing address: given by Stellan; it goes on the website's privacy page, which the email footer links to (CASL allows a link). It's not stored in this public repo
+- → The sender workflow (approved rows only, MX check, 10 per run, footer) and the `sent_at` column are still blocked by the session's Auto permission mode
+
