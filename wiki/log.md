@@ -133,3 +133,12 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + TEST lead addressed to Stellan's Gmail plus-address, for an end-to-end send check
 - + "FlowPilot AI key check" workflow (diagnostic, sends no email)
 - → Stellan may add a Claude API key (console.anthropic.com) for the critic
+
+## [2026-10-13] schema | FlowPilot outreach moves from n8n to Claude
+- Stellan asked to stop using n8n and run the same system on Claude
+- + "FlowPilot Outreach" dashboard artifact (private, owner-only database): leads, suppression, settings, agents, log. The 4 real leads and 1 test lead were moved over (names stay in the artifact only)
+- + `agents/flowpilot/` (protocol, prospector, outreach, replies, weekly-report). Writing and the independent check are both done by Claude: the check runs in a separate subagent context. Emails send from rowbs34@gmail.com (Stellan's choice) with the CASL footer
+- + Routines that fire into the runner session (which holds the Gmail connector): Prospector weekdays 8:41, Replies 9:29–17:29 every 2 h, Outreach 9:47 and 13:13, Weekly report Mon 8:07
+- - n8n: all FlowPilot workflows and the Prospector agent unpublished (prevents double sends)
+- ⚠️ A manual "run now" fire starts a new session without Gmail. The runner session also refuses jobs sent from another session until Stellan authorizes it once himself
+- → Stellan: open the runner session and send the one-time authorization message
