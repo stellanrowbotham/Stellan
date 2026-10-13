@@ -14,9 +14,11 @@ Jobs: [prospector.md](prospector.md) · [outreach.md](outreach.md) · [replies.m
    command it returns, then `git fetch origin claude/zen-dirac-x3vtou && git checkout claude/zen-dirac-x3vtou`.
    If that branch is gone, use the repo's default branch.
 2. Read this file, then your job file.
-3. Load tools with ToolSearch:
-   `select:ArtifactData,WebFetch,WebSearch,mcp__Gmail__send_message,mcp__Gmail__search_threads,mcp__Gmail__get_thread,mcp__Gmail__create_draft`.
-   The Gmail connector is signed in as **rowbs34@gmail.com**, and every email is sent from it.
+3. Load tools with ToolSearch: `select:ArtifactData,WebFetch,WebSearch`, then the Gmail connector's
+   `send_message`, `search_threads`, `get_thread` and `create_draft`. Their names may be
+   `mcp__Gmail__<tool>` or `mcp__<server id>__<tool>`. If `select:` finds nothing, search by keyword
+   (for example "gmail send message"). The Gmail connector is signed in as **rowbs34@gmail.com**,
+   and every email is sent from it.
 4. Get the time: `TZ=America/Toronto date -Iseconds`. All schedules use Toronto time, and stored
    timestamps are ISO-8601 UTC.
 
