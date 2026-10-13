@@ -125,3 +125,11 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - The critic worked once: it caught an unsupported "25 years" claim and rewrote the email
 - → Stellan: fix the OpenAI key (billing and a new key) or enable billing on the Google AI key. Free-tier limits block every AI step
 - Note: the workflow JSON exports in `growth-engine/n8n/workflows/` predate these model changes
+
+## [2026-10-13] edit | Outreach: Gemini free-tier pacing, lead rotation, end-to-end test
+- The 2026-10-13 runs all executed, every 15 minutes, but each stopped with Gemini "too many requests" (free-tier limits). A key check confirmed that Stellan's OpenAI key is still rejected and Gemini works
+- ~ Composer: 15-second pauses before the writer and each critic, 2 tries per AI call (was 4), and NEW leads now rotate by last attempt, so one failing lead can't block the others. TEST rows go first
+- ~ Sender v2: outside weekdays 8:00–18:00, only TEST rows (to Stellan's own address) can be sent
+- + TEST lead addressed to Stellan's Gmail plus-address, for an end-to-end send check
+- + "FlowPilot AI key check" workflow (diagnostic, sends no email)
+- → Stellan may add a Claude API key (console.anthropic.com) for the critic
