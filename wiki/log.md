@@ -142,3 +142,11 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - - n8n: all FlowPilot workflows and the Prospector agent unpublished (prevents double sends)
 - ⚠️ A manual "run now" fire starts a new session without Gmail. The runner session also refuses jobs sent from another session until Stellan authorizes it once himself
 - → Stellan: open the runner session and send the one-time authorization message
+
+## [2026-10-13] schema | FlowPilot morning send at 9:15, up to 10 verified emails
+- Stellan asked for up to 10 verified emails at 9:15 AM and for a list of free lead sources
+- ~ Outreach morning Routine 9:47 → 9:15; Prospector 8:41 → 7:41 so leads are ready in time; settings `per_run_limit` 6 → 10, `prospects_per_day` 8 → 15 (daily cap stays 20)
+- ~ `agents/flowpilot/outreach.md`: stricter email verification (placeholder/no-reply/platform addresses skipped, email must still be printed on the site character for character, all checks stored as `email_verification` and every one must pass before a send)
+- ~ `agents/flowpilot/prospector.md`: never guess an address, MX and suppression check before saving
+- ~ 9:20 AM check-in in the build session: if the runner session hasn't started, the build session runs the outreach job itself
+- → Free lead sources Stellan can connect: Apollo.io connector, Hunter.io, Google Places API key

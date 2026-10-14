@@ -1,4 +1,4 @@
-# Outreach job: write, check and send (weekdays 9:47 and 13:13 Toronto)
+# Outreach job: write, check and send (weekdays 9:15 and 13:13 Toronto)
 
 Read [protocol.md](protocol.md) first. Agent id: `outreach`.
 
@@ -38,9 +38,17 @@ most `room` of them. For each:
    - no mail server: `dig +short MX <domain>`, or if `dig` is missing,
      `curl -s "https://dns.google/resolve?name=<domain>&type=MX"`. Empty, NXDOMAIN or a null MX →
      `SKIPPED`, "no mail server". A DNS error or timeout is not proof: leave it `NEW` for the next run.
+   - not a real inbox: placeholder or obviously wrong addresses (`example.com`, `yourname@`,
+     `noreply@`/`no-reply@`, `wordpress@`, an address on a web designer's or platform's domain
+     rather than the business's) → `SKIPPED`, "not the business's inbox". A free-mail address
+     (gmail.com, outlook.com and similar) is fine only if the business's own site prints it.
+   - Save what passed as `email_verification: {syntax, on_site, mx, suppression, duplicate,
+     gmail_history, checked_at}` (each `true`, or the reason it failed). **Only a lead whose checks
+     are all `true` may be sent.** Research step 2 sets `on_site`.
 2. **Research (keep it short).** Skip this for test rows. `WebFetch` the `website` and the
-   `email_source_url`. Confirm the email is still printed on the business's own site; if it isn't,
-   set `NEEDS_REVIEW`. Pick one or two real, specific observations. Write them, each with its URL, to
+   `email_source_url`. Confirm the email is still printed on the business's own site, character for character
+   (watch for obfuscation such as "info [at]"); if it isn't, set `NEEDS_REVIEW` with
+   `failure_reason` "email no longer on site". Pick one or two real, specific observations. Write them, each with its URL, to
    `research_notes`. Never invent anything you didn't see.
 3. **Write** the email (§4).
 4. **Check** it (§5). On `REWRITE`, use the revision and check again, at most 2 rewrites. If it's still
