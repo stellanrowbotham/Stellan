@@ -5,7 +5,7 @@ title: Connected apps & agents
 aliases: ["Connected apps", "Agents", "Everything connected"]
 tags: [apps, agents, links]
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-10-12
 sources: [src-command-centre, src-flowpilot-request-page, src-ace-outreach-log]
 ---
 
@@ -23,7 +23,8 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 | Stellan's Brain (the app) | Brain map, link inbox, live agents, schedule, morning breakdown, sections | [claude.ai artifact](https://claude.ai/artifact/RmkjrydKPNeqMoYjDdNXm5) (private) |
 | Command Centre | Agent scoreboard, calendar approvals, drafted replies, game plan, briefs ([[src-command-centre]]) | [claude.ai artifact](https://claude.ai/artifact/WApPYiiN9caKKWxuWacLZN) |
 | Investing Apprentice dashboard | Paper-trading simulation: research, trades, learning, promotions ([[src-command-centre]]) | [claude.ai artifact](https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ) (private) |
-| FlowPilot website | The business site, built on Manus | [flowpilot-rob9iwxx.manus.space](https://flowpilot-rob9iwxx.manus.space) |
+| FlowPilot website | The business site, built on Manus ([[src-flowpilot-website]]). Demo form not connected yet | [flowpilot-rob9iwxx.manus.space](https://flowpilot-rob9iwxx.manus.space) |
+| FlowPilot Growth Engine | CRM, lead API and n8n agents for inbound acquisition ([[growth-engine]]). Not deployed yet | `growth-engine/` in this repo |
 | Automation request page | "Get a simple automation plan" intake form ([[src-flowpilot-request-page]]) | [project28751.websitepublisher.ai](https://project28751.websitepublisher.ai/) |
 | ACE outreach log | No-repeat log of businesses ACE emailed ([[src-ace-outreach-log]]) | Google Doc (linked in the app) |
 | n8n cloud | Runs the FlowPilot inquiry workflow ([[src-flowpilot-request-page]]) | n8n cloud (linked in the app) |
@@ -48,7 +49,7 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 ## Open questions
 1. Keep both morning briefings, or merge them?
 2. Reconnect the n8n connector so the FlowPilot workflow can be checked again?
-3. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
+3. Allow data sources for the Apprentice in the cloud environment's network settings? (manus.space is reachable as of 2026-10-12.)
 
 ## Pages
 - Related: [[overview]] · [[flowpilot]] · [[ace]] · [[investing-apprentice]] · [[daily-run-through]] · [[schedule]]

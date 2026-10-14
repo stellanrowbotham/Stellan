@@ -1,0 +1,170 @@
+{
+  "name": "FlowPilot Error Alerts",
+  "nodes": [
+    {
+      "id": "4282646d-d4ec-4332-bed9-5f9d6c09512a",
+      "name": "When a FlowPilot workflow fails",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "f53abb57-00db-42b5-aa15-89d310ac0f54",
+      "name": "Shape alert (no personal data)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "wf",
+              "name": "workflow",
+              "value": "={{ $json.workflow?.name || \"unknown workflow\" }}",
+              "type": "string"
+            },
+            {
+              "id": "node",
+              "name": "node",
+              "value": "={{ $json.execution?.lastNodeExecuted || \"unknown node\" }}",
+              "type": "string"
+            },
+            {
+              "id": "msg",
+              "name": "message",
+              "value": "={{ String($json.execution?.error?.message || $json.trigger?.error?.message || \"no message\").slice(0, 400) }}",
+              "type": "string"
+            },
+            {
+              "id": "exec",
+              "name": "execution_id",
+              "value": "={{ $json.execution?.id || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "url",
+              "name": "url",
+              "value": "={{ $json.execution?.url || \"\" }}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "751c4c72-e7b2-4ccb-b919-26a37ebefb42",
+      "name": "Log error event",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "X5TIQGCixIj0JjOh",
+          "cachedResultName": "FlowPilot Events"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "={{ $now.toISO() }}",
+            "workflow": "={{ $json.workflow }}",
+            "trigger_name": "error_trigger",
+            "execution_id": "={{ $json.execution_id }}",
+            "event": "workflow_error",
+            "detail": "={{ $json.node + \": \" + $json.message }}"
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "a9a5fb69-c3df-4b8f-ac28-7ce9aeb0f92e",
+      "name": "Email alert to Stellan",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "stellanrowbotham@gmail.com",
+        "subject": "={{ '[FlowPilot alert] ' + $('Shape alert (no personal data)').item.json.workflow + ' failed' }}",
+        "emailType": "text",
+        "message": "={{ 'Workflow: ' + $('Shape alert (no personal data)').item.json.workflow + '\\nFailed node: ' + $('Shape alert (no personal data)').item.json.node + '\\nError: ' + $('Shape alert (no personal data)').item.json.message + '\\nExecution: ' + $('Shape alert (no personal data)').item.json.url + '\\n\\nNo email is retried automatically after a failure. Check the FlowPilot Leads rows in SENDING or FAILED status before re-approving anything.' }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "webhookId": "70a24842-2e47-4adb-bc52-302050b10116",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Zbv34QnLPsA48N3a",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When a FlowPilot workflow fails": {
+      "main": [
+        [
+          {
+            "node": "Shape alert (no personal data)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape alert (no personal data)": {
+      "main": [
+        [
+          {
+            "node": "Log error event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log error event": {
+      "main": [
+        [
+          {
+            "node": "Email alert to Stellan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "exportedFrom": "rowbs.app.n8n.cloud",
+    "exportedAt": "2026-10-12",
+    "workflowId": "Xdtu5d7x3xYPvg98"
+  }
+}
