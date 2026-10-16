@@ -60,3 +60,9 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Stellan chose "Loosen a bit": minimum candidate score 55 → 45, reward:risk 2.0 → 1.5
 - Fixed: the live price record now counts as licensed evidence when scoring (crypto candidates wrongly failed the "official/licensed source" gate)
 - ~ [[investing-apprentice]] behaviour only; risk limits unchanged
+
+## [2026-10-16] edit | Dashboard wording; first week of results
+- Stellan asked to drop the "pretend money" and "had this much to start" wording and make it look as real as possible. Dashboard and report now read like a real account, with one small "Simulated" tag kept, because the page is link-shared
+- Results, 2026-10-12 to 2026-10-16: 2 crypto buys. SOLCAD was closed on a broken thesis for −$4.58; XRPCAD is still open. The account is at about $991.61 (−0.8%), and 3 of 7 scored forecasts were correct
+- ⚠️ No stock data at all: the Twelve Data, Finnhub and Alpha Vantage requests are all failing, so no stock could be traded
+- → Stellan asked about connecting the Investopedia simulator. It has no official API, so the proposal is a manual "order slip" mirror
