@@ -18,6 +18,7 @@
     python3 -m apprentice health                  health checks
     python3 -m apprentice verify                  verify every ledger hash chain + accounting
     python3 -m apprentice sources                 source registry with live status
+    python3 -m apprentice order-slips [--mark-sent]  Investopedia order slips for new fills (email them, then --mark-sent)
     python3 -m apprentice keys                    check API key format (never prints the keys)
     python3 -m apprentice approve-config          HUMAN ONLY: re-approve config after Stellan agrees to a change
     python3 -m apprentice run-start JOB           record that a scheduled job started
@@ -28,7 +29,7 @@ import os
 import sys
 from pathlib import Path
 
-from . import collect, dashboard, forecasts, health, promotion, report, research, reviews
+from . import collect, dashboard, forecasts, health, promotion, report, research, reviews, slips
 from .broker import PaperBroker
 from .ledger import Ledger, iso, new_id, utcnow, verify_all
 from .levels import NAMES
@@ -63,6 +64,8 @@ def main(argv=None):
     r = sub.add_parser("report")
     r.add_argument("file")
     r.add_argument("run")
+    os_ = sub.add_parser("order-slips")
+    os_.add_argument("--mark-sent", action="store_true")
     rs = sub.add_parser("run-start")
     rs.add_argument("job")
     a = ap.parse_args(argv)
@@ -161,6 +164,14 @@ def main(argv=None):
         h = config_hash()
         APPROVED_FILE.write_text(f"{h}  settings.json+universe.json approved {iso(now)}\n")
         print(f"approved {h}")
+    elif a.cmd == "order-slips":
+        pend = slips.pending(s, b)
+        if a.mark_sent:
+            slips.mark_sent(b, pend, now)
+            _print({"marked_sent": len(pend)})
+        else:
+            subject, text, body_html = slips.render(pend) if pend else (None, None, None)
+            _print({"count": len(pend), "subject": subject, "text": text, "html": body_html})
     elif a.cmd == "run-start":
         health.record_run(a.job, now)
         print("recorded")

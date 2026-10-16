@@ -163,6 +163,10 @@ python3 -m apprentice verify
   may be `mcp__Gmail__send_message` or `mcp__<uuid>__send_message`), then `send_message` to `["stellanrowbotham@gmail.com"]`, subject
   `Apprentice · <job> · <date>: <headline>`. `htmlBody` = the generated `.html` report, plus a short
   plain `body` with the dashboard link `https://claude.ai/artifact/PHFxL9AAwnp1DRxWzXLMUQ`.
+- **Investopedia order slips** (every job, after `propose`/`process`): run `python3 -m apprentice order-slips`.
+  If `count` > 0, email it to `stellanrowbotham@gmail.com` (subject and `html` as given, `text` as the plain
+  body). Only after the email is sent, run `python3 -m apprentice order-slips --mark-sent`. This lets Stellan
+  copy every trade into his Investopedia simulator by hand. Never log in to Investopedia yourself.
 - **Commit and push:**
   `git add apprentice/ledger apprentice/reports apprentice/state && git commit -m "apprentice: <job> <date>"`
   then `git push origin claude/practical-galileo-8nwjmp`. If the push is rejected, run `git pull --rebase`

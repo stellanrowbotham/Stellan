@@ -26,6 +26,7 @@ Starting point: learn how markets work by watching an AI apprentice research, pr
 - **Evolving thesis:** honest records beat clever predictions. A strategy only "works" if it still beats a simple benchmark after costs, on data it never saw while being designed *(synthesis)*.
 
 ## Open questions / gaps
+- Going live: see [[moving-to-a-real-brokerage]]. It needs a proven record, an adult account holder, and a broker that allows API orders (Questrade doesn't for personal use).
 - [[investing-apprentice]] can't research yet. It needs the data sites allowed in the cloud environment's network settings, free API keys, and Gmail added to its Routines (`apprentice/README.md`).
 - Do free data plans cover TSX prices? This will show on the first run with keys ([[source-reliability]]).
 - Questrade's official fee schedule still needs checking ([[trading-costs]]).

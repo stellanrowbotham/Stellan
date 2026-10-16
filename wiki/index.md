@@ -9,7 +9,7 @@ updated: 2026-10-10
 # Index
 Catalog of every page in the wiki. The agent reads this first on every query and updates it on every operation.
 
-**Totals:** 2 sources · 7 agents · 6 investing concepts · 2 analyses · last updated 2026-10-10 (wiki reset)
+**Totals:** 2 sources · 7 agents · 6 investing concepts · 3 analyses · last updated 2026-10-10 (wiki reset)
 
 ## Overview
 - [[overview]]: top-level synthesis, main themes, and open questions
@@ -43,3 +43,4 @@ Catalog of every page in the wiki. The agent reads this first on every query and
 
 ## Analyses
 - [[investing-apprentice-plan]]: interview answers, architecture, phases, costs and decisions; approved 2026-10-10 · 1 source
+- [[moving-to-a-real-brokerage]]: what it would take to go from simulation to a real account (proof, adult holder, broker API, safeguards) · 1 source

@@ -190,6 +190,21 @@ class LevelsOff(Base):
         self.assertTrue(r["accepted"], r.get("reasons"))
 
 
+class OrderSlips(Base):
+    def test_slips_for_new_fills_once(self):
+        from apprentice import slips
+        self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
+        self.b.propose(proposal("BCE", T0, self.ev(), stop=39.2, target=42.0), T0)
+        p = slips.pending(self.s, self.b)
+        self.assertEqual(len(p), 1)
+        self.assertIn("BUY 2 shares of BCE", p[0]["lines"][0])
+        self.assertIn("39.2", p[0]["lines"][1])
+        subject, text, body = slips.render(p)
+        self.assertIn("Investopedia", subject)
+        slips.mark_sent(self.b, p, T0)
+        self.assertEqual(slips.pending(self.s, self.b), [])
+
+
 class NoRealOrders(unittest.TestCase):
     def test_broker_has_no_network_code(self):
         import ast

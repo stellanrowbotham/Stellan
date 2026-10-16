@@ -32,6 +32,7 @@ Picture a new employee at an investing company. On day one they can't touch any 
 - Five levels, from Research Apprentice to Trusted Research Agent ([[promotion-system]], [[src-stellan-investing-apprentice-brief]]).
 - Trading style: try everything, with individual trades, and learning first before trading for real results *(Stellan, 2026-10-10)*.
 - Reports go by email, **only to Stellan's own address**, and explain things simply, the way you would to a 10-year-old *(Stellan, 2026-10-10)*.
+- **Investopedia mirror** (2026-10-16): every new buy or sell is emailed as an order slip, so Stellan can copy it into his Investopedia simulator by hand. There's no automatic connection, because Investopedia has no official API *(Stellan, 2026-10-16)*.
 - Fees are modelled on **Questrade** (his likely future broker) for stocks and Kraken for crypto ([[trading-costs]]) *(Stellan, 2026-10-10)*.
 - Day trading runs only as a **labelled hourly experiment** *(Stellan, 2026-10-10)*.
 
@@ -41,4 +42,5 @@ Picture a new employee at an investing company. On day one they can't touch any 
 - It will be the only agent working overnight, because crypto trades 24/7. See [[agents-24-7]].
 
 ## Related
+- [[moving-to-a-real-brokerage]]: the plan for going live (not started)
 - [[paper-trading]], [[look-ahead-bias]], [[trading-costs]], [[risk-management]], [[source-reliability]]

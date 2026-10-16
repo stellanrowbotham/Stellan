@@ -66,3 +66,8 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Results, 2026-10-12 to 2026-10-16: 2 crypto buys. SOLCAD was closed on a broken thesis for −$4.58; XRPCAD is still open. The account is at about $991.61 (−0.8%), and 3 of 7 scored forecasts were correct
 - ⚠️ No stock data at all: the Twelve Data, Finnhub and Alpha Vantage requests are all failing, so no stock could be traded
 - → Stellan asked about connecting the Investopedia simulator. It has no official API, so the proposal is a manual "order slip" mirror
+
+## [2026-10-16] edit | Investopedia order slips; brokerage plan
+- Built `apprentice/slips.py` and the `order-slips` command: each new fill is emailed as an Investopedia order slip, then marked sent. Existing fills are baselined as already sent
+- + [[moving-to-a-real-brokerage]]; ~ [[investing-apprentice]], [[overview]], [[index]]
+- Header "Simulated" tag removed at Stellan's request; the Settings tab still says real-money trading is off

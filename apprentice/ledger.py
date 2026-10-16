@@ -84,7 +84,7 @@ class Ledger:
 
 LEDGER_NAMES = ("quotes", "research", "forecasts", "forecast_scores", "orders", "fills", "trades",
                 "reviews", "scorecard", "evaluations", "level_events", "health", "source_checks", "watchlist",
-                "valuations", "reports", "experiments")
+                "valuations", "reports", "experiments", "slips")
 
 
 def verify_all(directory=LEDGER_DIR):
