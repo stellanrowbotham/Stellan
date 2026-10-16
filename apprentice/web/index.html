@@ -82,7 +82,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
 
 <div class="wrap">
   <header class="top">
-    <h1>Investing Apprentice <small>Pretend-money stock &amp; crypto research · simulation only · no real trades</small></h1>
+    <h1>Investing Apprentice <small>Stocks &amp; crypto · <span class="pill info">Simulated</span></small></h1>
     <div class="meta" id="updated">Waiting for data…</div>
   </header>
   <nav class="tabs" role="tablist" aria-label="Sections">
@@ -188,24 +188,24 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
     if (!o) return;
     const lvl = o.level || 1;
     p.replaceChildren(
-      (o.levelsEnabled !== false && lvl < 2) ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place pretend trades until it earns Level 2 and you approve.") : null,
+      (o.levelsEnabled !== false && lvl < 2) ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place trades until it earns Level 2 and you approve.") : null,
       h("div", {class: "hero"},
-        h("span", {class: "kpi"}, h("span", {class: "label"}, "If this were real money, you'd have " + (o.totalPnl > 0 ? "made" : o.totalPnl < 0 ? "lost" : "made"))),
+        h("span", {class: "kpi"}, h("span", {class: "label"}, "Total profit / loss")),
         h("span", {class: "big " + cls(o.totalPnl)}, money(o.totalPnl, true)),
         h("div", {class: "row2"},
           h("span", {}, "Today: ", h("b", {class: cls(o.dayPnl)}, money(o.dayPnl, true)), " (" + pct(o.dayReturnPct) + ")"),
-          h("span", {}, "Account: ", h("b", {}, money(o.equity)), " of " + money(o.startingBalance) + " start"),
+          h("span", {}, "Account value: ", h("b", {}, money(o.equity))),
           h("span", {}, "Sold so far: ", h("b", {class: cls(o.realized)}, money(o.realized, true))),
           h("span", {}, "Still holding: ", h("b", {class: cls(o.unrealized)}, money(o.unrealized, true)))),
-        h("span", {class: "meta"}, "Pretend money with real market prices, after fees. Gains on things still held change as prices move.")),
+        h("span", {class: "meta"}, "Live market prices, after fees. Open positions move with the market.")),
       card("Today's buys and sells", (o.todayActivity || []).length ? table([
         {t: "Time", v: r => when(r.at)}, {t: "", v: r => pill(r.side === "buy" ? "bought" : "sold", r.side === "buy" ? "info" : "ok")},
         {t: "Asset", v: r => r.symbol}, {t: "Units", r: 1, v: r => r.qty}, {t: "Price", r: 1, v: r => r.price},
         {t: "Money", r: 1, v: r => money(r.cashCad, true), c: r => cls(r.cashCad)},
         {t: "Profit", r: 1, v: r => r.pnl == null ? "–" : money(r.pnl, true), c: r => cls(r.pnl)}], o.todayActivity) :
-        empty("No pretend buys or sells yet today.")),
+        empty("No buys or sells yet today.")),
       h("div", {class: "kpis"},
-        kpi("Pretend account", money(o.equity), "started at " + money(o.startingBalance)),
+        kpi("Account value", money(o.equity), "cash " + money(o.cash)),
         kpi("Total return", pct(o.totalReturnPct), money((o.equity || 0) - (o.startingBalance || 0), true), cls(o.totalReturnPct)),
         kpi("Today", pct(o.dayReturnPct), "since yesterday's close", cls(o.dayReturnPct)),
         kpi("Cash", money(o.cash), (o.positions || []).length + " open position(s)"),
@@ -215,7 +215,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         card("Account value", equityChart(o.equityCurve, o.startingBalance, o.benchmarkLabel),
           h("p", {class: "meta"}, "Week " + pct(o.weekReturnPct) + " · Month " + pct(o.monthReturnPct) + " · " +
             (o.riskAdjusted && o.riskAdjusted.available ? "Sharpe " + (o.riskAdjusted.sharpe ?? 0).toFixed(2) + ", Sortino " + (o.riskAdjusted.sortino ?? 0).toFixed(2) : "Risk-adjusted stats: " + ((o.riskAdjusted || {}).reason || "not enough data")))),
-        o.levelsEnabled === false ? card("Trading permissions", h("p", {}, "Levels are turned off, so pretend trading is fully unlocked. The safety limits still apply: at most $100 per position, at most $10 lost per trade, and a stop-loss on every buy."), h("p", {class: "meta"}, "Real money is never possible.")) : card("Promotion progress", promoMini(o.promotion))),
+        o.levelsEnabled === false ? card("Trading permissions", h("p", {}, "All trading is unlocked. Safety limits: at most 10% of the account per position, at most 1% lost per trade, and a stop-loss on every buy.")) : card("Promotion progress", promoMini(o.promotion))),
       card("Open positions", (o.positions || []).length ? table([
         {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)},
         {t: "Units", r: 1, v: r => r.qty},
@@ -274,7 +274,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         sec("News", c.news), sec("Chart clues", c.technicals), sec("Coming up", c.catalysts), sec("When to buy", c.entry_conditions),
         sec("When to sell", c.exit_conditions), sec("Safety plan", c.stop_plan), sec("How long", c.holding_period), sec("Scenarios", c.scenarios),
         sec("Confidence", (c.confidence || "–") + ". " + (c.confidence_basis || "")),
-        c.size ? sec("Suggested pretend size", c.size.qty + " units" + (c.size.cost_cad ? " ≈ " + money(c.size.cost_cad) : " (" + (c.size.note || "") + ")")) : null,
+        c.size ? sec("Suggested size", c.size.qty + " units" + (c.size.cost_cad ? " ≈ " + money(c.size.cost_cad) : " (" + (c.size.note || "") + ")")) : null,
         h("div", {}, h("h3", {}, "Score parts (0–1)"), table([{t: "Part", v: r => r[0]}, {t: "Score", r: 1, v: r => Number(r[1]).toFixed(2)}], Object.entries(parts))),
         h("div", {}, h("h3", {}, "Checks"), h("ul", {class: "plain"}, Object.entries(s.gates || {}).map(([k, g]) => h("li", {}, pill(g.passed ? "pass" : "fail", g.passed ? "ok" : "bad"), " ", g.detail))))),
       (c.sources || []).length ? h("div", {}, h("h3", {}, "Sources"), h("ul", {class: "plain"}, c.sources.map(x => h("li", {}, x.url ? h("a", {href: x.url}, x.title || x.url) : (x.title || "record"), h("span", {class: "meta"}, " · " + (x.source_id || "") + " · " + when(x.published_at)))))) : null));
@@ -298,7 +298,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
           {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)}, {t: "Strategy", v: r => r.strategy},
           {t: "In", r: 1, v: r => r.entry}, {t: "Out", r: 1, v: r => r.exit}, {t: "Why sold", v: r => r.exitReason},
           {t: "P&L", r: 1, v: r => money(r.pnl, true), c: r => cls(r.pnl)}, {t: "Return", r: 1, v: r => pct(r.returnPct), c: r => cls(r.returnPct)},
-          {t: "Days", r: 1, v: r => r.holdingDays}, {t: "Fees", r: 1, v: r => money(r.fees)}], t.closed) : empty("No pretend trades yet. Trading starts at Level 2.")),
+          {t: "Days", r: 1, v: r => r.holdingDays}, {t: "Fees", r: 1, v: r => money(r.fees)}], t.closed) : empty("No closed trades yet.")),
       st.closed ? h("div", {class: "grid"},
         card("Best and worst", h("p", {}, "Best: ", h("b", {}, st.best.symbol), " ", h("span", {class: "up num"}, money(st.best.pnl_cad, true))), h("p", {}, "Worst: ", h("b", {}, st.worst.symbol), " ", h("span", {class: "down num"}, money(st.worst.pnl_cad, true)))),
         card("By strategy", groupTable(st.by_strategy)), card("By holding time", groupTable(st.by_holding_period)), card("By asset", groupTable(st.by_asset))) : null,
@@ -353,7 +353,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         h("summary", {}, r.symbol + " · " + money(r.realized_pnl_cad, true) + " · " + (r.verdict || "").replace("_", " ") + (r.complete ? "" : " · incomplete")),
         h("p", {}, h("b", {}, "Original idea: "), r.original_thesis),
         h("ul", {}, Object.entries(r.answers || {}).map(([k, v]) => h("li", {}, h("b", {}, k.replaceAll("_", " ") + ": "), v))),
-        h("p", {class: "meta"}, "Rules followed (checked by code): " + (r.rule_compliance && r.rule_compliance.all ? "yes" : "no"))))) : empty("Reviews appear after pretend trades close.")),
+        h("p", {class: "meta"}, "Rules followed (checked by code): " + (r.rule_compliance && r.rule_compliance.all ? "yes" : "no"))))) : empty("Reviews appear after trades close.")),
       h("div", {class: "grid"},
         card("Mistake journal", (l.mistakes || []).length ? h("ul", {class: "plain"}, l.mistakes.map(m => h("li", {}, h("b", {}, m.category || "mistake"), ": ", m.description || ""))) : empty("No mistakes logged yet.")),
         card("Lessons learned", (l.lessons || []).length ? h("ul", {class: "plain"}, l.lessons.map(m => h("li", {}, m.lesson, h("span", {class: "meta"}, " · " + m.symbol)))) : empty("No lessons yet."))),
@@ -399,10 +399,10 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
       "headline-only": ["link reference only", "info"], manual: ["manual / later", "info"], "not-integrated": ["not integrated yet", "info"], "not-yet-checked": ["not checked yet", "info"],
       "rate-limited": ["rate-limited", "warn"], "http-error": ["error", "bad"], "bad-response": ["bad response", "bad"]})[st] || [st, "info"];
     p.replaceChildren(
-      !s.approved ? h("div", {class: "banner"}, h("b", {}, "Settings changed without approval. "), "All pretend trading is locked until Stellan approves.") : null,
+      !s.approved ? h("div", {class: "banner"}, h("b", {}, "Settings changed without approval. "), "All trading is locked until Stellan approves.") : null,
       card("Permissions", h("ul", {class: "plain"},
         h("li", {}, pill("off", "bad"), " Real-money trading: there is no code for it, and simulated success never unlocks it."),
-        h("li", {}, pill(perms.canPlaceSimulatedTrades ? "on" : "off", perms.canPlaceSimulatedTrades ? "ok" : "info"), " Pretend trades"),
+        h("li", {}, pill(perms.canPlaceSimulatedTrades ? "on" : "off", perms.canPlaceSimulatedTrades ? "ok" : "info"), " Trading (simulated)"),
         h("li", {}, pill("off", "bad"), " Changing its own rules, limits or level"),
         h("li", {}, pill("on", "ok"), " Email reports, to Stellan only"))),
       h("div", {class: "grid"},

@@ -118,9 +118,10 @@ def _markdown(settings, payload, rows, passing, level, equity, port, now, run_na
     title = {"pre_market": "Morning research report", "post_close": "After-the-bell update", "crypto": "Crypto check",
              "day_experiment": "Hourly experiment check"}.get(run_name, "Research report")
     o.append(f"# {title}: {now.astimezone(ET).strftime('%A %B %d, %Y, %I:%M %p ET')}")
-    o.append(f"**Level {level}: {NAMES[level]}** · Pretend account: **${equity:,.2f} CAD** (started at ${settings['account']['starting_balance']:,.0f}) · Cash ${port.cash:,.2f}")
-    o.append("> This is practice with pretend money. Every idea below is a *guess with reasons*, not a promise. A high score does not mean a trade will work.")
-    if level < 2:
+    pnl = equity - settings["account"]["starting_balance"]
+    o.append(f"Account: **${equity:,.2f} CAD** · Profit/loss: **{'+' if pnl >= 0 else '−'}${abs(pnl):,.2f}** · Cash ${port.cash:,.2f}")
+    o.append("> Every idea below is a *guess with reasons*, not a promise. A high score does not mean a trade will work.")
+    if level < 2 and settings["agent"].get("levels_enabled", True):
         o.append("> 🎓 **Level 1 means forecasts only.** The apprentice is still proving its research is honest and accurate, so no pretend trades are placed yet.")
     ms = payload.get("market_summary") or {}
     if ms.get("text"):
@@ -160,7 +161,7 @@ def _markdown(settings, payload, rows, passing, level, equity, port, now, run_na
             o.append(f"**Plan:** buy near {c['entry_price']}, sell at {c['target_price']} for profit, or at {c['stop_price']} to stop the loss. "
                      f"Reward-to-risk {s['reward_risk']:.1f}. ({PLAIN['rr']})")
         if r["size"]:
-            o.append(f"**Suggested pretend size:** {r['size'].get('qty')} units"
+            o.append(f"**Suggested size:** {r['size'].get('qty')} units"
                      + (f" ≈ ${r['size']['cost_cad']:.2f} CAD including fees" if r['size'].get('cost_cad') else f" ({r['size'].get('note')})"))
         o.append(f"**Confidence:** {c.get('confidence')}. Why: {c.get('confidence_basis')}")
         o.append("**Score breakdown:** " + ", ".join(f"{k} {v:.2f}" for k, v in s["parts"].items())
