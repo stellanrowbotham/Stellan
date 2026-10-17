@@ -85,3 +85,7 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
   - Crypto trend passes vs the basket: +20.7% vs +14.4%, with a smaller drop, but trails holding bitcoin alone (+26.6%); only 2 test folds, so weak
 - Hourly experiment Routine disabled
 - ⚠️ Whole shares and a 10% cap on about $989 exclude most US large caps the momentum rule picks
+
+## [2026-10-17] edit | FRED key working; runner v3
+- FRED tested live: US unemployment 4.2% (2026-09)
+- Routines moved to runner v3 (`session_01AHWNRutcADNMdhhTcEim89`), so the new key is visible there; runner v2 archived
