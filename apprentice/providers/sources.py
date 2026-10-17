@@ -187,6 +187,8 @@ def twelve_data_quotes(assets, daily_limit=800):
         params = {"symbol": a["symbol"], "apikey": key}
         if a["exchange"] == "TSX":
             params["exchange"] = "TSX"
+        if out.calls:
+            _time.sleep(7.6)  # free plan: 8 requests per minute
         try:
             j = http_json("https://api.twelvedata.com/quote?" + urllib.parse.urlencode(params))
         except FetchError as e:

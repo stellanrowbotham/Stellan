@@ -49,7 +49,8 @@ def run(settings, broker, now, scope=("crypto", "stocks", "macro", "news"), ledg
             results.append(P.defillama())
     if "stocks" in scope:
         assets = [settings.asset(s) for s in wl if settings.asset(s)["asset_type"] != "crypto"]
-        td = P.twelve_data_quotes(assets)
+        # Twelve Data's free plan covers US listings only (TSX needs its paid Grow plan), so TSX goes to Alpha Vantage.
+        td = P.twelve_data_quotes([a for a in assets if a["exchange"] != "TSX"])
         results.append(td)
         got = {q["symbol"] for q in td.records}
         tsx_missing = [a for a in assets if a["exchange"] == "TSX" and a["symbol"] not in got]
