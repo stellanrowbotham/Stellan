@@ -45,7 +45,13 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 
 ## [2026-10-17] edit | Voice "daily call" agent (ElevenLabs)
 - Read: n8n workflows (8 FlowPilot ones, all inactive), scheduled tasks. Found that Morning Rundown, Inbox Sweep and 6 PM Update are Claude scheduled tasks, not n8n workflows.
-- + ElevenLabs agent "Brain - Daily Call" (`agent_7601m55qy2hrfk2a3vpbkkfr91ns`): rundown, then questions, then requests, then wrap-up; hangs up on voicemail; max 6 calls/day; pulls out requests, answers and notes after each call. The day's rundown is passed in at call time, so no personal data is stored in the agent.
+- + ElevenLabs agent "Brain - Daily Call": rundown, then questions, then requests, then wrap-up; hangs up on voicemail; max 6 calls/day; pulls out requests, answers and notes after each call. The day's rundown is passed in at call time, so no personal data is stored in the agent.
 - ~ [[connected-apps]] (new agent row, open question about the phone line)
 - ⚠️ No phone line yet: ElevenLabs has no phone number, so the agent can't ring a phone. It needs a Twilio number (paid after the trial).
 - → Stellan: Twilio trial and minutes budget; then build the 7:45/6 PM call workflow, the email fallback and the after-call follow-up.
+
+## [2026-10-17] edit | Daily call: free push "call" instead of a phone line
+- Twilio setup didn't work out for Stellan, and no free service can ring a phone (checked Vapi, Retell, Bland). ntfy.sh is rate-limited from the shared cloud network.
+- ~ Voice agent replaced by a private copy (ID kept out of this public repo; the old copy is archived). Rundown and questions are now loaded into it before each call.
+- Test: loaded the real 6 PM Update rundown for Sun 2026-10-18 and sent a Claude push "Brain is calling" with a link to talk.
+- → If Stellan likes it: Morning Rundown and 6 PM Update load the rundown and send the "call" push, with an email fallback if he doesn't talk within ~20 minutes.
