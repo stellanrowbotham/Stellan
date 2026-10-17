@@ -42,3 +42,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-10-17] edit | Voice "daily call" agent (ElevenLabs)
+- Read: n8n workflows (8 FlowPilot ones, all inactive), scheduled tasks. Found that Morning Rundown, Inbox Sweep and 6 PM Update are Claude scheduled tasks, not n8n workflows.
+- + ElevenLabs agent "Brain - Daily Call" (`agent_7601m55qy2hrfk2a3vpbkkfr91ns`): rundown, then questions, then requests, then wrap-up; hangs up on voicemail; max 6 calls/day; pulls out requests, answers and notes after each call. The day's rundown is passed in at call time, so no personal data is stored in the agent.
+- ~ [[connected-apps]] (new agent row, open question about the phone line)
+- ⚠️ No phone line yet: ElevenLabs has no phone number, so the agent can't ring a phone. It needs a Twilio number (paid after the trial).
+- → Stellan: Twilio trial and minutes budget; then build the 7:45/6 PM call workflow, the email fallback and the after-call follow-up.
