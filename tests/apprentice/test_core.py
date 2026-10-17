@@ -123,6 +123,9 @@ class CostTests(unittest.TestCase):
         self.assertEqual(costs.round_qty(self.s, self.s.asset("RY"), 2.9), 2.0)
         self.assertEqual(costs.round_qty(self.s, self.s.asset("XBTCAD"), 0.123456789), 0.12345678)
 
+    def test_us_fractional_shares_on(self):
+        self.assertEqual(costs.round_qty(self.s, self.s.asset("AAPL"), 0.28765), 0.2876)
+
 
 class PortfolioTests(unittest.TestCase):
     def test_round_trip_reconciles_with_fees(self):

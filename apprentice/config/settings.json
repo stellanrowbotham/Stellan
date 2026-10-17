@@ -100,7 +100,7 @@
       "fx_fee_pct": 0.015,
       "fractional_shares": {
         "TSX": false,
-        "US": false
+        "US": true
       },
       "estimated_spread_pct": {
         "etf": 0.0005,
@@ -108,7 +108,8 @@
         "mid_cap": 0.002,
         "default": 0.003
       },
-      "slippage_pct": 0.0005
+      "slippage_pct": 0.0005,
+      "fractional_note": "US fractional shares turned on by Stellan on 2026-10-17 (Questrade reportedly offers them for US stocks/ETFs; unverified). TSX stays whole shares."
     },
     "kraken": {
       "status": "UNVERIFIED: Kraken Pro starter-tier taker fee from general knowledge. Check kraken.com/features/fee-schedule.",

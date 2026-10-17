@@ -89,3 +89,9 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 ## [2026-10-17] edit | FRED key working; runner v3
 - FRED tested live: US unemployment 4.2% (2026-09)
 - Routines moved to runner v3 (`session_01AHWNRutcADNMdhhTcEim89`), so the new key is visible there; runner v2 archived
+
+## [2026-10-17] edit | US fractional shares on
+- Stellan chose option 1: US stocks and ETFs can be bought in fractional shares (TSX stays whole shares). Config re-approved
+- Momentum signals now include AAPL, AMD, JNJ and XOM, which were previously skipped for costing more than the 10% cap
+- Investopedia order slips round down to whole shares, because Investopedia doesn't take fractions
+- ⚠️ US buys from a CAD account pay about 1.5% currency conversion each way in the simulator. The lab assumed USD is held, so live results will trail lab results a little

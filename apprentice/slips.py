@@ -33,8 +33,12 @@ def pending(settings, broker):
         if f["side"] == "buy":
             if a["asset_type"] == "crypto":
                 qty_txt = f"about ${f['notional_cad']:.2f} CAD worth ({f['qty']:.6f} {tick})"
-            else:
+            elif float(f["qty"]).is_integer():
                 qty_txt = f"{int(f['qty'])} shares"
+            else:
+                whole = int(f["qty"])
+                qty_txt = (f"{f['qty']:.4f} shares (about ${f['notional_cad']:.2f} CAD). Investopedia only takes whole shares, so "
+                           + (f"buy {whole} share{'s' if whole != 1 else ''}" if whole else "skip it or buy 1 share if you have room"))
             lines = [f"BUY {qty_txt} of {tick}: market order.",
                      f"Then add a STOP (sell) order at {t.get('stop_price')}, the safety exit if it drops.",
                      f"And a LIMIT (sell) order at {t.get('target_price')}, which takes the profit."]
