@@ -85,14 +85,27 @@ def redact(text):
     if not text:
         return text
     for name in SECRET_ENV:
-        v = (os.environ.get(name) or "").strip()
-        if len(v) >= 6:
-            text = text.replace(v, "[redacted]")
+        raw = (os.environ.get(name) or "").strip()
+        for v in {raw, clean_key(name, raw)}:
+            if len(v) >= 6:
+                text = text.replace(v, "[redacted]")
     return re.sub(r"(?i)(apikey|api_key|token|key)=([^&\s]+)", r"\1=[redacted]", text)
 
 
+def clean_key(name, v):
+    """Tolerate common paste mistakes: spaces, quotes, or 'NAME=key' pasted into the value box."""
+    import re
+    v = (v or "").strip().strip("'\"").strip()
+    if "=" in v:
+        v = v.rsplit("=", 1)[1].strip().strip("'\"")
+    if name == "FRED_API_KEY" and not re.fullmatch(r"[a-z0-9]{32}", v):
+        m = re.search(r"[a-z0-9]{32}", v.lower())
+        v = m.group(0) if m else v
+    return v
+
+
 def env_key(name):
-    v = os.environ.get(name, "").strip()
+    v = clean_key(name, os.environ.get(name, ""))
     return v or None
 
 

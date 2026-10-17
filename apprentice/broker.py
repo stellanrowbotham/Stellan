@@ -146,7 +146,7 @@ class PaperBroker:
                                  "stop_price": p["stop_price"], "target_price": p["target_price"],
                                  "max_holding_days": p.get("max_holding_days") or strat["holding_days"][1],
                                  "expected_holding": p.get("expected_holding"), "confidence": p.get("confidence"),
-                                 "scenarios": p.get("scenarios"), "forecast_id": p.get("forecast_id"),
+                                 "scenarios": p.get("scenarios"), "forecast_id": p.get("forecast_id"), "rule": p.get("rule"),
                                  "planned_qty": qty, "est_cost_cad": est_cost,
                                  "risk_checks": [c.as_dict() for c in checks]}, now=now)
         order = self.L["orders"].append({"event": "placed", "order_id": order_id, "trade_id": trade_id, "symbol": p["symbol"],

@@ -71,3 +71,17 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Built `apprentice/slips.py` and the `order-slips` command: each new fill is emailed as an Investopedia order slip, then marked sent. Existing fills are baselined as already sent
 - + [[moving-to-a-real-brokerage]]; ~ [[investing-apprentice]], [[overview]], [[index]]
 - Header "Simulated" tag removed at Stellan's request; the Settings tab still says real-money trading is off
+
+## [2026-10-17] edit | Strategy lab, rules-first trading, API key check
+- Keys tested live:
+  - Twelve Data OK for US (free plan excludes TSX: "available starting with the Grow plan")
+  - Finnhub OK after auto-cleanup (the value had "NAME=" pasted in)
+  - CoinGecko OK
+  - Alpha Vantage OK, but its 25/day budget was used up
+  - FRED rejected ("api_key is not registered"; the value has a dash, so it should be re-copied)
+- + `apprentice/history.py` (Twelve Data US 20y, Kraken crypto 2y, Alpha Vantage TSX), `apprentice/lab.py` (walk-forward, after costs, vs buy-and-hold and index), `apprentice/signals.py` (rules pick the buys; the AI does a news veto)
+- Lab results:
+  - US momentum passes: +36.6%/yr out of sample vs SPY +12.0%, but a −42% worst drop and heavy survivorship bias
+  - Crypto trend passes vs the basket: +20.7% vs +14.4%, with a smaller drop, but trails holding bitcoin alone (+26.6%); only 2 test folds, so weak
+- Hourly experiment Routine disabled
+- ⚠️ Whole shares and a 10% cap on about $989 exclude most US large caps the momentum rule picks

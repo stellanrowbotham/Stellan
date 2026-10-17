@@ -625,6 +625,19 @@
    "env_key": null,
    "limitations": "Same publisher as #24; tracked separately because it is the FX endpoint used for every USD conversion.",
    "terms_checked": false
+  },
+  {
+   "n": 49,
+   "id": "strategy_lab",
+   "name": "Strategy lab (internal)",
+   "category": "internal_model",
+   "url": "",
+   "integration": "internal",
+   "tier": "B",
+   "provider": null,
+   "env_key": null,
+   "limitations": "Signals computed by code from licensed price history (Twelve Data, Kraken, Alpha Vantage). Backtested rules: survivorship bias and short crypto history apply.",
+   "terms_checked": true
   }
  ]
 }

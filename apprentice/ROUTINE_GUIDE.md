@@ -34,7 +34,7 @@ export APPRENTICE_ROUTINE=1
 cd <repo>                                  # stellanrowbotham/Stellan
 git fetch origin claude/practical-galileo-8nwjmp
 git checkout -B claude/practical-galileo-8nwjmp origin/claude/practical-galileo-8nwjmp   # not reset --hard (blocked)
-python3 -m apprentice run-start <job>      # job = pre_market | post_close | opportunity_scan | day_experiment
+python3 -m apprentice run-start <job>      # job = pre_market | post_close | opportunity_scan
 python3 -m apprentice health               # read it; carry on even if it reports problems
 python3 -m apprentice status
 ```
@@ -103,19 +103,26 @@ it. If so, read the reasons and don't retry the same idea in the same run. To cl
 thesis broke: `python3 -m apprentice exit <trade_id> thesis_invalidated`.
 `day_experiment` trades are a **labelled experiment**: hourly checks on free, possibly delayed data.
 
-## 5b. Opportunity scan: hunting for a new buy (every 4 hours)
-Stellan's instruction (2026-10-10): every 4 hours, look for a new stock (or crypto) to buy. If you
-believe it will make a profit, pretend-buy it within the budget. **You are the one being trained.**
-1. Pick 3-5 approved symbols from `apprentice/config/universe.json` that are **not** on the watchlist
-   yet. Prefer TSX names and assets priced under about $100, since whole shares only fit the $100
-   position cap. Add them with `python3 -m apprentice watch add SYMBOL "why"`. Then collect.
-2. Research each one and the existing watchlist. Score them honestly using the report fields.
-3. Propose **at most 2** buys: every candidate that passes all report gates (score 45+, reward:risk of 1.5 or
-   more, 2 or more independent sources) **must** be proposed, best first. The risk engine sizes them. Outside market hours a
-   stock order waits and fills at the next run during market hours, at the real price then. Crypto
-   fills any time.
-4. If nothing passes, record "No trade" with the reasons. Skipping is better than a weak buy.
-5. Remove watchlist names that have been rejected 3 or more times: `watch remove SYMBOL "reason"`.
+## 5b. Rules first, AI as news check (since 2026-10-17)
+Stellan approved this design on 2026-10-17. **Tested rules pick the trades; you check the news.**
+1. Daily (pre_market job only): `python3 -m apprentice history`, then `python3 -m apprentice lab`. The lab
+   re-tests every rule walk-forward after costs and marks which ones *pass* (they beat buy-and-hold, or
+   lose less for similar return, in test periods they weren't tuned on). Never change lab code or
+   thresholds.
+2. Every scan: `python3 -m apprentice signals`. It lists `buys` (assets a passing rule wants held, with
+   entry, a 2×ATR stop and a 3.1×ATR target, written to the ledger as signal records) and `exits` (rule
+   holdings the rule no longer wants).
+3. **For each buy, do the news check:** search recent news for that asset. Add the real headlines to the
+   ledger. **Veto** the buy only for a concrete, sourced reason: a fraud or hack, delisting, a pending
+   earnings report within 2 trading days, a halted market, or a sudden crash on bad news. Otherwise
+   propose it with `"rule"` set to the signal's rule, `evidence_ids` = [signal id, headline ids], and the
+   signal's stop and target. "I just don't like it" is not a veto. Put each veto and its source in the report.
+4. **For each exit:** `python3 -m apprentice exit TRADE_ID rule_exit`.
+5. Up to 2 new buys per run, best evidence grade first. The risk engine still sizes and checks
+   everything. `evidence_grade: weak` means few test periods, so say so in the report.
+6. If `signals` has no buys, that is the answer for this run: no trade, and say why (for example, no
+   rule wants to hold anything in a downtrend).
+7. You may still research other ideas, but the rules come first.
 
 ## 6. Post-trade reviews
 `python3 -m apprentice reviews-due`. For each closed trade, answer all eight questions honestly:

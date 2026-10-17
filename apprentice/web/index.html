@@ -340,6 +340,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         kpi("Hit rate", fs.scored ? pct(fs.hit_rate, false) : "–", "direction right"),
         kpi("Brier score", fs.brier != null ? fs.brier.toFixed(3) : "–", "0 = perfect · 0.25 = coin flip"),
         kpi("Last 30 Brier", fs.brier_last30 != null ? fs.brier_last30.toFixed(3) : "–")),
+      labCard(l.lab),
       card("Is it well calibrated?", fs.calibration ? h("div", {},
         h("p", {class: "meta"}, "When it says 70% sure, it should be right about 70% of the time."),
         table([{t: "It said", v: r => r[0].replace("-", "–")}, {t: "Times", r: 1, v: r => r[1].n}, {t: "Actually right", r: 1, v: r => pct(r[1].hit_rate, false)}], Object.entries(fs.calibration))) :
@@ -359,6 +360,17 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         card("Lessons learned", (l.lessons || []).length ? h("ul", {class: "plain"}, l.lessons.map(m => h("li", {}, m.lesson, h("span", {class: "meta"}, " · " + m.symbol)))) : empty("No lessons yet."))),
       card("Experiments waiting for your approval", (l.experiments || []).length ? h("ul", {class: "plain"}, l.experiments.map(x => h("li", {}, pill(x.status || "proposed", "warn"), " ", h("b", {}, x.title), h("div", {}, x.hypothesis), h("div", {class: "meta"}, "Change: " + x.change + " · Test: " + x.test_plan)))) :
         empty("None. Strategy changes are tested out-of-sample before you're asked.")));
+  }
+
+  function labCard(lb) {
+    if (!lb || !(lb.groups || []).length) return card("Strategy lab", empty("The lab hasn't run yet. It tests trading rules on years of real prices before they're allowed to trade."));
+    return card("Strategy lab: which rules actually work",
+      h("p", {class: "meta"}, "Each rule is tested on years it wasn't tuned on, after fees, and compared with just buying and holding. Only rules marked ✅ are allowed to pick trades. Last run " + when(lb.runAt) + "."),
+      ...lb.groups.map(g => h("div", {}, h("h3", {}, g.name.replaceAll("_", " ") + " · " + g.from + " to " + g.to + " · " + g.assets + " assets"),
+        table([{t: "Rule", v: r => r.rule.replace("_", " ")}, {t: "Yearly", r: 1, v: r => pct(r.cagr), c: r => cls(r.cagr)}, {t: "Worst drop", r: 1, v: r => pct(r.maxDD)},
+          {t: "Hold-only yearly", r: 1, v: r => pct(r.bhCagr)}, {t: "Hold-only worst drop", r: 1, v: r => pct(r.bhMaxDD)}, {t: "Tests", r: 1, v: r => r.folds},
+          {t: "Allowed", v: r => r.passes ? pill("yes", "ok") : pill("no", "bad")}], g.rules))),
+      h("details", {}, h("summary", {}, "Limits of these tests"), h("ul", {}, (lb.limits || []).map(x => h("li", {}, x)))));
   }
 
   function renderProgression() {

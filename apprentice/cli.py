@@ -19,6 +19,9 @@
     python3 -m apprentice verify                  verify every ledger hash chain + accounting
     python3 -m apprentice sources                 source registry with live status
     python3 -m apprentice order-slips [--mark-sent]  Investopedia order slips for new fills (email them, then --mark-sent)
+    python3 -m apprentice history [--scope us,crypto,tsx]  refresh cached daily price history
+    python3 -m apprentice lab                     walk-forward test every rule on history (after costs)
+    python3 -m apprentice signals                 today's rule-based buys/exits from the lab's passing rules
     python3 -m apprentice keys                    check API key format (never prints the keys)
     python3 -m apprentice approve-config          HUMAN ONLY: re-approve config after Stellan agrees to a change
     python3 -m apprentice run-start JOB           record that a scheduled job started
@@ -29,7 +32,7 @@ import os
 import sys
 from pathlib import Path
 
-from . import collect, dashboard, forecasts, health, promotion, report, research, reviews, slips
+from . import collect, dashboard, forecasts, health, history, lab, promotion, report, research, reviews, signals, slips
 from .broker import PaperBroker
 from .ledger import Ledger, iso, new_id, utcnow, verify_all
 from .levels import NAMES
@@ -64,6 +67,10 @@ def main(argv=None):
     r = sub.add_parser("report")
     r.add_argument("file")
     r.add_argument("run")
+    hi = sub.add_parser("history")
+    hi.add_argument("--scope", default="us,crypto,tsx")
+    sub.add_parser("lab")
+    sub.add_parser("signals")
     os_ = sub.add_parser("order-slips")
     os_.add_argument("--mark-sent", action="store_true")
     rs = sub.add_parser("run-start")
@@ -164,6 +171,13 @@ def main(argv=None):
         h = config_hash()
         APPROVED_FILE.write_text(f"{h}  settings.json+universe.json approved {iso(now)}\n")
         print(f"approved {h}")
+    elif a.cmd == "history":
+        _print(history.refresh(s, scope=tuple(a.scope.split(","))))
+    elif a.cmd == "lab":
+        out = lab.run()
+        print((lab.OUT / "results.md").read_text())
+    elif a.cmd == "signals":
+        _print(signals.compute(s, b, now))
     elif a.cmd == "order-slips":
         pend = slips.pending(s, b)
         if a.mark_sent:

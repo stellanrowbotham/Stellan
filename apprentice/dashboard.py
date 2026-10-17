@@ -116,6 +116,7 @@ def export(settings, broker, now, health_issues=()):
             "mistakes": [m | {"tradeId": r["trade_id"], "at": r["recorded_at"]} for r in L("reviews") for m in r.get("mistakes", [])][-LIMIT:][::-1],
             "lessons": [{"lesson": x, "tradeId": r["trade_id"], "symbol": r["symbol"]} for r in L("reviews") for x in r.get("lessons", [])][-LIMIT:][::-1],
             "experiments": L("experiments")[-50:][::-1],
+            "lab": _lab_summary(),
         },
         "progression": {
             "updatedAt": iso(now), "level": level, "levelName": NAMES[level], "levels": NAMES,
@@ -137,6 +138,24 @@ def export(settings, broker, now, health_issues=()):
         (OUT / f"{name}.json").write_text(json.dumps(doc, default=str))
     _csv(closed, vals)
     return {name: str(OUT / f"{name}.json") for name in docs}
+
+
+def _lab_summary():
+    from . import lab
+    res = lab.latest()
+    if not res:
+        return None
+    out = {"runAt": res["run_at"], "limits": res["limits"], "groups": []}
+    for name, g in res["groups"].items():
+        if "error" in g:
+            continue
+        out["groups"].append({"name": name, "from": g["from"], "to": g["to"], "assets": len(g["symbols"]),
+                              "rules": [{"rule": r, "folds": v["folds"], "passes": v["passes"], "params": v["live_params"],
+                                         "cagr": _r(v["oos"].get("cagr")), "maxDD": _r(v["oos"].get("max_drawdown")),
+                                         "sharpe": _r(v["oos"].get("sharpe"), 2), "bhCagr": _r(v["buy_hold_oos"].get("cagr")),
+                                         "bhMaxDD": _r(v["buy_hold_oos"].get("max_drawdown")),
+                                         "index": v.get("index"), "indexCagr": _r((v.get("index_oos") or {}).get("cagr"))} for r, v in g["rules"].items()]})
+    return out
 
 
 def _csv(closed, vals):

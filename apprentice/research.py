@@ -72,7 +72,7 @@ def independence(settings, evidence):
     """Distinct origins among evidence (syndicated copies collapse) and the best tier seen."""
     origins, tiers = set(), []
     for e in evidence:
-        if e.get("kind") in ("headline", "filing", "macro", "note", "event", "crypto_market", "chain_tvl") or e.get("url"):
+        if e.get("kind") in ("headline", "filing", "macro", "note", "event", "crypto_market", "chain_tvl", "signal") or e.get("url"):
             origins.add(e.get("origin_id") or e.get("id"))
             tiers.append(source_tier(settings, e))
         elif e.get("provider"):  # a quote

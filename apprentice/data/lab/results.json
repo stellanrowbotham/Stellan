@@ -1,0 +1,1599 @@
+{
+ "run_at": "2026-10-17T00:28:01.653464Z",
+ "limits": [
+  "Asset list is today's survivors (companies that did badly and vanished are missing), which flatters results.",
+  "End-of-day prices only; real fills can be worse.",
+  "Crypto history is about 2 years, too short to trust much.",
+  "Past results do not guarantee future results."
+ ],
+ "costs_per_turnover": {
+  "us": 0.0015,
+  "crypto": 0.005
+ },
+ "groups": {
+  "us_stocks_etfs": {
+   "kind": "us",
+   "symbols": [
+    "SPY",
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "AMD",
+    "GOOGL",
+    "META",
+    "NFLX",
+    "AMZN",
+    "JPM",
+    "V",
+    "BRK.B",
+    "JNJ",
+    "XOM",
+    "KO",
+    "PG",
+    "WMT",
+    "COST",
+    "QQQ",
+    "VTI",
+    "IWM",
+    "DIA",
+    "XLE",
+    "XLF",
+    "GLD"
+   ],
+   "from": "2006-11-30",
+   "to": "2026-10-16",
+   "benchmark": "equal-weight buy-and-hold of the same assets",
+   "rules": {
+    "trend": {
+     "rule": "trend",
+     "folds": 16,
+     "oos": {
+      "total_return": 3.6966932435737236,
+      "cagr": 0.10281724443259188,
+      "max_drawdown": -0.19355862117950973,
+      "sharpe": 1.0236058868144904,
+      "days": 3983
+     },
+     "buy_hold_oos": {
+      "total_return": 13.552513661520093,
+      "cagr": 0.18461656327214282,
+      "max_drawdown": -0.30095625700787865,
+      "sharpe": 1.0865123770357101,
+      "days": 3983
+     },
+     "index": "SPY",
+     "index_oos": {
+      "total_return": 4.976707886198153,
+      "cagr": 0.11976243226585614,
+      "max_drawdown": -0.34104746704498445,
+      "sharpe": 0.75025732971136,
+      "days": 3983
+     },
+     "passes": false,
+     "live_params": {
+      "n": 200
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        1016,
+        1268
+       ],
+       "params": {
+        "n": 150
+       },
+       "strategy": {
+        "total_return": -0.023846174527834663,
+        "cagr": -0.023846174527834663,
+        "max_drawdown": -0.10177315470326431,
+        "sharpe": -0.21380618071147484,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.012234491295942118,
+        "cagr": -0.012234491295942118,
+        "max_drawdown": -0.16456474078741745,
+        "sharpe": 0.04725336473768278,
+        "days": 252
+       },
+       "trades": 303
+      },
+      {
+       "test_days": [
+        1268,
+        1520
+       ],
+       "params": {
+        "n": 150
+       },
+       "strategy": {
+        "total_return": 0.026657396900106933,
+        "cagr": 0.026657396900106933,
+        "max_drawdown": -0.09168792394361913,
+        "sharpe": 0.3708928559939104,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.12993455378755514,
+        "cagr": 0.12993455378755514,
+        "max_drawdown": -0.12629766960079747,
+        "sharpe": 0.9873093369586952,
+        "days": 252
+       },
+       "trades": 285
+      },
+      {
+       "test_days": [
+        1520,
+        1772
+       ],
+       "params": {
+        "n": 50
+       },
+       "strategy": {
+        "total_return": 0.1874309866321604,
+        "cagr": 0.1874309866321604,
+        "max_drawdown": -0.04002956865055041,
+        "sharpe": 1.938936182980533,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.3574116196828232,
+        "cagr": 0.3574116196828232,
+        "max_drawdown": -0.0466916397150785,
+        "sharpe": 2.637672321479501,
+        "days": 252
+       },
+       "trades": 446
+      },
+      {
+       "test_days": [
+        1772,
+        2024
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.03441970656586757,
+        "cagr": 0.03441970656586757,
+        "max_drawdown": -0.05341886274694563,
+        "sharpe": 0.4180245688112719,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.07236982440851158,
+        "cagr": 0.07236982440851158,
+        "max_drawdown": -0.0863609771743874,
+        "sharpe": 0.6697336330624802,
+        "days": 252
+       },
+       "trades": 244
+      },
+      {
+       "test_days": [
+        2024,
+        2276
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.09717768207192301,
+        "cagr": 0.09717768207192301,
+        "max_drawdown": -0.05206778781791366,
+        "sharpe": 1.0945291596964666,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.17408098182401255,
+        "cagr": 0.17408098182401255,
+        "max_drawdown": -0.11124391232998077,
+        "sharpe": 1.1023061497061775,
+        "days": 252
+       },
+       "trades": 198
+      },
+      {
+       "test_days": [
+        2276,
+        2528
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.13912309227043096,
+        "cagr": 0.13912309227043096,
+        "max_drawdown": -0.07459296891357259,
+        "sharpe": 1.4185789475801236,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.24285759246236815,
+        "cagr": 0.24285759246236815,
+        "max_drawdown": -0.11995383209262622,
+        "sharpe": 1.608026784493733,
+        "days": 252
+       },
+       "trades": 219
+      },
+      {
+       "test_days": [
+        2528,
+        2780
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.24009588898985412,
+        "cagr": 0.24009588898985412,
+        "max_drawdown": -0.02886373035501466,
+        "sharpe": 2.683175326298777,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.26484207212904454,
+        "cagr": 0.26484207212904454,
+        "max_drawdown": -0.02738602588235084,
+        "sharpe": 2.822065838919591,
+        "days": 252
+       },
+       "trades": 109
+      },
+      {
+       "test_days": [
+        2780,
+        3032
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.016428459655438488,
+        "cagr": 0.016428459655438488,
+        "max_drawdown": -0.11169308764714747,
+        "sharpe": 0.1916370952429478,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.031002375065820598,
+        "cagr": 0.031002375065820598,
+        "max_drawdown": -0.15101521672841978,
+        "sharpe": 0.2616904587876373,
+        "days": 252
+       },
+       "trades": 231
+      },
+      {
+       "test_days": [
+        3032,
+        3284
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.11622591724862086,
+        "cagr": 0.11622591724862086,
+        "max_drawdown": -0.05384222700690455,
+        "sharpe": 1.2692788038006682,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.31652798402155047,
+        "cagr": 0.31652798402155047,
+        "max_drawdown": -0.08505886654128403,
+        "sharpe": 1.8408605464601389,
+        "days": 252
+       },
+       "trades": 223
+      },
+      {
+       "test_days": [
+        3284,
+        3536
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.15249141387225196,
+        "cagr": 0.15249141387225196,
+        "max_drawdown": -0.19355862117950962,
+        "sharpe": 0.9548249601915998,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.27121068351399513,
+        "cagr": 0.27121068351399513,
+        "max_drawdown": -0.30095625700787876,
+        "sharpe": 0.9005880491442332,
+        "days": 252
+       },
+       "trades": 221
+      },
+      {
+       "test_days": [
+        3536,
+        3788
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.15208355412583652,
+        "cagr": 0.15208355412583652,
+        "max_drawdown": -0.04809805025082603,
+        "sharpe": 1.2492036401264182,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.2690018569177013,
+        "cagr": 0.2690018569177013,
+        "max_drawdown": -0.04556543726189288,
+        "sharpe": 1.8867579560787613,
+        "days": 252
+       },
+       "trades": 237
+      },
+      {
+       "test_days": [
+        3788,
+        4040
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": -0.09508238893351295,
+        "cagr": -0.09508238893351295,
+        "max_drawdown": -0.1179366583436876,
+        "sharpe": -1.3477321623380636,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.1592147002003924,
+        "cagr": -0.1592147002003924,
+        "max_drawdown": -0.25038433825891504,
+        "sharpe": -0.5593376460706938,
+        "days": 252
+       },
+       "trades": 278
+      },
+      {
+       "test_days": [
+        4040,
+        4292
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.19950262020547527,
+        "cagr": 0.19950262020547527,
+        "max_drawdown": -0.07370885109974512,
+        "sharpe": 1.7771378570011238,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.37278358117125543,
+        "cagr": 0.37278358117125543,
+        "max_drawdown": -0.07773349500746574,
+        "sharpe": 2.387227877312658,
+        "days": 252
+       },
+       "trades": 223
+      },
+      {
+       "test_days": [
+        4292,
+        4544
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.2816170533877924,
+        "cagr": 0.2816170533877924,
+        "max_drawdown": -0.07271309646691848,
+        "sharpe": 2.3592894953237677,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.33249170878712087,
+        "cagr": 0.33249170878712087,
+        "max_drawdown": -0.07440410624112026,
+        "sharpe": 2.5269340568196053,
+        "days": 252
+       },
+       "trades": 138
+      },
+      {
+       "test_days": [
+        4544,
+        4796
+       ],
+       "params": {
+        "n": 200
+       },
+       "strategy": {
+        "total_return": 0.08349578346295705,
+        "cagr": 0.08349578346295705,
+        "max_drawdown": -0.10335949347823115,
+        "sharpe": 0.9308727729026108,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.21957884559976493,
+        "cagr": 0.21957884559976493,
+        "max_drawdown": -0.16900199164335739,
+        "sharpe": 1.2565170906503778,
+        "days": 252
+       },
+       "trades": 250
+      },
+      {
+       "test_days": [
+        4796,
+        4999
+       ],
+       "params": {
+        "n": 150
+       },
+       "strategy": {
+        "total_return": 0.08416155729845021,
+        "cagr": 0.1055158416325106,
+        "max_drawdown": -0.04409336932563046,
+        "sharpe": 1.4533391205788881,
+        "days": 203
+       },
+       "buy_hold": {
+        "total_return": 0.181647278221994,
+        "cagr": 0.23022607665509698,
+        "max_drawdown": -0.06108278805763867,
+        "sharpe": 2.055703256619245,
+        "days": 203
+       },
+       "trades": 196
+      }
+     ]
+    },
+    "sma_cross": {
+     "rule": "sma_cross",
+     "folds": 16,
+     "oos": {
+      "total_return": 4.576327399604602,
+      "cagr": 0.11486075628300152,
+      "max_drawdown": -0.2543142688330877,
+      "sharpe": 0.9775657873937998,
+      "days": 3983
+     },
+     "buy_hold_oos": {
+      "total_return": 13.552513661520093,
+      "cagr": 0.18461656327214282,
+      "max_drawdown": -0.30095625700787865,
+      "sharpe": 1.0865123770357101,
+      "days": 3983
+     },
+     "index": "SPY",
+     "index_oos": {
+      "total_return": 4.976707886198153,
+      "cagr": 0.11976243226585614,
+      "max_drawdown": -0.34104746704498445,
+      "sharpe": 0.75025732971136,
+      "days": 3983
+     },
+     "passes": false,
+     "live_params": {
+      "fast": 20,
+      "slow": 100
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        1016,
+        1268
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": -0.011659105638956557,
+        "cagr": -0.011659105638956557,
+        "max_drawdown": -0.11946639425102468,
+        "sharpe": -0.06804112891812335,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.012234491295942118,
+        "cagr": -0.012234491295942118,
+        "max_drawdown": -0.16456474078741745,
+        "sharpe": 0.04725336473768278,
+        "days": 252
+       },
+       "trades": 106
+      },
+      {
+       "test_days": [
+        1268,
+        1520
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": 0.059580804488580164,
+        "cagr": 0.059580804488580164,
+        "max_drawdown": -0.08424039042765386,
+        "sharpe": 0.7468543823644008,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.12993455378755514,
+        "cagr": 0.12993455378755514,
+        "max_drawdown": -0.12629766960079747,
+        "sharpe": 0.9873093369586952,
+        "days": 252
+       },
+       "trades": 91
+      },
+      {
+       "test_days": [
+        1520,
+        1772
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": 0.24464520898724995,
+        "cagr": 0.24464520898724995,
+        "max_drawdown": -0.03919070549334125,
+        "sharpe": 2.269425560691144,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.3574116196828232,
+        "cagr": 0.3574116196828232,
+        "max_drawdown": -0.0466916397150785,
+        "sharpe": 2.637672321479501,
+        "days": 252
+       },
+       "trades": 77
+      },
+      {
+       "test_days": [
+        1772,
+        2024
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": 0.013631516862971704,
+        "cagr": 0.013631516862971704,
+        "max_drawdown": -0.05695910262899018,
+        "sharpe": 0.19980668901825788,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.07236982440851158,
+        "cagr": 0.07236982440851158,
+        "max_drawdown": -0.0863609771743874,
+        "sharpe": 0.6697336330624802,
+        "days": 252
+       },
+       "trades": 116
+      },
+      {
+       "test_days": [
+        2024,
+        2276
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.1248906191663699,
+        "cagr": 0.1248906191663699,
+        "max_drawdown": -0.06497088504881365,
+        "sharpe": 1.274979951771253,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.17408098182401255,
+        "cagr": 0.17408098182401255,
+        "max_drawdown": -0.11124391232998077,
+        "sharpe": 1.1023061497061775,
+        "days": 252
+       },
+       "trades": 50
+      },
+      {
+       "test_days": [
+        2276,
+        2528
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.15848808391709257,
+        "cagr": 0.15848808391709257,
+        "max_drawdown": -0.08905360490531222,
+        "sharpe": 1.4691171608936078,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.24285759246236815,
+        "cagr": 0.24285759246236815,
+        "max_drawdown": -0.11995383209262622,
+        "sharpe": 1.608026784493733,
+        "days": 252
+       },
+       "trades": 53
+      },
+      {
+       "test_days": [
+        2528,
+        2780
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.24007850177752998,
+        "cagr": 0.24007850177752998,
+        "max_drawdown": -0.030793939637218215,
+        "sharpe": 2.6659183804462394,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.26484207212904454,
+        "cagr": 0.26484207212904454,
+        "max_drawdown": -0.02738602588235084,
+        "sharpe": 2.822065838919591,
+        "days": 252
+       },
+       "trades": 37
+      },
+      {
+       "test_days": [
+        2780,
+        3032
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.032151052227679555,
+        "cagr": 0.032151052227679555,
+        "max_drawdown": -0.1107496264026695,
+        "sharpe": 0.2858578121438362,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.031002375065820598,
+        "cagr": 0.031002375065820598,
+        "max_drawdown": -0.15101521672841978,
+        "sharpe": 0.2616904587876373,
+        "days": 252
+       },
+       "trades": 57
+      },
+      {
+       "test_days": [
+        3032,
+        3284
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.16346843976764847,
+        "cagr": 0.16346843976764847,
+        "max_drawdown": -0.05906524069701602,
+        "sharpe": 1.5906022352126274,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.31652798402155047,
+        "cagr": 0.31652798402155047,
+        "max_drawdown": -0.08505886654128403,
+        "sharpe": 1.8408605464601389,
+        "days": 252
+       },
+       "trades": 50
+      },
+      {
+       "test_days": [
+        3284,
+        3536
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.15068487727649416,
+        "cagr": 0.15068487727649416,
+        "max_drawdown": -0.2543142688330874,
+        "sharpe": 0.6665267879675725,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.27121068351399513,
+        "cagr": 0.27121068351399513,
+        "max_drawdown": -0.30095625700787876,
+        "sharpe": 0.9005880491442332,
+        "days": 252
+       },
+       "trades": 51
+      },
+      {
+       "test_days": [
+        3536,
+        3788
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": 0.17168387650585082,
+        "cagr": 0.17168387650585082,
+        "max_drawdown": -0.04565785489416807,
+        "sharpe": 1.5108610350364005,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.2690018569177013,
+        "cagr": 0.2690018569177013,
+        "max_drawdown": -0.04556543726189288,
+        "sharpe": 1.8867579560787613,
+        "days": 252
+       },
+       "trades": 93
+      },
+      {
+       "test_days": [
+        3788,
+        4040
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": -0.1053534321263,
+        "cagr": -0.1053534321263,
+        "max_drawdown": -0.1421774108444448,
+        "sharpe": -1.2547739636298132,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.1592147002003924,
+        "cagr": -0.1592147002003924,
+        "max_drawdown": -0.25038433825891504,
+        "sharpe": -0.5593376460706938,
+        "days": 252
+       },
+       "trades": 115
+      },
+      {
+       "test_days": [
+        4040,
+        4292
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.20541458792236256,
+        "cagr": 0.20541458792236256,
+        "max_drawdown": -0.07619921571105825,
+        "sharpe": 1.8808717204682526,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.37278358117125543,
+        "cagr": 0.37278358117125543,
+        "max_drawdown": -0.07773349500746574,
+        "sharpe": 2.387227877312658,
+        "days": 252
+       },
+       "trades": 50
+      },
+      {
+       "test_days": [
+        4292,
+        4544
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.2847665240032713,
+        "cagr": 0.2847665240032713,
+        "max_drawdown": -0.07696188864144138,
+        "sharpe": 2.3145077514021346,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.33249170878712087,
+        "cagr": 0.33249170878712087,
+        "max_drawdown": -0.07440410624112026,
+        "sharpe": 2.5269340568196053,
+        "days": 252
+       },
+       "trades": 40
+      },
+      {
+       "test_days": [
+        4544,
+        4796
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": 0.0762224058247214,
+        "cagr": 0.0762224058247214,
+        "max_drawdown": -0.13691544148304602,
+        "sharpe": 0.6741302120086164,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.21957884559976493,
+        "cagr": 0.21957884559976493,
+        "max_drawdown": -0.16900199164335739,
+        "sharpe": 1.2565170906503778,
+        "days": 252
+       },
+       "trades": 69
+      },
+      {
+       "test_days": [
+        4796,
+        4999
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": 0.08181197476169855,
+        "cagr": 0.10254244733018769,
+        "max_drawdown": -0.035376199630600014,
+        "sharpe": 1.4187348387635668,
+        "days": 203
+       },
+       "buy_hold": {
+        "total_return": 0.181647278221994,
+        "cagr": 0.23022607665509698,
+        "max_drawdown": -0.06108278805763867,
+        "sharpe": 2.055703256619245,
+        "days": 203
+       },
+       "trades": 96
+      }
+     ]
+    },
+    "momentum": {
+     "rule": "momentum",
+     "folds": 16,
+     "oos": {
+      "total_return": 136.71012651600083,
+      "cagr": 0.36562042207154444,
+      "max_drawdown": -0.4242338768004845,
+      "sharpe": 1.1337178432653634,
+      "days": 3983
+     },
+     "buy_hold_oos": {
+      "total_return": 13.552513661520093,
+      "cagr": 0.18461656327214282,
+      "max_drawdown": -0.30095625700787865,
+      "sharpe": 1.0865123770357101,
+      "days": 3983
+     },
+     "index": "SPY",
+     "index_oos": {
+      "total_return": 4.976707886198153,
+      "cagr": 0.11976243226585614,
+      "max_drawdown": -0.34104746704498445,
+      "sharpe": 0.75025732971136,
+      "days": 3983
+     },
+     "passes": true,
+     "live_params": {
+      "lookback": 252,
+      "top": 5
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        1016,
+        1268
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": -0.029153071332921554,
+        "cagr": -0.029153071332921554,
+        "max_drawdown": -0.41063902860537194,
+        "sharpe": 0.08710709782875718,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.012234491295942118,
+        "cagr": -0.012234491295942118,
+        "max_drawdown": -0.16456474078741745,
+        "sharpe": 0.04725336473768278,
+        "days": 252
+       },
+       "trades": 32
+      },
+      {
+       "test_days": [
+        1268,
+        1520
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 5
+       },
+       "strategy": {
+        "total_return": 0.04207457338064202,
+        "cagr": 0.04207457338064202,
+        "max_drawdown": -0.201339228865959,
+        "sharpe": 0.3371757818263709,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.12993455378755514,
+        "cagr": 0.12993455378755514,
+        "max_drawdown": -0.12629766960079747,
+        "sharpe": 0.9873093369586952,
+        "days": 252
+       },
+       "trades": 57
+      },
+      {
+       "test_days": [
+        1520,
+        1772
+       ],
+       "params": {
+        "lookback": 252,
+        "top": 3
+       },
+       "strategy": {
+        "total_return": 0.9803337530094793,
+        "cagr": 0.9803337530094793,
+        "max_drawdown": -0.07979370122572949,
+        "sharpe": 2.581665638093494,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.3574116196828232,
+        "cagr": 0.3574116196828232,
+        "max_drawdown": -0.0466916397150785,
+        "sharpe": 2.637672321479501,
+        "days": 252
+       },
+       "trades": 19
+      },
+      {
+       "test_days": [
+        1772,
+        2024
+       ],
+       "params": {
+        "lookback": 252,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.060872920802724106,
+        "cagr": 0.060872920802724106,
+        "max_drawdown": -0.26019767165248053,
+        "sharpe": 0.3451802158579571,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.07236982440851158,
+        "cagr": 0.07236982440851158,
+        "max_drawdown": -0.0863609771743874,
+        "sharpe": 0.6697336330624802,
+        "days": 252
+       },
+       "trades": 8
+      },
+      {
+       "test_days": [
+        2024,
+        2276
+       ],
+       "params": {
+        "lookback": 252,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.3872383485337958,
+        "cagr": 0.3872383485337958,
+        "max_drawdown": -0.19429889602059103,
+        "sharpe": 1.2655437663447289,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.17408098182401255,
+        "cagr": 0.17408098182401255,
+        "max_drawdown": -0.11124391232998077,
+        "sharpe": 1.1023061497061775,
+        "days": 252
+       },
+       "trades": 14
+      },
+      {
+       "test_days": [
+        2276,
+        2528
+       ],
+       "params": {
+        "lookback": 252,
+        "top": 5
+       },
+       "strategy": {
+        "total_return": 0.455294008829898,
+        "cagr": 0.455294008829898,
+        "max_drawdown": -0.20698230367205017,
+        "sharpe": 1.671489453378062,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.24285759246236815,
+        "cagr": 0.24285759246236815,
+        "max_drawdown": -0.11995383209262622,
+        "sharpe": 1.608026784493733,
+        "days": 252
+       },
+       "trades": 27
+      },
+      {
+       "test_days": [
+        2528,
+        2780
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.5681413207734181,
+        "cagr": 0.5681413207734181,
+        "max_drawdown": -0.18878873709980226,
+        "sharpe": 1.3002436836171112,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.26484207212904454,
+        "cagr": 0.26484207212904454,
+        "max_drawdown": -0.02738602588235084,
+        "sharpe": 2.822065838919591,
+        "days": 252
+       },
+       "trades": 6
+      },
+      {
+       "test_days": [
+        2780,
+        3032
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.32960233527554195,
+        "cagr": 0.32960233527554195,
+        "max_drawdown": -0.2972361821873136,
+        "sharpe": 0.9361532563542707,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.031002375065820598,
+        "cagr": 0.031002375065820598,
+        "max_drawdown": -0.15101521672841978,
+        "sharpe": 0.2616904587876373,
+        "days": 252
+       },
+       "trades": 20
+      },
+      {
+       "test_days": [
+        3032,
+        3284
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.40968681754164193,
+        "cagr": 0.40968681754164193,
+        "max_drawdown": -0.14724782064558972,
+        "sharpe": 1.278492856327563,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.31652798402155047,
+        "cagr": 0.31652798402155047,
+        "max_drawdown": -0.08505886654128403,
+        "sharpe": 1.8408605464601389,
+        "days": 252
+       },
+       "trades": 18
+      },
+      {
+       "test_days": [
+        3284,
+        3536
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 5
+       },
+       "strategy": {
+        "total_return": 0.7362573967153518,
+        "cagr": 0.7362573967153518,
+        "max_drawdown": -0.3298665129471693,
+        "sharpe": 1.4457762977086355,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.27121068351399513,
+        "cagr": 0.27121068351399513,
+        "max_drawdown": -0.30095625700787876,
+        "sharpe": 0.9005880491442332,
+        "days": 252
+       },
+       "trades": 23
+      },
+      {
+       "test_days": [
+        3536,
+        3788
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.7539908762336642,
+        "cagr": 0.7539908762336642,
+        "max_drawdown": -0.17821969788563963,
+        "sharpe": 2.0104881994787593,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.2690018569177013,
+        "cagr": 0.2690018569177013,
+        "max_drawdown": -0.04556543726189288,
+        "sharpe": 1.8867579560787613,
+        "days": 252
+       },
+       "trades": 24
+      },
+      {
+       "test_days": [
+        3788,
+        4040
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": -0.1498160158669224,
+        "cagr": -0.1498160158669224,
+        "max_drawdown": -0.31988047959812405,
+        "sharpe": -0.224851661655991,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": -0.1592147002003924,
+        "cagr": -0.1592147002003924,
+        "max_drawdown": -0.25038433825891504,
+        "sharpe": -0.5593376460706938,
+        "days": 252
+       },
+       "trades": 16
+      },
+      {
+       "test_days": [
+        4040,
+        4292
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 3
+       },
+       "strategy": {
+        "total_return": 0.9010154426738788,
+        "cagr": 0.9010154426738788,
+        "max_drawdown": -0.1627588835835243,
+        "sharpe": 2.2441043832255843,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.37278358117125543,
+        "cagr": 0.37278358117125543,
+        "max_drawdown": -0.07773349500746574,
+        "sharpe": 2.387227877312658,
+        "days": 252
+       },
+       "trades": 29
+      },
+      {
+       "test_days": [
+        4292,
+        4544
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 3
+       },
+       "strategy": {
+        "total_return": 0.4021471876965794,
+        "cagr": 0.4021471876965794,
+        "max_drawdown": -0.1964008010217042,
+        "sharpe": 1.3865851665826787,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.33249170878712087,
+        "cagr": 0.33249170878712087,
+        "max_drawdown": -0.07440410624112026,
+        "sharpe": 2.5269340568196053,
+        "days": 252
+       },
+       "trades": 37
+      },
+      {
+       "test_days": [
+        4544,
+        4796
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.36785882677699844,
+        "cagr": 0.36785882677699844,
+        "max_drawdown": -0.19314400065568194,
+        "sharpe": 1.1225989452421858,
+        "days": 252
+       },
+       "buy_hold": {
+        "total_return": 0.21957884559976493,
+        "cagr": 0.21957884559976493,
+        "max_drawdown": -0.16900199164335739,
+        "sharpe": 1.2565170906503778,
+        "days": 252
+       },
+       "trades": 16
+      },
+      {
+       "test_days": [
+        4796,
+        4999
+       ],
+       "params": {
+        "lookback": 126,
+        "top": 5
+       },
+       "strategy": {
+        "total_return": 0.15666673023625943,
+        "cagr": 0.19802369080379711,
+        "max_drawdown": -0.11571396921014954,
+        "sharpe": 1.104982450053562,
+        "days": 203
+       },
+       "buy_hold": {
+        "total_return": 0.181647278221994,
+        "cagr": 0.23022607665509698,
+        "max_drawdown": -0.06108278805763867,
+        "sharpe": 2.055703256619245,
+        "days": 203
+       },
+       "trades": 39
+      }
+     ]
+    }
+   },
+   "passing": [
+    "momentum"
+   ]
+  },
+  "crypto": {
+   "kind": "crypto",
+   "symbols": [
+    "XBTCAD",
+    "ETHCAD",
+    "SOLCAD",
+    "XRPCAD",
+    "DOGECAD"
+   ],
+   "from": "2024-10-27",
+   "to": "2026-10-16",
+   "benchmark": "equal-weight buy-and-hold of the same assets",
+   "rules": {
+    "trend": {
+     "rule": "trend",
+     "folds": 2,
+     "oos": {
+      "total_return": 0.09843928120746104,
+      "cagr": 0.2071914609955141,
+      "max_drawdown": -0.15205617274267857,
+      "sharpe": 0.7185774590714696,
+      "days": 182
+     },
+     "buy_hold_oos": {
+      "total_return": 0.06953245648752793,
+      "cagr": 0.14432225220884298,
+      "max_drawdown": -0.2834569148535411,
+      "sharpe": 0.5188475767529146,
+      "days": 182
+     },
+     "index": "XBTCAD",
+     "index_oos": {
+      "total_return": 0.1250216029400537,
+      "cagr": 0.26649309855080405,
+      "max_drawdown": -0.259573908188629,
+      "sharpe": 0.8379834337610294,
+      "days": 182
+     },
+     "passes": true,
+     "live_params": {
+      "n": 200
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        533,
+        624
+       ],
+       "params": {
+        "n": 100
+       },
+       "strategy": {
+        "total_return": -0.09893761124649769,
+        "cagr": -0.34155083780788775,
+        "max_drawdown": -0.12984082882204517,
+        "sharpe": -2.6644420871538412,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": -0.18303232709229966,
+        "cagr": -0.5555174594215524,
+        "max_drawdown": -0.2834569148535411,
+        "sharpe": -1.7951093453986622,
+        "days": 91
+       },
+       "trades": 22
+      },
+      {
+       "test_days": [
+        624,
+        715
+       ],
+       "params": {
+        "n": 50
+       },
+       "strategy": {
+        "total_return": 0.21904908574311088,
+        "cagr": 1.213247896996016,
+        "max_drawdown": -0.11865057429929093,
+        "sharpe": 1.96364364331989,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": 0.3091490544306539,
+        "cagr": 1.9460626624302826,
+        "max_drawdown": -0.10961819463957301,
+        "sharpe": 2.36352758865599,
+        "days": 91
+       },
+       "trades": 22
+      }
+     ]
+    },
+    "sma_cross": {
+     "rule": "sma_cross",
+     "folds": 2,
+     "oos": {
+      "total_return": -0.18098832906067497,
+      "cagr": -0.32995533603200766,
+      "max_drawdown": -0.19746163916341586,
+      "sharpe": -1.9155684072576926,
+      "days": 182
+     },
+     "buy_hold_oos": {
+      "total_return": 0.06953245648752793,
+      "cagr": 0.14432225220884298,
+      "max_drawdown": -0.2834569148535411,
+      "sharpe": 0.5188475767529146,
+      "days": 182
+     },
+     "index": "XBTCAD",
+     "index_oos": {
+      "total_return": 0.1250216029400537,
+      "cagr": 0.26649309855080405,
+      "max_drawdown": -0.259573908188629,
+      "sharpe": 0.8379834337610294,
+      "days": 182
+     },
+     "passes": false,
+     "live_params": {
+      "fast": 20,
+      "slow": 100
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        533,
+        624
+       ],
+       "params": {
+        "fast": 20,
+        "slow": 100
+       },
+       "strategy": {
+        "total_return": -0.1576482324169568,
+        "cagr": -0.4974778453241726,
+        "max_drawdown": -0.1834099934158765,
+        "sharpe": -3.9960264772276552,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": -0.18303232709229966,
+        "cagr": -0.5555174594215524,
+        "max_drawdown": -0.2834569148535411,
+        "sharpe": -1.7951093453986622,
+        "days": 91
+       },
+       "trades": 10
+      },
+      {
+       "test_days": [
+        624,
+        715
+       ],
+       "params": {
+        "fast": 50,
+        "slow": 200
+       },
+       "strategy": {
+        "total_return": -0.027708253893368173,
+        "cagr": -0.10658694838718263,
+        "max_drawdown": -0.11040937832052922,
+        "sharpe": -0.39005253401168993,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": 0.3091490544306539,
+        "cagr": 1.9460626624302826,
+        "max_drawdown": -0.10961819463957301,
+        "sharpe": 2.36352758865599,
+        "days": 91
+       },
+       "trades": 5
+      }
+     ]
+    },
+    "momentum": {
+     "rule": "momentum",
+     "folds": 2,
+     "oos": {
+      "total_return": 0.04784679822723725,
+      "cagr": 0.09826490950871092,
+      "max_drawdown": -0.11535432438051219,
+      "sharpe": 0.5079007267649289,
+      "days": 182
+     },
+     "buy_hold_oos": {
+      "total_return": 0.06953245648752793,
+      "cagr": 0.14432225220884298,
+      "max_drawdown": -0.2834569148535411,
+      "sharpe": 0.5188475767529146,
+      "days": 182
+     },
+     "index": "XBTCAD",
+     "index_oos": {
+      "total_return": 0.1250216029400537,
+      "cagr": 0.26649309855080405,
+      "max_drawdown": -0.259573908188629,
+      "sharpe": 0.8379834337610294,
+      "days": 182
+     },
+     "passes": false,
+     "live_params": {
+      "lookback": 63,
+      "top": 2
+     },
+     "fold_detail": [
+      {
+       "test_days": [
+        533,
+        624
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.0,
+        "cagr": 0.0,
+        "max_drawdown": 0.0,
+        "sharpe": null,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": -0.18303232709229966,
+        "cagr": -0.5555174594215524,
+        "max_drawdown": -0.2834569148535411,
+        "sharpe": -1.7951093453986622,
+        "days": 91
+       },
+       "trades": 0
+      },
+      {
+       "test_days": [
+        624,
+        715
+       ],
+       "params": {
+        "lookback": 63,
+        "top": 2
+       },
+       "strategy": {
+        "total_return": 0.04784679822723725,
+        "cagr": 0.20618581145817716,
+        "max_drawdown": -0.11535432438051219,
+        "sharpe": 0.7165478024531056,
+        "days": 91
+       },
+       "buy_hold": {
+        "total_return": 0.3091490544306539,
+        "cagr": 1.9460626624302826,
+        "max_drawdown": -0.10961819463957301,
+        "sharpe": 2.36352758865599,
+        "days": 91
+       },
+       "trades": 2
+      }
+     ]
+    }
+   },
+   "passing": [
+    "trend"
+   ]
+  }
+ }
+}

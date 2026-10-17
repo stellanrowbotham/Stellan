@@ -15,7 +15,7 @@ QUESTIONS = {
     "change_strategy": "Is there enough evidence to change the strategy?",
 }
 VERDICTS = {"sound_process", "luck", "mistake"}
-PLANNED_EXITS = {"stop", "target", "time", "end_of_day"}
+PLANNED_EXITS = {"stop", "target", "time", "end_of_day", "rule_exit"}
 
 
 def rule_compliance(trade):
