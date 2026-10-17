@@ -5,7 +5,7 @@ title: Connected apps & agents
 aliases: ["Connected apps", "Agents", "Everything connected"]
 tags: [apps, agents, links]
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-10-17
 sources: [src-command-centre, src-flowpilot-request-page, src-ace-outreach-log]
 ---
 
@@ -41,6 +41,7 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 | [[ace]] | Command Centre | on call in chat | Cold outreach for [[flowpilot]] |
 | FlowPilot workflow | n8n | each inquiry | Emails Stellan and confirms with the visitor ([[src-flowpilot-request-page]]) |
 | Investing Apprentice | Command Centre | weekdays 8:27 AM, 4:33 PM | Research, forecasts, paper trades ([[investing-apprentice]]) |
+| Brain · Daily Call | ElevenLabs | planned 7:45 AM and 6 PM (not live yet) | Voice agent that phones Stellan with the rundown, asks open questions, and writes down requests (drafts and calendar approvals only) *(Stellan, 2026-10-17)* |
 
 ## Tensions & contradictions
 - ⚠️ **Two morning briefings:** this brain's 6:30 AM email and the Command Centre's 7:45 AM Morning Rundown. Status: open. Stellan to decide whether to keep both or merge them.
@@ -48,7 +49,8 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 ## Open questions
 1. Keep both morning briefings, or merge them?
 2. Reconnect the n8n connector so the FlowPilot workflow can be checked again?
-3. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
+3. Phone line for the daily call: Twilio trial number connected to ElevenLabs? (needed before the 7:45 AM and 6 PM calls can ring)
+4. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
 
 ## Pages
 - Related: [[overview]] · [[flowpilot]] · [[ace]] · [[investing-apprentice]] · [[daily-run-through]] · [[schedule]]
