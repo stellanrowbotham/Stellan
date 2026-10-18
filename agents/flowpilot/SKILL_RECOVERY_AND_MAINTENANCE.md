@@ -88,6 +88,11 @@ firing.
   - They also include hard safety rules, and they point to the Run checklist above.
 - Disabled the 5 old bound tasks. They're renamed "… (OLD, disabled 2026-10-18)" and not deleted, so
   they can be restored.
+- **Found while testing:** fresh scheduled sessions start with no repo checkout and no `add_repo`
+  tool, so the first Replies test couldn't read its instructions. All 5 prompts now download
+  `protocol.md`, this file and the job file from `raw.githubusercontent.com` (the repo is public)
+  with `curl`, and stop with an error if that fails. The prompts also spell out the log doc format,
+  because the first test run wrote log entries under the wrong doc ids.
 - Added this file. No job file (`protocol.md`, `prospector.md`, `outreach.md`, `replies.md`,
   `weekly-report.md`) was changed.
 - **Not done, because the tool refused it:** attaching the Gmail connector to the new tasks. The
@@ -136,7 +141,7 @@ Both are needed.
 | "critic unavailable" | Agent tool not given to the session | Check the task's tools. Until fixed, leads wait in NEEDS_REVIEW |
 | Lead stuck in SENDING | A run died mid-send | The next outreach run resolves it (protocol §4). Never resend by hand without checking Gmail Sent |
 | Many SKIPPED "no MX" or "no email" | Normal filtering | None. That's the CASL checks working |
-| Repo checkout fails | Branch renamed or deleted | Runs fall back to the default branch. Restore the branch, or update the task prompts |
+| "Could not load the job files from GitHub" | Branch `claude/zen-dirac-x3vtou` renamed or deleted, the repo made private, or GitHub down | Restore the branch, or change the URL in all 5 task prompts. If the repo goes private, attach it to each task as a repository source instead |
 
 ## G. Recovery and rollback
 
