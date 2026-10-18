@@ -1,0 +1,25 @@
+-- Shared helpers for the SQL tests. Every test file runs inside one transaction that is rolled back.
+create or replace function pg_temp.expect_error(p_sql text, p_pattern text) returns void
+language plpgsql as $$
+begin
+  begin
+    execute p_sql;
+  exception when others then
+    if sqlerrm !~* p_pattern then
+      raise exception 'expected error matching "%" but got "%"', p_pattern, sqlerrm;
+    end if;
+    return;
+  end;
+  raise exception 'expected error matching "%" but statement succeeded: %', p_pattern, p_sql;
+end $$;
+
+-- Users: owner, operator, viewer, and a signed-in stranger with no app role.
+insert into auth.users (id, email) values
+  ('00000000-0000-0000-0000-0000000000a1', 'owner@test.invalid'),
+  ('00000000-0000-0000-0000-0000000000a2', 'operator@test.invalid'),
+  ('00000000-0000-0000-0000-0000000000a3', 'viewer@test.invalid'),
+  ('00000000-0000-0000-0000-0000000000a4', 'stranger@test.invalid');
+insert into growth.app_users (user_id, email, role) values
+  ('00000000-0000-0000-0000-0000000000a1', 'owner@test.invalid', 'owner'),
+  ('00000000-0000-0000-0000-0000000000a2', 'operator@test.invalid', 'operator'),
+  ('00000000-0000-0000-0000-0000000000a3', 'viewer@test.invalid', 'viewer');
