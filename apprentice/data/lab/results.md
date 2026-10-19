@@ -1,4 +1,4 @@
-# Strategy lab results (2026-10-17)
+# Strategy lab results (2026-10-19)
 
 Every number below comes from test years the rule was **not** tuned on, after trading costs.
 
@@ -12,15 +12,15 @@ Every number below comes from test years the rule was **not** tuned on, after tr
 
 Passing rules: momentum
 
-## crypto (2024-10-27 to 2026-10-16, 5 assets)
+## crypto (2024-10-29 to 2026-10-18, 5 assets)
 
 | Rule | Test folds | Yearly return | Worst drop | Sharpe | Buy & hold yearly | Buy & hold worst drop | Index only yearly | Passes? |
 |---|---|---|---|---|---|---|---|---|
-| trend | 2 | +20.7% | -15.2% | 0.72 | +14.4% | -28.3% | +26.6% (XBTCAD) | ✅ |
-| sma_cross | 2 | -33.0% | -19.7% | -1.92 | +14.4% | -28.3% | +26.6% (XBTCAD) | ❌ |
-| momentum | 2 | +9.8% | -11.5% | 0.51 | +14.4% | -28.3% | +26.6% (XBTCAD) | ❌ |
+| trend | 2 | -10.0% | -13.0% | -0.24 | +12.8% | -28.3% | +24.6% (XBTCAD) | ❌ |
+| sma_cross | 2 | -34.5% | -20.6% | -1.98 | +12.8% | -28.3% | +24.6% (XBTCAD) | ❌ |
+| momentum | 2 | -6.7% | -11.6% | -0.30 | +12.8% | -28.3% | +24.6% (XBTCAD) | ❌ |
 
-Passing rules: trend
+Passing rules: none
 
 ## Limits
 
