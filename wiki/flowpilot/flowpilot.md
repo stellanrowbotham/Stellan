@@ -5,7 +5,7 @@ title: FlowPilot
 aliases: ["FlowPilot Automation", "Flow Pilot"]
 tags: [business, ai, automation]
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-10-25
 sources: [src-flowpilot-request-page, src-ace-outreach-log, src-command-centre]
 ---
 
@@ -17,6 +17,7 @@ FlowPilot Automation, Stellan's AI automations business for local small business
 - **Funnel:** [[ace]] cold-emails local businesses, which can request a plan on the request page, and an n8n workflow emails Stellan and confirms with the visitor. ([[src-ace-outreach-log]], [[src-flowpilot-request-page]])
 - **Pipeline:** 69 businesses emailed in 4 batches (2026-09-13 to 09-15). Replies aren't recorded in the brain yet. ([[src-ace-outreach-log]])
 - **Health:** the n8n workflow's last known run was 2026-09-30, and the n8n connector has been failing since about 2026-10-10, so the workflow can't be checked. ([[src-command-centre]])
+- **Agents:** the scheduled FlowPilot agents were retired on 2026-10-25. Prospector, replies and the weekly report were deleted, and the two outreach runs were switched off, so nothing emails businesses on its own any more. Business work now goes through Atlas and the on-demand **nova** specialist, which only writes drafts *(Stellan, 2026-10-25)*.
 
 ## What FlowPilot sells
 A first automation for a repetitive process. The page's examples are responding to inquiries, organizing leads, sending confirmations, and creating reminders. "People remain in control of important decisions. Nothing here guarantees business results." ([[src-flowpilot-request-page]])

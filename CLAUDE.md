@@ -36,6 +36,8 @@ It is not re-derived on every question.
 /
 ├── CLAUDE.md                 ← this schema
 ├── tools/wiki.py             ← helper CLI: search · lint · stats · graph (stdlib Python)
+├── .claude/                  ← Atlas skill (skills/atlas/) and on-demand specialists (agents/: nova, forge, scout, sage, tempo, echo, sentinel)
+├── docs/                     ← AGENT_REGISTRY.md: every agent, its tools, schedule and test status
 ├── agents/                   ← standing instructions for the scheduled agents (protocol, inbox, morning brief)
 ├── raw/                      ← LAYER 1: immutable inputs (Claude only creates new files, never edits)
 │   ├── assets/               ← images/attachments (Obsidian attachment folder)
@@ -308,6 +310,9 @@ check-in works through them one at a time.
     Added [[connected-apps]]. The Command Centre's agents are synced into the app each run.
     **The repo is public**, so personal and third-party details live only in the app database
     (source pages may use `raw: app:<db path>`), and the wiki holds aggregates.
+  - 2026-10-25: **v2.3. Atlas and the specialist team.** Added the Atlas entry-point skill and seven
+    on-demand specialists in `.claude/agents/`, plus `docs/AGENT_REGISTRY.md`. Retired the scheduled FlowPilot agents
+    (3 deleted, 5 old copies deleted, outreach ×2 switched off).
 
 ---
 

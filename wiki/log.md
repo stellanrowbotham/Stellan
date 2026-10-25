@@ -42,3 +42,16 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-10-25] schema | Atlas entry point (central assistant skill)
+- + `.claude/skills/atlas/SKILL.md`: one entry point that routes school, FlowPilot, Apprentice, briefings and status checks; hard rules ($0 extra spend, ask before sending or scheduling, no faked results, public-repo privacy)
+- read: audit of 11 active scheduled tasks and 3 dashboards on 2026-10-24 (no changes made to schedules or connectors)
+- → Stellan: usage-credits check, reconnect Gmail on failing tasks, trim connectors, forward secondary inboxes
+
+## [2026-10-25] schema | v2.3: retire FlowPilot scheduled agents, add the specialist team
+- - Scheduled tasks deleted: FlowPilot · Prospector, Replies, Weekly report, and the 5 "OLD" copies disabled on 2026-10-18 *(Stellan, 2026-10-25: "get rid of the flow pilot agent")*
+- ~ FlowPilot · Outreach morning and afternoon: switched **off** (deleting them was blocked by a permission check; Stellan can delete them at claude.ai/code/routines)
+- + `.claude/agents/`: nova (business, drafts only), forge (automation), scout (research), sage (school), tempo (calendar, read-only), echo (sales coach), sentinel (QA, read-only)
+- ~ `.claude/skills/atlas/SKILL.md`: routes to the specialists; system map updated
+- + `docs/AGENT_REGISTRY.md`; ~ `CLAUDE.md` §2 and §10; ~ [[flowpilot]] Snapshot (agents retired)
+- → Specialists are untested: next step is one dummy task per agent, with results recorded in the registry
