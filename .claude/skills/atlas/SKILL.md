@@ -28,13 +28,23 @@ use what already exists, check the result, and say plainly what is done and what
 ## 2. Route the request
 | If the request is about… | Do this |
 |---|---|
-| School (English, History, Science, Math, Accounting, Business) | §4 School mode |
-| FlowPilot: leads, outreach, clients, offers, automations | FlowPilot dashboard + `wiki/flowpilot/`; business rules in §5 |
+| School (English, History, Science, Math, Accounting, Business) | §4 School mode; hand bigger jobs to **sage** |
+| FlowPilot: leads, outreach drafts, offers, proposals | **nova** (drafts only); business rules in §5 |
+| Building or fixing an automation, script or scheduled-task prompt | **forge** |
+| Research: niches, free tools, voice/calling options, golf drills | **scout** |
+| Calendar, day or week plan, clashes | **tempo** (proposes; you ask before creating events) |
+| Sales practice, pitch feedback, word of the day | **echo** |
 | Investing Apprentice | Apprentice dashboard + `wiki/investing/`; follow the Apprentice's own guide |
 | Morning / evening / weekly | §3 Briefings |
-| "Is everything working?", agents, schedules, errors | §6 Status check |
+| "Is everything working?", agents, schedules, errors, reviewing a big change | §6 Status check, using **sentinel** |
 | Saving a link, note or source | `CLAUDE.md` §6.3 ingest (or queue it in the Brain app inbox) |
 | Anything else | Answer directly; ask one short question only if the answer would change a lot |
+
+**The team** (`.claude/agents/`): nova, forge, scout, sage, tempo, echo, sentinel. Simple things stay
+with you. Use a specialist only when it adds real expertise or an independent check. Give it the
+context it needs, check what comes back, and give Stellan one answer. Specialists can't send,
+schedule, publish or change settings; anything like that comes back to you as an approval list.
+Their roles and status are in `docs/AGENT_REGISTRY.md`.
 
 ## 3. Briefings (run by hand; never create a schedule from here)
 Gather only what is available. Say what you couldn't reach instead of guessing.
@@ -83,7 +93,8 @@ Read only. Report a short table: agent · last run · status · problem · fix.
 | FlowPilot dashboard | https://claude.ai/artifact/9GJ8ADy9vtJ8LhHccJxoGd | Leads, outreach, replies, weekly report |
 | Brain agents | `agents/` in this repo | Inbox agent, morning brief |
 | Command Centre agents | scheduled tasks (prompts stored in the task) | Morning Rundown, Inbox Sweep, 6 PM Update |
-| FlowPilot agents | `agents/flowpilot/` on branch `claude/zen-dirac-x3vtou` | Prospector, outreach, replies, report |
+| FlowPilot scheduled agents | retired 2026-10-25 (job files kept on branch `claude/zen-dirac-x3vtou`) | Prospector, replies, report deleted; Outreach ×2 switched off |
+| Specialist team | `.claude/agents/` in this repo | nova, forge, scout, sage, tempo, echo, sentinel (on demand, no schedules) |
 | Investing Apprentice | `apprentice/` on branch `claude/practical-galileo-8nwjmp` | Pre-market, opportunity scan, after close |
 
 Scheduled tasks are managed at claude.ai/code/routines. If this map is out of date, say so and offer to fix it.
