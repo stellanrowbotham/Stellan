@@ -47,3 +47,7 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + `.claude/skills/atlas/SKILL.md`: one entry point that routes school, FlowPilot, Apprentice, briefings and status checks; hard rules ($0 extra spend, ask before sending or scheduling, no faked results, public-repo privacy)
 - read: audit of 11 active scheduled tasks and 3 dashboards on 2026-10-24 (no changes made to schedules or connectors)
 - → Stellan: usage-credits check, reconnect Gmail on failing tasks, trim connectors, forward secondary inboxes
+
+## [2026-10-26] edit | Browserbase demo scraper
+- + `tools/browserbase-demo/`: Stagehand script that opens a cloud browser and extracts a product page (title, price, rating, stock, description) from books.toscrape.com; verified 2026-10-26 on the Browserbase free plan
+- API key kept out of the repo (`.env` git-ignored; `.env.example` blank)
