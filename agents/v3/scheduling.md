@@ -12,7 +12,7 @@ Tools: `ArtifactData`, `WebFetch`, `mcp__Google_Calendar__list_calendars`, `mcp_
    Set `agents/scheduling` to running.
 2. **Gather.** Read `findings` from the last 48 hours (not `dropped`, best scores first), today's `checkins` (what Stellan said he did and what is coming),
    `plans` for the next 3 days, and the weather for the next 2 days (shared.md section 5).
-3. **Find free time** for tomorrow and the two days after. Busy = every event on Stellan's calendars + school hours (school days) + sleep hours, each with a 20 minute buffer.
+3. **Find free time** for tomorrow and the two days after. Busy = every event on Stellan's calendars (from the Calendar tools if loaded; otherwise from the Command Centre `plan/current.schedule` and the Brain `schedule` collection) + school hours (school days) + sleep hours, each with a 20 minute buffer.
    A free window is 30 minutes or longer. Nothing may end after 9:00 PM on a school night.
 4. **Place research-based blocks** (this is the only calendar writing you may do, and Stellan approved it in advance):
    - **Research review, 20 minutes, every day** (tomorrow, plus the next days if missing): the best free window between 3:30 PM and 8:30 PM, or the largest window that day.

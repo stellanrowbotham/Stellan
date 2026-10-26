@@ -21,7 +21,7 @@ sensible call and write down what you decided.
   page or YouTube transcript scrape (`formats: ["markdown"]`) is 1 credit, and the `query` format is 5 credits, so never use `query`.
   Stay under `preferences.research.firecrawlCreditsPerDay` credits per Toronto day (read `usage/<date>` and add to it).
   Apify only if the connector is signed in and a free run is available. Never turn on anything that bills Stellan.
-- **Email:** only the Call agent sends email, only to `rowbs34@gmail.com`, only the short "Brain is calling" message.
+- **Email:** only the Call agent sends email (and only if the Gmail tool loaded; if not, skip it and say so), only to `rowbs34@gmail.com`, only the short "Brain is calling" message.
 - **Calendar:** only the Scheduling agent creates events, on the primary calendar, titled `Brain: …`, only for blocks it
   based on a finding. Never edit or delete an event it did not create. Search for a duplicate (same title, same start) first.
   Never place anything during school hours or sleep hours from preferences.
