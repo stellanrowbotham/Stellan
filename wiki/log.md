@@ -51,3 +51,12 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 ## [2026-10-26] edit | Browserbase demo scraper
 - + `tools/browserbase-demo/`: Stagehand script that opens a cloud browser and extracts a product page (title, price, rating, stock, description) from books.toscrape.com; verified 2026-10-26 on the Browserbase free plan
 - API key kept out of the repo (`.env` git-ignored; `.env.example` blank)
+
+## [2026-10-26] schema | Brain agents v3: Research, Scheduling, Calls
+- read: Stellan's answers to 30 questions (research topics, call times 6:45 AM and 6:00 PM, school/sleep hours, calendar auto-add from research, queued Q&A, all agents on Sonnet 5.5); tested Firecrawl search and YouTube transcript (1 credit), Open-Meteo weather, raw GitHub access
+- + `agents/v3/` (shared, research, scheduling, call); 4 routines created (research 3×/day, scheduling, morning call, evening call)
+- + Brain app: Brain calls panel (spoken by the phone's own voice), Research and Scheduling sections with ask boxes, pause switch; 27 browser checks passed on a copy before publishing
+- ~ turned off FlowPilot Outreach ×2 and Brain Morning brief; Link Sorter now 12:53 PM and 8:53 PM; models set to Sonnet 5.5 on the routines this session could reach
+- ~ [[connected-apps]], CLAUDE.md §10 (v2.3), `agents/README.md`
+- ⚠️ routines can't have connectors attached from a session: Firecrawl, Google Calendar and Gmail must be added in claude.ai
+- → Stellan: attach connectors; merge the PR so the routines can read instructions from the main branch
