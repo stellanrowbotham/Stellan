@@ -1,26 +1,26 @@
-# Strategy lab results (2026-10-27)
+# Strategy lab results (2026-10-28)
 
 Every number below comes from test years the rule was **not** tuned on, after trading costs.
 
-## us_stocks_etfs (2006-12-08 to 2026-10-26, 25 assets)
+## us_stocks_etfs (2006-12-11 to 2026-10-27, 25 assets)
 
 | Rule | Test folds | Yearly return | Worst drop | Sharpe | Buy & hold yearly | Buy & hold worst drop | Index only yearly | Passes? |
 |---|---|---|---|---|---|---|---|---|
-| trend | 16 | +10.2% | -19.4% | 1.02 | +18.4% | -30.1% | +11.9% (SPY) | ❌ |
-| sma_cross | 16 | +11.5% | -25.4% | 0.97 | +18.4% | -30.1% | +11.9% (SPY) | ❌ |
-| momentum | 16 | +39.4% | -37.9% | 1.21 | +18.4% | -30.1% | +11.9% (SPY) | ✅ |
+| trend | 16 | +10.2% | -19.4% | 1.02 | +18.4% | -30.1% | +12.0% (SPY) | ❌ |
+| sma_cross | 16 | +11.5% | -25.4% | 0.98 | +18.4% | -30.1% | +12.0% (SPY) | ❌ |
+| momentum | 16 | +39.9% | -32.1% | 1.25 | +18.4% | -30.1% | +12.0% (SPY) | ✅ |
 
 Passing rules: momentum
 
-## crypto (2024-11-06 to 2026-10-26, 5 assets)
+## crypto (2024-11-07 to 2026-10-27, 5 assets)
 
 | Rule | Test folds | Yearly return | Worst drop | Sharpe | Buy & hold yearly | Buy & hold worst drop | Index only yearly | Passes? |
 |---|---|---|---|---|---|---|---|---|
-| trend | 2 | -6.0% | -14.2% | -0.10 | +3.1% | -28.3% | +11.7% (XBTCAD) | ❌ |
-| sma_cross | 2 | -38.4% | -23.0% | -2.14 | +3.1% | -28.3% | +11.7% (XBTCAD) | ❌ |
-| momentum | 2 | +0.6% | -15.2% | 0.14 | +3.1% | -28.3% | +11.7% (XBTCAD) | ❌ |
+| trend | 2 | +4.4% | -16.1% | 0.29 | +1.4% | -28.3% | +12.7% (XBTCAD) | ✅ |
+| sma_cross | 2 | -39.1% | -23.7% | -2.20 | +1.4% | -28.3% | +12.7% (XBTCAD) | ❌ |
+| momentum | 2 | +3.2% | -15.6% | 0.25 | +1.4% | -28.3% | +12.7% (XBTCAD) | ✅ |
 
-Passing rules: none
+Passing rules: trend, momentum
 
 ## Limits
 
