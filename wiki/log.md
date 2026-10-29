@@ -95,3 +95,10 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - Momentum signals now include AAPL, AMD, JNJ and XOM, which were previously skipped for costing more than the 10% cap
 - Investopedia order slips round down to whole shares, because Investopedia doesn't take fractions
 - ⚠️ US buys from a CAD account pay about 1.5% currency conversion each way in the simulator. The lab assumed USD is held, so live results will trail lab results a little
+
+## [2026-10-29] query | Best short-term investing rules and fundamentals
+- Read: [[investing-apprentice]], [[trading-costs]], [[risk-management]]; web research via Firecrawl (day-trading studies, RSI(2), post-earnings drift, time-series momentum, profitability factor, Norbert's Gambit)
+- + [[short-term-investing-rules-research]]
+- ~ [[investing-apprentice]] (Related link), index
+- ⚠️ Evidence says most short-term traders lose money; the apprentice's ~3% round-trip FX cost is its biggest drag
+- → Stellan to answer questions on goals before any rule is built; new rules need code + lab test + his approval

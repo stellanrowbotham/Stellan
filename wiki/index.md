@@ -3,13 +3,13 @@ type: meta
 title: Index
 tags: [meta]
 created: 2026-10-01
-updated: 2026-10-10
+updated: 2026-10-29
 ---
 
 # Index
 Catalog of every page in the wiki. The agent reads this first on every query and updates it on every operation.
 
-**Totals:** 2 sources · 7 agents · 6 investing concepts · 3 analyses · last updated 2026-10-10 (wiki reset)
+**Totals:** 2 sources · 7 agents · 6 investing concepts · 3 analyses · last updated 2026-10-29
 
 ## Overview
 - [[overview]]: top-level synthesis, main themes, and open questions
@@ -43,4 +43,5 @@ Catalog of every page in the wiki. The agent reads this first on every query and
 
 ## Analyses
 - [[investing-apprentice-plan]]: interview answers, architecture, phases, costs and decisions; approved 2026-10-10 · 1 source
+- [[short-term-investing-rules-research]]: evidence on short-term trading, fundamentals, and 6 candidate new apprentice rules (rank buffer, vol targeting, RSI(2), earnings drift, quality filter, FX savings) · 2026-10-29 web research
 - [[moving-to-a-real-brokerage]]: what it would take to go from simulation to a real account (proof, adult holder, broker API, safeguards) · 1 source

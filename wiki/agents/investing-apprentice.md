@@ -43,4 +43,5 @@ Picture a new employee at an investing company. On day one they can't touch any 
 
 ## Related
 - [[moving-to-a-real-brokerage]]: the plan for going live (not started)
+- [[short-term-investing-rules-research]]: candidate new rules to test in the lab (2026-10-29)
 - [[paper-trading]], [[look-ahead-bias]], [[trading-costs]], [[risk-management]], [[source-reliability]]
