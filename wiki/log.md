@@ -102,3 +102,11 @@ Last 5 entries: `grep "^## \[" wiki/log.md | tail -5`
 - ~ [[investing-apprentice]] (Related link), index
 - ⚠️ Evidence says most short-term traders lose money; the apprentice's ~3% round-trip FX cost is its biggest drag
 - → Stellan to answer questions on goals before any rule is built; new rules need code + lab test + his approval
+
+## [2026-10-29] edit | Apprentice upgrade from Stellan's answers
+- Stellan's answers: biggest gains even with 30–40% drops; hold winners while they rise; ETFs plus risky stocks; US and Canadian; drop crypto; lots of action; as real as possible
+- Lab now charges the real 1.5% currency conversion each way; momentum falls from +31.8% to +17.9%/yr but still passes; new momentum_buffer passes (+17.3%/yr, smaller drops); rsi2 fails after fees
+- Momentum trades now use a 3×ATR trailing stop that follows winners up; Bitcoin and Ether sold (−C$7.70 total) and crypto removed from the lab
+- Dashboard redesigned as a trading-desk screen
+- ⚠️ Holding USD instead of converting each trade would lift the tested return to about +31%/yr; Canadian stocks have no daily history source yet
+- → [[short-term-investing-rules-research]] has the evidence behind these rules
