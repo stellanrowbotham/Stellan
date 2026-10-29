@@ -157,6 +157,27 @@ class QueueingAndExits(Base):
         self.assertAlmostEqual(port.cash, 1000 + t["exit"]["realized_pnl_cad"])
         self.assertAlmostEqual(t["exit"]["realized_pnl_cad"], 2 * 42.5 * (1 - 0.0005) - 2 * 40.02 * (1 + 0.0005))
 
+    def test_trailing_stop_follows_winner_up_then_sells(self):
+        self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
+        r = self.b.propose(proposal("BCE", T0, self.ev(), stop=38.0, target=60, trail_distance=2.0), T0)
+        t1 = T0 + timedelta(days=1)
+        self.env.quote("BCE", t1 - timedelta(minutes=1), bid=45.0, ask=45.05)  # winner: stop follows to 43
+        self.b.process(t1)
+        t = self.b.trades()[r["trade_id"]]
+        self.assertEqual(t["status"], "open")
+        self.assertAlmostEqual(t["stop_price"], 43.0)
+        t2 = t1 + timedelta(days=1)
+        self.env.quote("BCE", t2 - timedelta(minutes=1), bid=44.0, ask=44.05)  # small dip: stop never moves down
+        self.b.process(t2)
+        self.assertAlmostEqual(self.b.trades()[r["trade_id"]]["stop_price"], 43.0)
+        t3 = t2 + timedelta(days=1)
+        self.env.quote("BCE", t3 - timedelta(minutes=1), bid=42.9, ask=42.95)  # turns down: sold, profit kept
+        self.b.process(t3)
+        t = self.b.trades()[r["trade_id"]]
+        self.assertEqual(t["exit"]["exit_reason"], "stop")
+        self.assertGreater(t["exit"]["realized_pnl_cad"], 0)
+        self.assertTrue(self.b.portfolio().reconcile()[0])
+
     def test_day_experiment_closes_before_bell(self):
         self.env.quote("BCE", T0 - timedelta(minutes=2), bid=40.0, ask=40.02)
         r = self.b.propose(proposal("BCE", T0, self.ev(), stop=39.2, target=42, strategy="day_experiment"), T0)

@@ -42,6 +42,8 @@ class PaperBroker:
             elif r["event"] == "opened":
                 t["status"] = "open"
                 t["entry"] = r
+            elif r["event"] == "stop_raised":
+                t["stop_price"] = r["stop_price"]
             elif r["event"] == "closed":
                 t["status"] = "closed"
                 t["exit"] = r
@@ -147,7 +149,7 @@ class PaperBroker:
                                  "max_holding_days": p.get("max_holding_days") or strat["holding_days"][1],
                                  "expected_holding": p.get("expected_holding"), "confidence": p.get("confidence"),
                                  "scenarios": p.get("scenarios"), "forecast_id": p.get("forecast_id"), "rule": p.get("rule"),
-                                 "planned_qty": qty, "est_cost_cad": est_cost,
+                                 "trail_distance": p.get("trail_distance"), "planned_qty": qty, "est_cost_cad": est_cost,
                                  "risk_checks": [c.as_dict() for c in checks]}, now=now)
         order = self.L["orders"].append({"event": "placed", "order_id": order_id, "trade_id": trade_id, "symbol": p["symbol"],
                                          "side": "buy", "qty": qty, "type": p.get("order_type", "market"),
@@ -268,6 +270,13 @@ class PaperBroker:
             q = book.latest(t["symbol"], now)
             px = (q.get("bid") if q and q.get("bid") is not None else q.get("price")) if q else None
             reason = None
+            trail = t.get("trail_distance")
+            if px is not None and trail and px - trail > t["stop_price"]:
+                # trailing stop: as the price climbs, the stop follows it up (never down), so winners can run
+                t["stop_price"] = round(px - trail, 6)
+                self.L["trades"].append({"event": "stop_raised", "trade_id": t["trade_id"], "stop_price": t["stop_price"],
+                                         "price": px}, now=now)
+                notes.append(f"{t['symbol']}: trailing stop raised to {t['stop_price']:.2f}")
             if px is not None and px <= t["stop_price"]:
                 reason = "stop"
             elif px is not None and px >= t["target_price"]:

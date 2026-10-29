@@ -116,9 +116,13 @@ Stellan approved this design on 2026-10-17. **Tested rules pick the trades; you 
    ledger. **Veto** the buy only for a concrete, sourced reason: a fraud or hack, delisting, a pending
    earnings report within 2 trading days, a halted market, or a sudden crash on bad news. Otherwise
    propose it with `"rule"` set to the signal's rule, `evidence_ids` = [signal id, headline ids], and the
-   signal's stop and target. "I just don't like it" is not a veto. Put each veto and its source in the report.
+   signal's stop and target. If the signal has a `trail_distance` (momentum rules), copy it into the
+   proposal as `"trail_distance"`: the stop then follows the price up so winners can run (Stellan,
+   2026-10-29: "if it keeps on rising keep it till it looks like it is going to drop"). "I just don't like it" is not a veto. Put each veto and its source in the report.
 4. **For each exit:** `python3 -m apprentice exit TRADE_ID rule_exit`.
-5. Up to 2 new buys per run, best evidence grade first. The risk engine still sizes and checks
+5. Up to 2 new buys per run, best evidence grade first. Don't re-propose a buy the risk engine already
+   blocked for the same reason today; say so in the report instead. Crypto is no longer tested or traded
+   (Stellan, 2026-10-29). US results in the lab now include the 1.5% currency conversion each way. The risk engine still sizes and checks
    everything. `evidence_grade: weak` means few test periods, so say so in the report.
 6. If `signals` has no buys, that is the answer for this run: no trade, and say why (for example, no
    rule wants to hold anything in a downtrend).
