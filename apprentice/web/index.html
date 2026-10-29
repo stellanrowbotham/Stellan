@@ -1,94 +1,120 @@
 <title>Investing Apprentice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: a sticky tab rail over one scrolling column of panels; summary first, detail below. */
+/* Layout: a trading-desk terminal. Ticker tape and account value first, the positions board next, detail tabs below.
+   Deliberately one dark look (a desk screen), with every color set explicitly. */
 :root {
-  --bg: #f3f5f8; --surface: #ffffff; --ink: #142130; --muted: #5b6878; --line: #dde3ea;
-  --accent: #b8322a; --accent-soft: #f6e3e1; --up: #17784a; --down: #b42318; --warn: #a15c00; --chart: #2a5d8f; --bench: #8a97a6;
-  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #090d12; --surface: #10161e; --raise: #151d27; --ink: #e6edf5; --muted: #8696a8; --line: #1e2935;
+  --accent: #f0b445; --accent-soft: #2a2213; --up: #2ccf7d; --down: #ff5c63; --warn: #f0b445; --chart: #f0b445; --bench: #5f6f82;
+  --display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0f151c; --surface: #17202a; --ink: #e6ecf2; --muted: #9aa8b7; --line: #283544;
-  --accent: #ec6b5f; --accent-soft: #3a2220; --up: #4cc58a; --down: #f0776b; --warn: #e3a64a; --chart: #7fb2e5; --bench: #6f7d8c; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #0f151c; --surface: #17202a; --ink: #e6ecf2; --muted: #9aa8b7; --line: #283544;
-  --accent: #ec6b5f; --accent-soft: #3a2220; --up: #4cc58a; --down: #f0776b; --warn: #e3a64a; --chart: #7fb2e5; --bench: #6f7d8c; color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); margin: 0 }
-.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px }
-header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding-block: 20px 8px }
-h1 { font: 700 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em }
-h1 small { display: block; font: 400 .8rem var(--body); color: var(--muted); letter-spacing: .02em }
-h2 { font: 700 1.15rem/1.2 var(--display); margin: 0 0 10px; text-wrap: balance }
-h3 { font: 700 1rem/1.25 var(--display); margin: 0 }
-.meta { color: var(--muted); font-size: .85rem }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px }
+header.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding-block: 18px 12px }
+.brand { display: grid; gap: 2px }
+h1 { font: 700 1.35rem/1.1 var(--display); margin: 0; letter-spacing: .14em; text-transform: uppercase; color: var(--accent) }
+h1 small { display: block; font: 500 .72rem var(--mono); color: var(--muted); letter-spacing: .18em; margin-top: 4px }
+.status { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font: 500 .75rem var(--mono); color: var(--muted) }
+.live { display: inline-flex; align-items: center; gap: 6px; color: var(--up); letter-spacing: .12em }
+.live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--up); box-shadow: 0 0 0 0 var(--up) }
+@media (prefers-reduced-motion: no-preference) { .live::before { animation: ping 2s infinite } }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(44, 207, 125, .55) } 70% { box-shadow: 0 0 0 8px rgba(44, 207, 125, 0) } 100% { box-shadow: 0 0 0 0 rgba(44, 207, 125, 0) } }
+.badge { font: 600 .68rem var(--mono); letter-spacing: .14em; color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 3px }
+.tape { overflow: hidden; border-block: 1px solid var(--line); background: var(--surface); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
+.tape-in { display: inline-flex; gap: 28px; padding: 7px 16px; white-space: nowrap; font: 500 .82rem var(--mono); font-variant-numeric: tabular-nums }
+.tape-in span b { color: var(--ink); margin-right: 6px; letter-spacing: .04em }
+@media (prefers-reduced-motion: no-preference) { .tape-in.moving { animation: tape 40s linear infinite } }
+@keyframes tape { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+h2 { font: 600 .8rem/1.2 var(--display); margin: 0 0 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted) }
+h3 { font: 600 .95rem/1.25 var(--display); margin: 0; letter-spacing: .04em }
+.meta { color: var(--muted); font-size: .82rem }
 nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
-  display: flex; gap: 4px; overflow-x: auto; padding-block: 6px; scrollbar-width: none }
-nav.tabs button { font: 600 .9rem var(--body); color: var(--muted); background: none; border: 0; padding: 8px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap }
-nav.tabs button[aria-selected="true"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 -2px 0 var(--accent) }
-nav.tabs button:focus-visible, button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--chart); outline-offset: 2px }
-section.panel { display: grid; gap: 16px; padding-block: 16px }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0 }
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)) }
-.kpis { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden }
+  display: flex; gap: 2px; overflow-x: auto; padding-block: 8px; scrollbar-width: none }
+nav.tabs button { font: 600 .78rem var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); background: none; border: 0; padding: 8px 12px; border-radius: 3px; cursor: pointer; white-space: nowrap }
+nav.tabs button:hover { color: var(--ink) }
+nav.tabs button[aria-selected="true"] { color: var(--bg); background: var(--accent) }
+nav.tabs button:focus-visible, button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+section.panel { display: grid; gap: 14px; padding-block: 14px }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 16px; min-width: 0 }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) }
+.kpis { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden }
 .kpi { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px }
-.kpi .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
-.kpi .value { font: 600 1.25rem var(--mono); font-variant-numeric: tabular-nums }
-.kpi .sub { font-size: .78rem; color: var(--muted) }
+.kpi .label { font: 600 .66rem var(--display); text-transform: uppercase; letter-spacing: .14em; color: var(--muted) }
+.kpi .value { font: 600 1.2rem var(--mono); font-variant-numeric: tabular-nums }
+.kpi .sub { font-size: .76rem; color: var(--muted) }
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums }
 .up { color: var(--up) } .down { color: var(--down) }
-.pill { display: inline-block; font: 700 .7rem var(--body); letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.pill { display: inline-block; font: 600 .64rem var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; border: 1px solid currentColor; white-space: nowrap }
 .pill.ok { color: var(--up) } .pill.bad { color: var(--down) } .pill.warn { color: var(--warn) } .pill.info { color: var(--muted) } .pill.exp { color: var(--accent) }
-.hero { display: grid; gap: 4px; padding: 18px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface) }
-.hero .big { font: 700 clamp(2rem, 7vw, 3rem)/1.05 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em }
-.hero .row2 { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .95rem }
-.hero .row2 b { font-family: var(--mono) }
-.banner { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 6px }
+.hero { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; padding: 20px; border-radius: 4px; border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--raise), var(--surface)) }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr } }
+.hero .eyebrow { font: 600 .68rem var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--muted) }
+.hero .big { font: 600 clamp(2.4rem, 8vw, 3.6rem)/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.03em }
+.hero .chg { font: 600 1.05rem var(--mono); font-variant-numeric: tabular-nums }
+.hero .row2 { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .86rem; color: var(--muted) }
+.hero .row2 b { font-family: var(--mono); color: var(--ink) }
+.banner { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 3px }
 .scroll { overflow-x: auto }
-table { border-collapse: collapse; width: 100%; font-size: .88rem }
-th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top }
-th { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700 }
+table { border-collapse: collapse; width: 100%; font-size: .86rem }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+tbody tr:hover { background: var(--raise) }
+th { font: 600 .64rem var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--muted) }
 td.r, th.r { text-align: right }
-ul.plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px }
+ul.plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px }
 ul.plain li { min-width: 0 }
-a { color: var(--chart) }
+a { color: var(--accent) }
 details { border-top: 1px solid var(--line); padding-block: 8px }
-details summary { cursor: pointer; font-weight: 700 }
+details summary { cursor: pointer; font-weight: 600 }
 .cand { display: grid; gap: 8px }
 .cand-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between }
-.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden }
-.bar > i { display: block; height: 100%; background: var(--chart) }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden }
+.bar > i { display: block; height: 100%; background: var(--accent) }
 .crit { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; align-items: start; padding-block: 8px; border-bottom: 1px solid var(--line) }
 .crit:last-child { border-bottom: 0 }
 .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px }
 .dot.ok { background: var(--up) } .dot.bad { background: var(--down) }
 .ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px }
-.rung { padding: 8px 6px; border-radius: 6px; border: 1px solid var(--line); font-size: .72rem; text-align: center; color: var(--muted) }
+.rung { padding: 8px 6px; border-radius: 3px; border: 1px solid var(--line); font-size: .72rem; text-align: center; color: var(--muted) }
 .rung.done { background: var(--line); color: var(--ink) }
 .rung.now { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 -3px 0 var(--accent) }
 .rung b { display: block; font: 700 1rem var(--mono) }
 svg text { fill: var(--muted); font: 11px var(--mono) }
-.empty { color: var(--muted); padding: 16px; border: 1px dashed var(--line); border-radius: 10px; background: var(--surface) }
-.btn { font: 600 .85rem var(--body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer }
-.btn:hover { border-color: var(--chart) }
+.empty { color: var(--muted); padding: 16px; border: 1px dashed var(--line); border-radius: 4px; background: var(--surface) }
+.btn { font: 600 .8rem var(--body); background: var(--raise); color: var(--ink); border: 1px solid var(--line); border-radius: 3px; padding: 6px 12px; cursor: pointer }
+.btn:hover { border-color: var(--accent) }
 .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
 .md { white-space: pre-wrap }
+.board { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)) }
+.tile { background: var(--raise); border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; display: grid; gap: 6px; min-width: 0 }
+.tile .sym { display: flex; justify-content: space-between; align-items: baseline; gap: 8px }
+.tile .sym b { font: 700 1.15rem var(--display); letter-spacing: .06em }
+.tile .pl { font: 600 1.05rem var(--mono); font-variant-numeric: tabular-nums }
+.tile .lv { font: .74rem var(--mono); color: var(--muted); display: flex; justify-content: space-between; gap: 6px }
+.range { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--down), var(--line) 45%, var(--line) 55%, var(--up)) }
+.range i { position: absolute; top: -4px; width: 3px; height: 14px; background: var(--ink); border-radius: 2px; transform: translateX(-50%) }
+.rules { display: flex; flex-wrap: wrap; gap: 6px }
 @media (prefers-reduced-motion: no-preference) { .bar > i { transition: width .4s ease } }
 </style>
 
 <div class="wrap">
   <header class="top">
-    <h1>Investing Apprentice <small>Stocks &amp; crypto</small></h1>
-    <div class="meta" id="updated">Waiting for data…</div>
+    <div class="brand"><h1>Rowbotham Capital <small>APPRENTICE DESK · US &amp; CANADIAN EQUITIES</small></h1></div>
+    <div class="status"><span class="live">LIVE</span><span id="updated">Waiting for data…</span><span class="badge">PAPER ACCOUNT · SIMULATED</span></div>
   </header>
+  <div class="tape" aria-label="Ticker"><div class="tape-in" id="tape"><span>Waiting for prices…</span></div></div>
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" id="tab-overview" aria-selected="true" data-tab="overview">Overview</button>
     <button role="tab" id="tab-research" aria-selected="false" data-tab="research">Research</button>
-    <button role="tab" id="tab-trading" aria-selected="false" data-tab="trading">Paper trading</button>
+    <button role="tab" id="tab-trading" aria-selected="false" data-tab="trading">Trades</button>
     <button role="tab" id="tab-learning" aria-selected="false" data-tab="learning">Learning</button>
     <button role="tab" id="tab-progression" aria-selected="false" data-tab="progression">Progress</button>
     <button role="tab" id="tab-settings" aria-selected="false" data-tab="settings">Settings</button>
@@ -179,55 +205,72 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
     const last = curve[curve.length - 1];
     svg.append(s("circle", {cx: x(last.t), cy: y(last.equity), r: 4, fill: "var(--chart)"}));
     for (const p of [curve[0], last]) { const tx = s("text", {x: x(p.t), y: H - 8, "text-anchor": p === last ? "end" : "start"}); tx.textContent = when(p.t).replace(/, .*$/, ""); svg.append(tx); }
-    return h("div", {}, svg, h("div", {class: "row meta"}, h("span", {}, "— Apprentice"), curve.some(p => p.benchmark != null) ? h("span", {}, "- - " + benchLabel + " (same $ start)") : null, h("span", {}, "··· starting balance")));
+    return h("div", {}, svg, h("div", {class: "row meta"}, h("span", {}, "— Account"), curve.some(p => p.benchmark != null) ? h("span", {}, "- - " + benchLabel + " (same $ start)") : null, h("span", {}, "··· starting balance")));
   }
 
   // ---------- panels ----------
+  function renderTape(o) {
+    const el = document.getElementById("tape"), ps = o.positions || [];
+    if (!ps.length) { el.replaceChildren(h("span", {}, "No open positions · all cash")); el.classList.remove("moving"); return; }
+    const item = r => h("span", {}, h("b", {}, r.symbol), (r.price ?? "–") + " ",
+      h("span", {class: cls(r.unrealizedPct)}, (r.unrealizedPct > 0 ? "▲ " : r.unrealizedPct < 0 ? "▼ " : "") + pct(r.unrealizedPct)));
+    const eq = h("span", {}, h("b", {}, "ACCOUNT"), money(o.equity) + " ", h("span", {class: cls(o.dayPnl)}, money(o.dayPnl, true) + " today"));
+    const one = [eq, ...ps.map(item)];
+    el.replaceChildren(...one, ...one.map(n => n.cloneNode(true)));  // two copies so the loop is seamless
+    el.classList.add("moving");
+  }
+  function tile(r) {
+    const lo = r.stop, hi = r.target, at = r.price;
+    const pos = (at != null && hi > lo) ? Math.max(0, Math.min(100, 100 * (at - lo) / (hi - lo))) : null;
+    return h("div", {class: "tile"},
+      h("div", {class: "sym"}, h("b", {}, r.symbol), h("span", {class: "row"}, r.trailing ? pill("trailing stop", "exp") : null, r.experiment ? pill("experiment", "exp") : null)),
+      h("div", {class: "sym"}, h("span", {class: "pl " + cls(r.unrealized)}, money(r.unrealized, true)), h("span", {class: "num " + cls(r.unrealizedPct)}, pct(r.unrealizedPct))),
+      h("div", {class: "lv"}, h("span", {}, "Last " + (at ?? "–")), h("span", {}, "In " + Number(r.entry).toFixed(2)), h("span", {}, money(r.valueCad))),
+      pos == null ? null : h("div", {class: "range", title: "Where the price sits between the stop and the target"}, h("i", {style: `left:${pos}%`})),
+      h("div", {class: "lv"}, h("span", {class: "down"}, "Stop " + Number(lo).toFixed(2)), h("span", {class: "up"}, "Target " + Number(hi).toFixed(2))),
+      h("div", {class: "meta"}, (r.rule || r.strategy || "").replace("us_stocks_etfs/", "").replaceAll("_", " ") + " · since " + when(r.openedAt).replace(/, .*$/, "")));
+  }
   function renderOverview() {
     const o = state.overview, p = document.getElementById("p-overview");
     if (!o) return;
-    const lvl = o.level || 1;
+    renderTape(o);
+    const lab = (state.learning || {}).lab, on = [];
+    for (const g of (lab && lab.groups) || []) for (const r of g.rules || []) if (r.passes) on.push(r);
     p.replaceChildren(
-      (o.levelsEnabled !== false && lvl < 2) ? h("div", {class: "banner"}, h("b", {}, "Level 1 · Research Apprentice. "), "It makes forecasts and writes research, but it can't place trades until it earns Level 2 and you approve.") : null,
       h("div", {class: "hero"},
-        h("span", {class: "kpi"}, h("span", {class: "label"}, "Total profit / loss")),
-        h("span", {class: "big " + cls(o.totalPnl)}, money(o.totalPnl, true)),
-        h("div", {class: "row2"},
-          h("span", {}, "Today: ", h("b", {class: cls(o.dayPnl)}, money(o.dayPnl, true)), " (" + pct(o.dayReturnPct) + ")"),
-          h("span", {}, "Account value: ", h("b", {}, money(o.equity))),
-          h("span", {}, "Sold so far: ", h("b", {class: cls(o.realized)}, money(o.realized, true))),
-          h("span", {}, "Still holding: ", h("b", {class: cls(o.unrealized)}, money(o.unrealized, true)))),
-        h("span", {class: "meta"}, "Live market prices, after fees. Open positions move with the market.")),
-      card("Today's buys and sells", (o.todayActivity || []).length ? table([
-        {t: "Time", v: r => when(r.at)}, {t: "", v: r => pill(r.side === "buy" ? "bought" : "sold", r.side === "buy" ? "info" : "ok")},
-        {t: "Asset", v: r => r.symbol}, {t: "Units", r: 1, v: r => r.qty}, {t: "Price", r: 1, v: r => r.price},
-        {t: "Money", r: 1, v: r => money(r.cashCad, true), c: r => cls(r.cashCad)},
-        {t: "Profit", r: 1, v: r => r.pnl == null ? "–" : money(r.pnl, true), c: r => cls(r.pnl)}], o.todayActivity) :
-        empty("No buys or sells yet today.")),
+        h("div", {style: "display:grid;gap:8px;min-width:0"},
+          h("span", {class: "eyebrow"}, "Account value · CAD"),
+          h("span", {class: "big"}, money(o.equity)),
+          h("span", {class: "chg " + cls(o.dayPnl)}, (o.dayPnl > 0 ? "▲ " : o.dayPnl < 0 ? "▼ " : "") + money(o.dayPnl, true) + "  " + pct(o.dayReturnPct) + "  today"),
+          h("div", {class: "row2"},
+            h("span", {}, "Total P/L ", h("b", {class: cls(o.totalPnl)}, money(o.totalPnl, true) + " (" + pct(o.totalReturnPct) + ")")),
+            h("span", {}, "Cash ", h("b", {}, money(o.cash))),
+            h("span", {}, "Booked ", h("b", {class: cls(o.realized)}, money(o.realized, true))),
+            h("span", {}, "Open ", h("b", {class: cls(o.unrealized)}, money(o.unrealized, true))))),
+        h("div", {style: "min-width:0"}, equityChart(o.equityCurve, o.startingBalance, o.benchmarkLabel))),
       h("div", {class: "kpis"},
-        kpi("Account value", money(o.equity), "cash " + money(o.cash)),
-        kpi("Total return", pct(o.totalReturnPct), money((o.equity || 0) - (o.startingBalance || 0), true), cls(o.totalReturnPct)),
-        kpi("Today", pct(o.dayReturnPct), "since yesterday's close", cls(o.dayReturnPct)),
-        kpi("Cash", money(o.cash), (o.positions || []).length + " open position(s)"),
-        kpi("Biggest drop", pct(o.maxDrawdownPct), "from a high point", o.maxDrawdownPct < 0 ? "down" : ""),
-        o.levelsEnabled === false ? kpi("Levels", "Off", "everything unlocked") : kpi("Level", String(lvl), o.levelName)),
+        kpi("Week", pct(o.weekReturnPct), null, cls(o.weekReturnPct)),
+        kpi("Month", pct(o.monthReturnPct), null, cls(o.monthReturnPct)),
+        kpi("Biggest drop", pct(o.maxDrawdownPct), "from the high point", o.maxDrawdownPct < 0 ? "down" : ""),
+        kpi("Positions", String((o.positions || []).length), "max 8 at once"),
+        kpi("In cash", o.equity ? pct(o.cash / o.equity, false) : "–", money(o.cash)),
+        kpi("Started with", money(o.startingBalance), "Oct 10, 2026")),
+      card("Positions board", (o.positions || []).length ? h("div", {class: "board"}, o.positions.map(tile)) : empty("No open positions. It's all cash right now.")),
+      card("Rules on duty", on.length ? h("div", {class: "rules"}, on.map(r => h("span", {class: "pill ok"}, r.rule.replaceAll("_", " ") + " · " + pct(r.cagr) + "/yr tested"))) :
+        empty("No rule passes the lab right now, so the desk stays in cash."),
+        h("p", {class: "meta"}, "Only rules that beat buy-and-hold in years they were never tuned on, after real fees, may trade. Winners ride a trailing stop that follows the price up.")),
+      card("Today's fills", (o.todayActivity || []).length ? table([
+        {t: "Time", v: r => when(r.at)}, {t: "", v: r => pill(r.side === "buy" ? "buy" : "sell", r.side === "buy" ? "info" : "ok")},
+        {t: "Ticker", v: r => h("b", {}, r.symbol)}, {t: "Qty", r: 1, v: r => r.qty}, {t: "Price", r: 1, v: r => r.price},
+        {t: "Cash", r: 1, v: r => money(r.cashCad, true), c: r => cls(r.cashCad)},
+        {t: "Fees", r: 1, v: r => money(r.feesCad)},
+        {t: "P/L", r: 1, v: r => r.pnl == null ? "–" : money(r.pnl, true), c: r => cls(r.pnl)}], o.todayActivity) :
+        empty("No fills yet today.")),
       h("div", {class: "grid"},
-        card("Account value", equityChart(o.equityCurve, o.startingBalance, o.benchmarkLabel),
-          h("p", {class: "meta"}, "Week " + pct(o.weekReturnPct) + " · Month " + pct(o.monthReturnPct) + " · " +
-            (o.riskAdjusted && o.riskAdjusted.available ? "Sharpe " + (o.riskAdjusted.sharpe ?? 0).toFixed(2) + ", Sortino " + (o.riskAdjusted.sortino ?? 0).toFixed(2) : "Risk-adjusted stats: " + ((o.riskAdjusted || {}).reason || "not enough data")))),
-        o.levelsEnabled === false ? card("Trading permissions", h("p", {}, "All trading is unlocked. Safety limits: at most 10% of the account per position, at most 1% lost per trade, and a stop-loss on every buy.")) : card("Promotion progress", promoMini(o.promotion))),
-      card("Open positions", (o.positions || []).length ? table([
-        {t: "Asset", v: r => h("span", {}, r.symbol, " ", r.experiment ? pill("experiment", "exp") : null)},
-        {t: "Units", r: 1, v: r => r.qty},
-        {t: "Bought at", r: 1, v: r => r.entry},
-        {t: "Stop / target", r: 1, v: r => r.stop + " / " + r.target},
-        {t: "Worth now", r: 1, v: r => money(r.valueCad)},
-        {t: "Gain/loss", r: 1, v: r => money(r.unrealized, true) + (r.unrealizedPct != null ? " (" + pct(r.unrealizedPct) + ")" : ""), c: r => cls(r.unrealized)},
-        {t: "Since", v: r => when(r.openedAt)}], o.positions) : empty("No open positions.")),
-      card("Latest market headlines", (o.headlines || []).length ? h("ul", {class: "plain"}, o.headlines.map(x =>
-        h("li", {}, h("a", {href: x.url}, x.title), h("div", {class: "meta"}, x.source + " · " + when(x.publishedAt) + (x.syndicated ? " · repost of an earlier story" : ""))))) :
-        empty("No headlines collected yet. News feeds may be blocked by the network settings.")),
-      card("System health", healthList(o.health)));
+        card("Newswire", (o.headlines || []).length ? h("ul", {class: "plain"}, o.headlines.slice(0, 8).map(x =>
+          h("li", {}, h("a", {href: x.url}, x.title), h("div", {class: "meta"}, x.source + " · " + when(x.publishedAt))))) :
+          empty("No headlines collected yet.")),
+        card("System health", healthList(o.health))));
   }
   function healthList(items) {
     if (!items || !items.length) return h("p", {}, pill("all checks passed", "ok"));
@@ -365,10 +408,11 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
   function labCard(lb) {
     if (!lb || !(lb.groups || []).length) return card("Strategy lab", empty("The lab hasn't run yet. It tests trading rules on years of real prices before they're allowed to trade."));
     return card("Strategy lab: which rules actually work",
-      h("p", {class: "meta"}, "Each rule is tested on years it wasn't tuned on, after fees, and compared with just buying and holding. Only rules marked ✅ are allowed to pick trades. Last run " + when(lb.runAt) + "."),
+      h("p", {class: "meta"}, "Each rule is tested on years it wasn't tuned on, after real fees (including the 1.5% currency conversion each way), and compared with just buying and holding. \"If USD held\" shows the same rule without conversion fees. Only rules marked ✅ are allowed to pick trades. Last run " + when(lb.runAt) + "."),
       ...lb.groups.map(g => h("div", {}, h("h3", {}, g.name.replaceAll("_", " ") + " · " + g.from + " to " + g.to + " · " + g.assets + " assets"),
         table([{t: "Rule", v: r => r.rule.replace("_", " ")}, {t: "Yearly", r: 1, v: r => pct(r.cagr), c: r => cls(r.cagr)}, {t: "Worst drop", r: 1, v: r => pct(r.maxDD)},
           {t: "Hold-only yearly", r: 1, v: r => pct(r.bhCagr)}, {t: "Hold-only worst drop", r: 1, v: r => pct(r.bhMaxDD)}, {t: "Tests", r: 1, v: r => r.folds},
+          {t: "Trades", r: 1, v: r => r.trades ?? "–"}, {t: "If USD held", r: 1, v: r => pct(r.usdHeldCagr), c: r => cls(r.usdHeldCagr)},
           {t: "Allowed", v: r => r.passes ? pill("yes", "ok") : pill("no", "bad")}], g.rules))),
       h("details", {}, h("summary", {}, "Limits of these tests"), h("ul", {}, (lb.limits || []).map(x => h("li", {}, x)))));
   }
@@ -438,7 +482,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
   const RENDER = {overview: renderOverview, research: renderResearch, trading: renderTrading, learning: renderLearning, progression: renderProgression, settings: renderSettings};
   function stamp() {
     const t = state.overview && state.overview.updatedAt;
-    document.getElementById("updated").textContent = t ? "Last run: " + when(t) : "Waiting for the first run…";
+    document.getElementById("updated").textContent = t ? "Updated " + when(t) : "Waiting for the first run…";
   }
 
   (async () => {
@@ -450,7 +494,7 @@ svg text { fill: var(--muted); font: 11px var(--mono) }
         const d = snap && (typeof snap.data === "function" ? snap.data() : snap.data);
         if (!d) return;
         state[name] = d;
-        try { RENDER[name](); } catch (e) { console.error(e); }
+        try { RENDER[name](); if (name === "learning" && state.overview) renderOverview(); } catch (e) { console.error(e); }
         if (name === "overview") stamp();
       }, err => console.error(err));
     }

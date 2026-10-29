@@ -81,6 +81,8 @@ def export(settings, broker, now, health_issues=()):
             "positions": [{"tradeId": t["trade_id"], "symbol": t["symbol"], "strategy": t["strategy"], "experiment": t.get("experiment"),
                            "qty": port.positions[t["trade_id"]].qty if t["trade_id"] in port.positions else None,
                            "entry": _r(t["entry"]["entry_price"]), "stop": t["stop_price"], "target": t["target_price"],
+                           "trailing": bool(t.get("trail_distance")), "rule": t.get("rule"),
+                           "price": _r((book.latest(t["symbol"], now) or {}).get("price")),
                            "costBasis": _r(port.positions[t["trade_id"]].cost_basis_cad, 2) if t["trade_id"] in port.positions else None,
                            "unrealized": _r(unreal.get(t["trade_id"]), 2), "openedAt": t["entry"]["opened_at"],
                            "markCad": _r(marks.get(t["symbol"])),
@@ -154,7 +156,9 @@ def _lab_summary():
                                          "cagr": _r(v["oos"].get("cagr")), "maxDD": _r(v["oos"].get("max_drawdown")),
                                          "sharpe": _r(v["oos"].get("sharpe"), 2), "bhCagr": _r(v["buy_hold_oos"].get("cagr")),
                                          "bhMaxDD": _r(v["buy_hold_oos"].get("max_drawdown")),
-                                         "index": v.get("index"), "indexCagr": _r((v.get("index_oos") or {}).get("cagr"))} for r, v in g["rules"].items()]})
+                                         "index": v.get("index"), "indexCagr": _r((v.get("index_oos") or {}).get("cagr")),
+                                         "trades": v.get("trades"),
+                                         "usdHeldCagr": _r(((v.get("if_usd_held") or {}).get("oos") or {}).get("cagr"))} for r, v in g["rules"].items()]})
     return out
 
 
