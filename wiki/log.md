@@ -60,3 +60,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ [[connected-apps]], CLAUDE.md §10 (v2.3), `agents/README.md`
 - ⚠️ routines can't have connectors attached from a session: Firecrawl, Google Calendar and Gmail must be added in claude.ai
 - → Stellan: attach connectors; merge the PR so the routines can read instructions from the main branch
+
+## [2026-10-30] schema | v2.4 daily check-in questions, one notification, app redesign
+- ~ `agents/v3/call.md`: 3–4 new questions each call (Sunday evening / Monday morning weekly plan; rotating golf, school, business, health; one "Can I add …?" with a calendar suggestion); one push per call, email removed
+- ~ `agents/v3/shared.md`, `research.md`, `scheduling.md`: new `checkins/<call id>` shape, `settings/focus` steers research and words, scheduling adds check-in events the app couldn't
+- ~ app (artifact RmkjrydKPNeqMoYjDdNXm5): redesign, check-in form for both calls, Claude reads answers, one-tap Add to Google Calendar, streak; private data readable only by Stellan
+- ~ routines: Morning call, Evening call, Research, Scheduling now load their files from `claude/dreamy-planck-0r5seo`
+- → Stellan: set the app's Share to private (it still says "anyone with the link"; the data inside is already owner-only)

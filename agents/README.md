@@ -29,8 +29,10 @@ Instructions live in [`v3/`](v3/): [shared.md](v3/shared.md) (rules and the app 
 |---|---|---|---|
 | Brain · Research (`trig_01MkcXk54xCXqhiqkbx4R4fi`) | [v3/research.md](v3/research.md) | 5:47 AM, 12:47 PM, 6:47 PM | Firecrawl (YouTube transcripts, search); runs on WebSearch alone without it |
 | Brain · Scheduling (`trig_01LLLxKuWbyS9GPPLRkTw8B5`) | [v3/scheduling.md](v3/scheduling.md) | 8:11 PM | Google Calendar (without it, the plan is saved with `added: false`) |
-| Brain · Morning call (`trig_01SmqhKBv5AriN8wWpNyMbfF`) | [v3/call.md](v3/call.md) | builds 6:41 AM, arrives ~6:45 | Gmail optional (email link); push works without it |
-| Brain · Evening call (`trig_01S3P6w15q2ufu7QufPhtej4`) | [v3/call.md](v3/call.md) | builds 5:56 PM, arrives ~6:00 | Gmail optional |
+| Brain · Morning call (`trig_01SmqhKBv5AriN8wWpNyMbfF`) | [v3/call.md](v3/call.md) | builds 6:41 AM, arrives ~6:45 | none (one push, no email since 2026-10-30) |
+| Brain · Evening call (`trig_01S3P6w15q2ufu7QufPhtej4`) | [v3/call.md](v3/call.md) | builds 5:56 PM, arrives ~6:00 | none (one push) |
 
-The routines read these files from branch `claude/ecstatic-bohr-78whd2`. After that branch is merged, point the four prompts at `ccr-a52a2301-reivsy` (update the raw GitHub URL in each routine prompt).
+Since 2026-10-30 the routines read these files from branch `claude/dreamy-planck-0r5seo`. After that branch is merged, point the four prompts at `ccr-a52a2301-reivsy` (update the raw GitHub URL in each routine prompt).
+
+**Check-ins (2026-10-30):** each call now ends with 3 or 4 questions that change every day (call.md, Questions). Stellan answers in the app; Claude in the app reads the answers and proposes calendar events, and Stellan taps Add to put them in Google Calendar straight away (the app uses his Google Calendar connector). If the app can't reach the calendar, the Scheduling agent adds them at 8:11 PM. Sunday-evening and Monday-morning answers set `settings/focus`, which steers Research and the vocabulary words.
 Connectors can only be attached in claude.ai (Routines, then Edit, then Connectors), not from a Claude Code session.

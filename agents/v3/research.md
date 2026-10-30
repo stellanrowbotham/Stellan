@@ -14,6 +14,9 @@ Read `shared.md` first. Tools: `ArtifactData`, `WebSearch`, `WebFetch`, `mcp__Fi
    - `pm`: **golf** and **vocab**
 3. **Steer.** Read the last 14 days of `findings` (titles and URLs, so you never repeat one) and any `review` ratings: do more of what
    Stellan marked `useful` or `tried`, less of `not_for_me`. Read `channels` (status `following`).
+   Read `settings/focus` if it exists (Stellan's answers from the Sunday/Monday check-in). If `researchLookFor` is set, make at least one of
+   the 3 findings in every run match it, and let `weekPlan` shape the rest (for example a study method for a test he named). Also read the
+   newest `checkins` for anything he asked to learn more about.
 4. **Search.** Use `WebSearch` first. Use `firecrawl_search` (`sources: ["web"]`, `domainTools: false`, `limit: 5`, always fill `objective`) for
    YouTube results and anything WebSearch missed. Budget per run: at most 2 Firecrawl searches and 2 video reads.
    What each topic means:
@@ -34,7 +37,8 @@ Read `shared.md` first. Tools: `ArtifactData`, `WebSearch`, `WebFetch`, `mcp__Fi
    (his AI automation business, school, golf, the Apprentice). `howToUse`: 2 to 4 concrete steps, each with minutes. Cite sources with dates.
    **Channels:** for a clearly good creator (practical, original expertise, recent), create or update `channels/<slug>` with status `following` and a one-line `why`.
    At most 2 new channels per day.
-8. **Vocabulary (pm run only).** Write `vocab/<tomorrow>` with `preferences.vocab.perDay` words (default 5) at high-school business level,
+8. **Vocabulary (pm run only).** Write `vocab/<tomorrow>` with `preferences.vocab.perDay` words (default 5) at high-school business level
+   (or the kind of words in `settings/focus.wordsLookFor`, when Stellan set it this week),
    none repeated from the last 14 days. Each word: `word, partOfSpeech, meaning` (plain English), `example` (an everyday sentence, not office jargon), `useToday`
    (one concrete way to use it tomorrow in school, golf, FlowPilot or with friends).
 9. **Answer questions.** Read `questions` with `section: "research"`, `status: "queued"`, oldest first, at most 3. Answer in 120 words or fewer from your findings,

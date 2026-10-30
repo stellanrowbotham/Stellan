@@ -22,8 +22,8 @@ sensible call and write down what you decided.
   page or YouTube transcript scrape (`formats: ["markdown"]`) is 1 credit, and the `query` format is 5 credits, so never use `query`.
   Stay under `preferences.research.firecrawlCreditsPerDay` credits per Toronto day (read `usage/<date>` and add to it).
   Apify only if the connector is signed in and a free run is available. Never turn on anything that bills Stellan.
-- **Email:** only the Call agent sends email (and only if the Gmail tool loaded; if not, skip it and say so), only to `rowbs34@gmail.com`, only the short "Brain is calling" message.
-- **Calendar:** only the Scheduling agent creates events, on the primary calendar, titled `Brain: …`, only for blocks it
+- **Email:** none of these agents sends email. The Call agent sends one push notification per call and nothing else.
+- **Calendar:** among the agents only the Scheduling agent creates events (the app itself can add an event when Stellan taps Add on a check-in answer), on the primary calendar, titled `Brain: …`, only for blocks it
   based on a finding. Never edit or delete an event it did not create. Search for a duplicate (same title, same start) first.
   Never place anything during school hours or sleep hours from preferences.
 - **Investing is education only.** Describe how a strategy works, what data it needs and how it fails. Every figure carries
@@ -44,7 +44,8 @@ sensible call and write down what you decided.
 | `schedule/<YYYYMMDD>-<slug>` | `{title, start, end, allDay: false, location: "", source: "Scheduling agent", url: "", calendarEventId, calendar: true, addedAt}` (this is what the app's "Coming up" list reads) | Scheduling |
 | `vocab/<YYYY-MM-DD>` | `{date, words: [{word, partOfSpeech, meaning, example, useToday}]}` | Research (pm slot, for the next day) |
 | `calls/<YYYY-MM-DD>-<morning\|evening>` | `{kind, date, createdAt, title, sections: [{heading, text}], questions?: [], test?: bool}` (`heardAt` is set by the app) | Call |
-| `checkins/<YYYY-MM-DD>` | `{date, callId, did, upcoming, answeredAt}` | the app, from Stellan's typed answers |
+| `checkins/<call id>` | `{date, callId, kind, answers: [{id, q, a, topic}], events: [{title, start, end, why, added, eventLink?}], reply, answeredAt}` (older docs: `checkins/<date>` with `{did, upcoming}`) | the app, from Stellan's typed answers |
+| `settings/focus` | `{weekPlan, researchLookFor, wordsLookFor, updatedAt}` from Stellan's Sunday/Monday answers | the app |
 | `usage/<YYYY-MM-DD>` | `{date, firecrawlCredits, apifyCalls, runs: {research, scheduling, call}}` | every agent adds its own |
 | `activity/<YYYY-MM-DD>` | `{date, items: [{at, agent, text}]}`, newest last, keep at most 200 | every agent (1 to 3 plain lines per run) |
 
@@ -56,7 +57,7 @@ sensible call and write down what you decided.
 ## 4. `settings/preferences` fields
 `tz, city, weather {latitude, longitude}, school {start, end, days}, sleep {start, end}, topics [], youtube {follow, findChannels},
 research {topFindings, firecrawlCreditsPerDay, runs}, qa {perSectionPerDay}, calendar {autoAdd, prefix}, calls {morning, evening},
-vocab {perDay, quiz, level}, checkinQuestions [], paused` (`paused: true` means Stellan is low on usage: Research stops at once).
+vocab {perDay, quiz, level}, checkinQuestions [] (no longer used: call.md picks new questions each day), paused` (`paused: true` means Stellan is low on usage: Research stops at once).
 
 ## 5. Weather (Open-Meteo, free, no key)
 `WebFetch https://api.open-meteo.com/v1/forecast?latitude=<lat>&longitude=<lon>&current=temperature_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=America%2FToronto&forecast_days=2`
