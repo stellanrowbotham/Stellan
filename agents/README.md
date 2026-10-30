@@ -6,8 +6,8 @@ an agent behaves, edit its file. The next run picks up the change.
 
 | Routine | File | When (America/Toronto) | Agents shown in the app |
 |---|---|---|---|
-| Brain · Morning brief (`trig_01Qh6PkzGjUGoJgPw8jdTBp8`) | [morning-brief.md](morning-brief.md) | daily 6:18 (email lands ~6:30) | Morning Brief (it also clears the inbox first) |
-| Brain · Inbox agent (`trig_01HiS5y3PaTTuJQYh6wUdYPX`) | [inbox-agent.md](inbox-agent.md) | 6:53, 8:53 … 22:53 (every 2 h) | Link Sorter, Stock Agent, Schedule Agent |
+| Brain · Morning brief (`trig_01Qh6PkzGjUGoJgPw8jdTBp8`) | [morning-brief.md](morning-brief.md) | **off since 2026-10-26** (replaced by the morning call) | Morning Brief |
+| Brain · Inbox agent (`trig_01HiS5y3PaTTuJQYh6wUdYPX`) | [inbox-agent.md](inbox-agent.md) | 12:53 and 20:53 (cut from every 2 h on 2026-10-26) | Link Sorter, Stock Agent, Schedule Agent |
 
 Shared rules for every run are in [protocol.md](protocol.md). Read it first.
 
@@ -18,3 +18,21 @@ Shared rules for every run are in [protocol.md](protocol.md). Read it first.
 **Connectors:** both Routines need the **Gmail** and **Google Calendar** connectors attached in
 claude.ai → Routines → (routine) → Connectors. Without them, the agents still sort and research links and
 update the app, but they can't send the email or add calendar events, and they report that in the app.
+
+## v3 agents (2026-10-26)
+
+Instructions live in [`v3/`](v3/): [shared.md](v3/shared.md) (rules and the app database map) plus one job file each. Each run downloads
+`shared.md` and its job file from GitHub (no checkout), so it uses less usage. All four run on Sonnet 5.5 and keep private settings
+(city, school and sleep hours) in the app database only.
+
+| Routine | File | When (America/Toronto) | Needs connector |
+|---|---|---|---|
+| Brain · Research (`trig_01MkcXk54xCXqhiqkbx4R4fi`) | [v3/research.md](v3/research.md) | 5:47 AM, 12:47 PM, 6:47 PM | Firecrawl (YouTube transcripts, search); runs on WebSearch alone without it |
+| Brain · Scheduling (`trig_01LLLxKuWbyS9GPPLRkTw8B5`) | [v3/scheduling.md](v3/scheduling.md) | 8:11 PM | Google Calendar (without it, the plan is saved with `added: false`) |
+| Brain · Morning call (`trig_01SmqhKBv5AriN8wWpNyMbfF`) | [v3/call.md](v3/call.md) | builds 6:41 AM, arrives ~6:45 | none (one push, no email since 2026-10-30) |
+| Brain · Evening call (`trig_01S3P6w15q2ufu7QufPhtej4`) | [v3/call.md](v3/call.md) | builds 5:56 PM, arrives ~6:00 | none (one push) |
+
+Since 2026-10-30 the routines read these files from branch `claude/dreamy-planck-0r5seo`. After that branch is merged, point the four prompts at `ccr-a52a2301-reivsy` (update the raw GitHub URL in each routine prompt).
+
+**Check-ins (2026-10-30):** each call now ends with 3 or 4 questions that change every day (call.md, Questions). Stellan answers in the app; Claude in the app reads the answers and proposes calendar events, and Stellan taps Add to put them in Google Calendar straight away (the app uses his Google Calendar connector). If the app can't reach the calendar, the Scheduling agent adds them at 8:11 PM. Sunday-evening and Monday-morning answers set `settings/focus`, which steers Research and the vocabulary words.
+Connectors can only be attached in claude.ai (Routines, then Edit, then Connectors), not from a Claude Code session.

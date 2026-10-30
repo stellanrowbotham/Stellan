@@ -308,6 +308,13 @@ check-in works through them one at a time.
     Added [[connected-apps]]. The Command Centre's agents are synced into the app each run.
     **The repo is public**, so personal and third-party details live only in the app database
     (source pages may use `raw: app:<db path>`), and the wiki holds aggregates.
+  - 2026-10-26: **v2.3. Research, Scheduling and Call agents.** New agents in `agents/v3/` (research 3×/day, scheduling 1×/day,
+    morning and evening "Brain is calling"), run on Sonnet 5.5. The app gained a Brain calls panel (read aloud with the phone's own voice),
+    Research and Scheduling sections with ask boxes, and a pause switch. FlowPilot Outreach routines and the 6:30 AM brief are off;
+    the link inbox agent runs twice a day. Private preferences (city, school and sleep hours) live in the app database only.
+  - 2026-10-30: **v2.4. Daily check-in questions.** Morning and evening calls end with 3 or 4 questions that change every day
+    (weekly plan on Sunday night and Monday morning, then golf, school, business and health). Claude in the app turns answers into
+    Google Calendar events that Stellan adds with one tap. One push per call, no email. The app was redesigned and is private to Stellan.
 
 ---
 
