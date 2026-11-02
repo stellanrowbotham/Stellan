@@ -5,7 +5,7 @@ title: Connected apps & agents
 aliases: ["Connected apps", "Agents", "Everything connected"]
 tags: [apps, agents, links]
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-11-02
 sources: [src-command-centre, src-flowpilot-request-page, src-ace-outreach-log]
 ---
 
@@ -38,6 +38,7 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 | Morning Rundown | Command Centre | daily 7:45 AM | Email and calendar sweep, then the day's plan ([[src-command-centre]]) |
 | Inbox Sweep | Command Centre | 6× a day | Email: dates, deadlines, drafted replies ([[src-command-centre]]) |
 | 6 PM Update | Command Centre | daily ~6 PM | Checks every agent ran, plans tomorrow ([[src-command-centre]]) |
+| Alexa Wake-up (pending) | This brain | daily at wake time | Will speak the day's run-down on Stellan's Echo after the Alexa alarm *(Stellan, 2026-11-02)* |
 | [[ace]] | Command Centre | on call in chat | Cold outreach for [[flowpilot]] |
 | FlowPilot workflow | n8n | each inquiry | Emails Stellan and confirms with the visitor ([[src-flowpilot-request-page]]) |
 | Investing Apprentice | Command Centre | weekdays 8:27 AM, 4:33 PM | Research, forecasts, paper trades ([[investing-apprentice]]) |
@@ -48,7 +49,8 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 ## Open questions
 1. Keep both morning briefings, or merge them?
 2. Reconnect the n8n connector so the FlowPilot workflow can be checked again?
-3. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
+3. Alexa wake-up: wake time (weekdays and weekends), which Echo, and OK to send the spoken script through Voice Monkey?
+4. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
 
 ## Pages
 - Related: [[overview]] · [[flowpilot]] · [[ace]] · [[investing-apprentice]] · [[daily-run-through]] · [[schedule]]
