@@ -42,3 +42,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-11-02] edit | Alexa wake-up (drafted, not live)
+- Stellan asked for a morning run-down from his Alexa Echo that wakes him up.
+- + `agents/alexa-wakeup.md` (agent steps), `tools/alexa.py` (Voice Monkey v3 announce API, stdlib)
+- ~ `agents/README.md`, [[connected-apps]] (pending agent + open question)
+- Design: Alexa alarm + Alexa routine (weather, calendar) wake him; the agent speaks the Brain part a couple of minutes later
+- → Stellan: wake time, Echo, Voice Monkey env vars, OK on a protocol §2 exception. Then create the Routine and log a `schema` entry
