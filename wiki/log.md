@@ -42,3 +42,9 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-11-06] schema | Opportunity & Partnership Agent (Gmail drafts only)
+- + `agents/opportunity-agent.md`: a broad opportunity agent (business, FlowPilot clients, golf, programs, jobs, mentors) that saves outreach emails to Gmail Drafts through Composio `GMAIL_CREATE_EMAIL_DRAFT` and never sends them
+- ~ `agents/README.md`: added the agent (on demand, no Routine yet)
+- read: Composio connection check. Gmail (2 accounts), Facebook and Google Drive are active; the other apps haven't been checked yet
+- → the unified master prompt (all roles in one) lives in Stellan's Claude chats, not in this public repo, because it holds personal details
