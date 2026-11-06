@@ -48,3 +48,8 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ~ `agents/README.md`: added the agent (on demand, no Routine yet)
 - read: Composio connection check. Gmail (2 accounts), Facebook and Google Drive are active; the other apps haven't been checked yet
 - → the unified master prompt (all roles in one) lives in Stellan's Claude chats, not in this public repo, because it holds personal details
+
+## [2026-11-06] query | First Opportunity Report (Atlas)
+- read: the ACE outreach log (69 businesses already contacted, all skipped)
+- 5 outreach drafts saved to Gmail Drafts (not sent) for KW indoor-golf and entertainment venues. Names and contacts are kept in Stellan's private "Opportunity Pipeline" sheet, not here
+- → Stellan reviews and sends the drafts; follow-ups are due 5 and 10 business days after sending
