@@ -9,6 +9,8 @@ an agent behaves, edit its file. The next run picks up the change.
 | Brain · Morning brief (`trig_01Qh6PkzGjUGoJgPw8jdTBp8`) | [morning-brief.md](morning-brief.md) | daily 6:18 (email lands ~6:30) | Morning Brief (it also clears the inbox first) |
 | Brain · Inbox agent (`trig_01HiS5y3PaTTuJQYh6wUdYPX`) | [inbox-agent.md](inbox-agent.md) | 6:53, 8:53 … 22:53 (every 2 h) | Link Sorter, Stock Agent, Schedule Agent |
 
+| *(on demand, no Routine yet)* | [opportunity-agent.md](opportunity-agent.md) | When Stellan asks, plus the Monday Opportunity Report | Opportunity & Partnership Agent: finds opportunities beyond golf and saves outreach emails to Gmail Drafts (never sends) |
+
 Shared rules for every run are in [protocol.md](protocol.md). Read it first.
 
 - **App (live brain):** https://claude.ai/artifact/RmkjrydKPNeqMoYjDdNXm5
