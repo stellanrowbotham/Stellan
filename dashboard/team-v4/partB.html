@@ -1,0 +1,71 @@
+    <section class="panel span-12" id="p-daily" aria-labelledby="h-daily">
+      <div class="panel-head"><h2 id="h-daily">Full daily update</h2><span class="sub" id="daily-meta"></span></div>
+      <div class="row"><select id="daily-pick" class="sm" aria-label="Pick a day"></select><button type="button" class="btn-quiet" id="daily-read">Read it aloud</button><button type="button" class="btn-quiet" id="daily-stop" hidden>Stop</button></div>
+      <div id="daily-body" class="brief"></div>
+    </section>
+
+    <section class="panel span-6" id="p-cos" aria-labelledby="h-cos">
+      <div class="panel-head"><h2 id="h-cos">Chief of Staff</h2><span class="sub" id="cos-meta"></span></div>
+      <div><span class="label">Today's plan</span><ul class="events" id="cos-plan"></ul></div>
+      <div><span class="label">Needs an answer · drafts waiting</span><ul class="tbl" id="cos-mail"></ul></div>
+      <div><span class="label">Follow-ups: no reply yet</span><ul class="tbl" id="cos-wait"></ul></div>
+      <div><span class="label">Reminders (sent by text)</span><ul class="tbl" id="cos-rem"></ul>
+        <form id="rem-form" class="subform" novalidate><div class="grid2"><label>Remind me to<input type="text" id="rem-text" maxlength="140"></label><label>When<input type="datetime-local" id="rem-when"></label><label>How<select class="fld" id="rem-ch"><option value="sms">Text</option><option value="push">Push</option></select></label></div><div class="row"><button class="btn" type="submit">Add reminder</button><span class="formmsg" id="rem-msg"></span></div></form></div>
+    </section>
+
+    <section class="panel span-6" id="p-outreach" aria-labelledby="h-outreach">
+      <div class="panel-head"><h2 id="h-outreach">Outreach and networking</h2><span class="sub" id="out-meta"></span></div>
+      <div class="statrow" id="out-stats" role="group" aria-label="Filter by status"></div>
+      <ul class="tbl" id="out-list"></ul>
+      <div><span class="label">LinkedIn and forms: you send, one tap</span><ul class="tbl" id="out-queue"></ul></div>
+      <div><span class="label">Opportunities from the Research Brain</span><ul class="tbl" id="out-opps"></ul></div>
+      <div><span class="label">Mirrors</span><div class="row" id="out-links"></div></div>
+    </section>
+
+    <section class="panel span-6" id="p-perf" aria-labelledby="h-perf">
+      <div class="panel-head"><h2 id="h-perf">Performance</h2><span class="sub" id="perf-meta"></span></div>
+      <div id="perf-note"></div>
+      <div><span class="label">This week: hours done vs target</span><div class="bars" id="perf-bars"></div></div>
+      <div id="perf-flags"></div>
+      <div><span class="label">Practice: next 7 days</span><ul class="tbl" id="perf-list"></ul></div>
+      <div><span class="label">Tournament prep</span><div id="perf-tourn"></div></div>
+      <div><span class="label">Mental game · today</span>
+        <form id="mental-form" class="subform" novalidate><div class="grid2"><label>Focus 1-10<input type="number" id="m-focus" min="1" max="10"></label><label>Nerves 1-10<input type="number" id="m-nerves" min="1" max="10"></label></div><label class="sub">One intention for today<input type="text" id="m-intent" maxlength="140"></label><label class="sub">Game journal (3 lines after a game)<textarea id="m-journal" rows="2"></textarea></label><div class="row"><button class="btn" type="submit">Save</button><span class="formmsg" id="m-msg"></span></div></form></div>
+      <details><summary class="label">Meal plan (planning only)</summary><div id="perf-meals"></div></details>
+      <details><summary class="label">My schedule (send it when you have it)</summary>
+        <form id="train-form" class="subform" novalidate>
+          <label class="sub">Paste your school and hockey schedule in any format<textarea id="t-raw" rows="4" placeholder="e.g. School Mon-Fri 8:10-2:20. Hockey practice Tue/Thu 6-7:15pm. Games Sat."></textarea></label>
+          <div class="grid2"><label>Hockey hours / week<input type="number" id="t-h" min="0" max="25" step="0.5"></label><label>Golf hours / week<input type="number" id="t-g" min="0" max="25" step="0.5"></label><label>Max hours / day<input type="number" id="t-max" min="1" max="6" step="0.5"></label><label>Golf outdoors now?<select class="fld" id="t-out"><option value="no">No (winter)</option><option value="yes">Yes</option></select></label></div>
+          <div class="row"><button class="btn" type="submit">Save schedule</button><span class="formmsg" id="t-msg"></span></div></form></details>
+    </section>
+
+    <section class="panel span-6" id="p-rb" aria-labelledby="h-rb">
+      <div class="panel-head"><h2 id="h-rb">Research Brain: bookings and answers</h2><span class="sub" id="rb-meta"></span></div>
+      <div class="sub" id="rb-rule"></div>
+      <div><span class="label">Bookings</span><ul class="tbl" id="rb-book"></ul></div>
+      <div><span class="label">Latest answers (ask above or in the Research panel)</span><ul class="tbl" id="rb-ans"></ul></div>
+    </section>
+
+    <section class="panel span-12" id="p-log" aria-labelledby="h-log">
+      <div class="panel-head"><h2 id="h-log">What the agents did on their own</h2><span class="sub" id="log-meta"></span></div>
+      <div class="row"><select id="log-agent" class="sm" aria-label="Agent"></select><select id="log-kind" class="sm" aria-label="Kind"></select></div>
+      <ul class="feed" id="log-feed"></ul>
+      <details><summary class="label">Agent-to-agent messages (the bus)</summary><ul class="tbl" id="bus-list"></ul></details>
+    </section>
+
+    <section class="panel span-12" id="p-hist" aria-labelledby="h-hist">
+      <div class="panel-head"><h2 id="h-hist">Search everything</h2><span class="sub">daily updates, research, answers, calls, memory</span></div>
+      <div class="field"><label for="hq" class="sr">Search</label><input type="search" id="hq" placeholder="Search your history: a topic, a place, a word…"></div>
+      <ul class="tbl" id="hist-list" style="max-height:420px"></ul>
+    </section>
+
+    <section class="panel span-12" id="p-settings" aria-labelledby="h-set">
+      <div class="panel-head"><h2 id="h-set">Switches and limits</h2><span class="sub" id="set-meta"></span></div>
+      <div id="set-body"></div>
+      <form id="mem-form" class="subform" novalidate>
+        <span class="label">What every agent should know (shared memory)</span>
+        <label class="sub">My goals (hockey, golf, school, business)<textarea id="mem-goals" rows="3" maxlength="1500"></textarea></label>
+        <label class="sub">Outreach profile: who I am, my teams and results, and what I am asking sponsors and programs for. Only true facts: the Outreach Agent never invents anything, and only drafts until this is filled in.<textarea id="mem-prof" rows="5" maxlength="2500"></textarea></label>
+        <div class="row"><button class="btn" type="submit">Save to shared memory</button><span class="formmsg" id="mem-msg"></span></div>
+      </form>
+    </section>

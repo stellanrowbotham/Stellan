@@ -258,6 +258,7 @@ Make the change, keep links, the index, and frontmatter consistent, log an `edit
 - Agent runs are ingests done unsupervised. They follow §6.3 and log `ingest` entries noting "agent run".
 - In chat, when Stellan pastes a link, Claude can handle it directly (as an ingest), or add it to the inbox when Stellan says "queue it".
 - Any session that changes the hubs refreshes the app's `brain/snapshot` so the app stays in sync.
+- **Agent team (v4):** Chief of Staff, Research Brain, Outreach and Performance share the app database and a message bus. Their instructions are in `agents/v4/` (start with `ARCHITECTURE.md`); see [[agent-team]]. Contacts, replies, schedules and locations stay in the database only.
 - To change agent behaviour, edit the file in `agents/` and log a `schema` entry.
 
 ---
@@ -308,6 +309,7 @@ check-in works through them one at a time.
     Added [[connected-apps]]. The Command Centre's agents are synced into the app each run.
     **The repo is public**, so personal and third-party details live only in the app database
     (source pages may use `raw: app:<db path>`), and the wiki holds aggregates.
+  - 2026-11-08: **v2.4. Agent team.** Added the four-agent team (Chief of Staff, Research Brain, Outreach, Performance), the message bus and shared memory in the app database, `agents/v4/`, `dashboard/team-v4/` and [[agent-team]]. Outreach sends only after Stellan turns sending on; texts are off until a provider is connected.
 
 ---
 

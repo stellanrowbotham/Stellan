@@ -42,3 +42,12 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-11-08] schema | v2.4: agent team (Chief of Staff, Research Brain, Outreach, Performance)
+- Stellan asked for four always-on agents with shared memory, a message bus, text alerts, a 6:45 AM daily update and everything inside the Brain page. Built as v4 on top of the existing v3 Research, Scheduling and Call agents.
+- + `agents/v4/` (ARCHITECTURE, shared, chief-of-staff, research-brain, outreach, performance, dispatcher, call-addon), `dashboard/team-v4/` (page patch, build script, Playwright test with a fake database), [[agent-team]]
+- ~ app database: + `agents/cos|outreach|performance`, + `settings/team`, + `settings/training`, ~ `agents/research`, ~ `settings/preferences` (`qa.perSectionPerDay` 5 → 20)
+- ~ [[connected-apps]], [[overview]], [[index]], `CLAUDE.md` §6.7 and §10, `agents/README.md`
+- ⚠️ v3 rules changed: Outreach (and Research, for booking requests only) may send email; Performance owns hockey and golf calendar blocks. Both recorded in `agents/v4/shared.md` §1.
+- ⚠️ No texting provider is connected yet, and LinkedIn messages cannot be sent automatically (queued for a one-tap send instead).
+- → Stellan: choose the text provider, fill in the outreach profile and schedule on the Brain page, decide on Brain page sharing

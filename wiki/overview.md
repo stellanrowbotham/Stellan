@@ -23,6 +23,7 @@ Home page. This is the big picture across everything Stellan is working on, kept
 - **App:** [Stellan's Brain](https://claude.ai/artifact/RmkjrydKPNeqMoYjDdNXm5). Drop links into the inbox, watch the agents work, and see today's schedule, the morning breakdown, and each section.
 - **Agents:** the Link Sorter, Stock Agent and Schedule Agent work the inbox every 2 hours from 7am to 11pm. The Morning Brief emails rowbs34@gmail.com at 6:30 AM *(Stellan, 2026-10-10)*. Instructions are in `agents/`.
 - **Schedule:** [[schedule]] (also written to Google Calendar).
+- **Agent team:** Chief of Staff, Research Brain, Outreach and Performance share one memory and report on the Brain page ([[agent-team]]).
 - **Brain map & Talk to ACE:** the app draws every agent, app and outreach contact as a graph. Tap a dot for details. [[connected-apps]] lists them all, including the older **Command Centre** and its six agents.
 
 ## How they connect
