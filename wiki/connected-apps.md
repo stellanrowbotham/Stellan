@@ -35,6 +35,10 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 | Stock Agent | This brain | with each inbox run | Researches stocks and crypto you send ([[investing-apprentice]]) |
 | Schedule Agent | This brain | with each inbox run | Adds schedules to Google Calendar and [[schedule]] |
 | Morning Brief | This brain | daily 6:30 AM | Email breakdown to Stellan |
+| Chief of Staff | This brain | 6:15 AM daily, inbox every 2 h | Daily plan, Gmail drafts, follow-ups, reminders, weekly reviews ([[agent-team]]) |
+| Research Brain | This brain | 3x a day + hourly | On-demand research, booking, hands opportunities to Outreach ([[agent-team]]) |
+| Outreach | This brain | weekdays 3x a day | Sponsors, programs, businesses; Notion and Sheets mirrors ([[agent-team]]) |
+| Performance | This brain | 7:40 PM daily | Hockey and golf planning, hours log, tournament prep ([[agent-team]]) |
 | Morning Rundown | Command Centre | daily 7:45 AM | Email and calendar sweep, then the day's plan ([[src-command-centre]]) |
 | Inbox Sweep | Command Centre | 6× a day | Email: dates, deadlines, drafted replies ([[src-command-centre]]) |
 | 6 PM Update | Command Centre | daily ~6 PM | Checks every agent ran, plans tomorrow ([[src-command-centre]]) |
@@ -51,4 +55,4 @@ Every app, site, doc and agent that Stellan's Brain is connected to. The app's *
 3. Allow manus.space (and data sources for the Apprentice) in the cloud environment's network settings?
 
 ## Pages
-- Related: [[overview]] · [[flowpilot]] · [[ace]] · [[investing-apprentice]] · [[daily-run-through]] · [[schedule]]
+- Related: [[agent-team]] · [[overview]] · [[flowpilot]] · [[ace]] · [[investing-apprentice]] · [[daily-run-through]] · [[schedule]]

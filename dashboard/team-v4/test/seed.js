@@ -1,0 +1,55 @@
+// Seed data shaped exactly like agents/v4/ARCHITECTURE.md (all invented, no real people)
+const iso = (h) => new Date(Date.now() + h * 3600e3).toISOString();
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Toronto" }).format(new Date());
+module.exports = () => ({
+  agents: {
+    cos: { order: 30, name: "Chief of Staff", role: "r", cadence: "6:15 AM daily + every 2 h", status: "ok", lastRunAt: iso(-1), lastSummary: "Built today's plan: 6 items, 2 need an answer." },
+    outreach: { order: 32, name: "Outreach", role: "r", cadence: "weekdays 9:20, 1:20, 4:20", status: "attention", lastRunAt: iso(-3), lastSummary: "Drafted 3, sent 0 (draft only). Needs you: fill in your outreach profile." },
+    performance: { order: 33, name: "Performance", role: "r", cadence: "7:40 PM", status: "idle", lastRunAt: iso(-20), lastSummary: "Planned 5 blocks (3 hockey, 2 golf); provisional until schedule received." },
+    research: { order: 20, name: "Research Brain", role: "r", cadence: "3x/day + hourly", status: "ok", lastRunAt: iso(-2), lastSummary: "Answered 2 questions, 1 booking, 1 handoff." },
+  },
+  messages: {
+    m1: { from: "performance", to: "cos", kind: "task", subject: "Block practice 4:15-5:15", status: "new", priority: "normal", createdAt: iso(-2) },
+    m2: { from: "research", to: "outreach", kind: "handoff", subject: "U16 hockey showcase program", status: "done", result: "Created 1 contact", priority: "normal", createdAt: iso(-5), handledAt: iso(-4) },
+    m3: { from: "stellan", to: "cos", kind: "request", subject: "Move my meeting", body: "Move my meeting", status: "done", result: "Moved to 5pm", createdAt: iso(-8) },
+  },
+  alerts: { a1: { kind: "reply", urgent: true, title: "A sponsor replied", body: "Open your Brain to read it.", from: "outreach", createdAt: iso(-0.5), delivery: { push: { status: "sent" } } },
+    a2: { kind: "deadline", urgent: true, title: "Old deadline", from: "cos", createdAt: iso(-30), ack: iso(-29) } },
+  reminders: { r1: { text: "Pack hockey bag", dueAt: iso(3), channel: "sms", status: "pending", createdBy: "stellan", createdAt: iso(-1) } },
+  daily: { [today]: { date: today, headline: "Busy Tuesday: practice at 4:15, one program deadline in 2 days.", createdAt: iso(-2),
+    sections: [{ agent: "cos", heading: "Inbox", items: ["2 emails need an answer; 2 drafts are waiting in Gmail."] }, { agent: "performance", heading: "Practice", items: ["Hockey shooting 4:15 to 5:15.", "Golf putting 7 to 8 PM."] }, { agent: "outreach", heading: "Outreach", items: ["A sponsor replied."] }, { agent: "research", heading: "Research", items: ["Best find: a free shooting-drill video series."] }],
+    plan: [{ start: iso(1), end: iso(2), title: "Hockey: shooting", agent: "performance", kind: "practice" }, { start: iso(5), end: iso(6), title: "Golf: putting", agent: "performance", kind: "practice" }],
+    review: { kind: "monday", doneThisWeek: ["4 of 5 practices done"], nextWeek: ["Tournament prep starts Wednesday"] } },
+    "2026-11-07": { date: "2026-11-07", headline: "Saturday: game day.", createdAt: iso(-26), sections: [{ agent: "cos", heading: "Plan", items: ["Game at noon."] }], plan: [] } },
+  mail: { t1: { from: "coach@school.example", subject: "Tryout form", state: "drafted", draftLink: "https://mail.google.com/mail/u/0/#drafts", flaggedAt: iso(-3), waitingDays: 0 },
+    t2: { from: "Mr. Sample", subject: "Lesson times?", state: "needs_answer", flaggedAt: iso(-4) },
+    t3: { from: "club@example.com", subject: "Camp registration", state: "waiting", waitingDays: 2, flaggedAt: iso(-50) } },
+  contacts: {
+    c1: { name: "Sample Hockey Supply", org: "Sample Hockey Supply", kind: "business", channel: "email", status: "contacted", followupCount: 1, nextFollowupAt: iso(72), updatedAt: iso(-2) },
+    c2: { name: "Program Director", org: "Example Showcase", kind: "program", channel: "email", status: "replied", followupCount: 0, updatedAt: iso(-1) },
+    c3: { name: "Pat Example", org: "Example Club", kind: "athlete", channel: "linkedin", status: "ready", message: "Hi Pat, I'm a student athlete...", linkedin: "https://www.linkedin.com/in/example", updatedAt: iso(-6) },
+    c4: { name: "Old Lead", org: "Gone Inc", kind: "business", channel: "email", status: "stopped", followupCount: 2, updatedAt: iso(-90) } },
+  opportunities: { o1: { title: "U16 Showcase Program", kind: "program", url: "https://example.com/showcase", deadline: "2026-11-10", why: "fits hockey goals", status: "assigned", createdAt: iso(-6) } },
+  bookings: { b1: { what: "Haircut", place: "Sample Barbers", whenAt: iso(30), costCad: 30, tier: "low", status: "booked", confirmation: "Confirmed by email", createdAt: iso(-3) },
+    b2: { what: "Weekend tournament hotel", place: "Example Inn", costCad: 240, tier: "high", specific: false, status: "needs_info", note: "Price is above your auto-book limit.", createdAt: iso(-2) } },
+  practice: {
+    p1: { sport: "hockey", focus: "shooting", start: iso(-30), end: iso(-29), hours: 1, status: "planned" },
+    p2: { sport: "golf", focus: "putting", start: iso(-6), end: iso(-5), hours: 1, status: "done" },
+    p3: { sport: "hockey", focus: "skating", start: iso(20), end: iso(21.5), hours: 1.5, status: "planned", eventId: "ev1" } },
+  tournaments: { tn1: { name: "Waterloo Spring Classic", sport: "hockey", start: iso(100), end: iso(150), away: true, prepStartsAt: iso(-20), prep: { travel: ["Leave 6:00 AM"], gamePlan: ["Win faceoffs"], packing: ["Skates", "Jersey", "Health card"] } } },
+  meals: { "2026-45": { week: "2026-45", note: "Game-day carbs", days: [{ day: "Mon", meals: ["Oats + banana", "Chicken wrap", "Pasta"] }] } },
+  memory: { goals: { title: "Goals", text: "Make the school hockey team's top line; sponsor for tournaments.", updatedAt: iso(-100) } },
+  activity: { [today]: { date: today, items: [
+    { at: iso(-4), agent: "Outreach", text: "drafted a first email to a hockey-supply shop", kind: "draft", auto: true },
+    { at: iso(-3), agent: "Performance", text: "added 3 practice blocks to Google Calendar", kind: "calendar", auto: true },
+    { at: iso(-2), agent: "Dispatcher", text: "texted: a sponsor replied", kind: "text", auto: true },
+    { at: iso(-1), agent: "Link Sorter", text: "Checked the inbox" }] } },
+  questions: { q1: { section: "research", text: "Best pizza near me?", status: "answered", answer: "Option A (2 km, 4.6 stars, Nov 2026 Google) is the best bet.", askedAt: iso(-10), answeredAt: iso(-9), askedDate: today } },
+  findings: { f1: { topic: "golf", title: "Winter putting mat drills", summary: "A 10 minute gate drill.", whyItMatters: "Keeps the stroke grooved", howToUse: ["Set gates"], foundAt: iso(-12), sources: [] } },
+  calls: { c: { kind: "morning", date: today, createdAt: iso(-9), sections: [{ heading: "Weather", text: "Cold and clear" }], questions: [] } },
+  checkins: {}, inbox: {}, schedule: {}, research: {}, channels: {}, plans: {}, vocab: {}, briefs: {}, external: {},
+  settings: { preferences: { qa: { perSectionPerDay: 20 } }, team: { outreach: { send_mode: "DRAFT_ONLY", daily_send_limit: 10, per_run_limit: 4, max_followups: 2 }, notify: { push: true, sms: { enabled: false, provider: "ifttt", to: "", maxPerDay: 3 } }, booking: { autoBookMaxCad: 40, requireSpecificAbove: 40 }, calendar: { autoAddPractice: true }, sync: { notionUrl: "https://www.notion.so/example", sheetUrl: "https://docs.google.com/spreadsheets/d/example" } },
+    training: { scheduleReceived: false, targets: { hockeyHoursPerWeek: 6, golfHoursPerWeek: 3 } } },
+  training: { summary: { week: "2026-45", flags: [{ day: "Wednesday", slot: "evening", sport: "golf", shortByHours: 2, suggestion: "0 of 2 h golf in 3 weeks: practise here" }] } },
+  mental: {},
+});

@@ -1,0 +1,16 @@
+  <div class="alertbar" id="alertbar" aria-live="polite"></div>
+
+  <section class="panel" id="p-team" aria-labelledby="h-team">
+    <div class="panel-head"><h2 id="h-team">Your agent team</h2><span class="sub" id="team-meta">four agents, one memory</span></div>
+    <div class="team-strip" id="team-strip"><div class="empty">Waiting for the agents to report in…</div></div>
+    <div class="talk qa" id="p-talk">
+      <span class="label">Talk to your agents (type or use the mic): tasks, questions, reminders</span>
+      <form id="talk-form" class="composer" novalidate>
+        <div class="field"><label for="talk-text" class="sr">What do you want done?</label><textarea id="talk-text" placeholder='e.g. "Remind me at 4pm to pack my hockey bag", "Find a barber near me and book it", "Move my golf session to Friday", "Reach out to the Waterloo hockey academy"'></textarea></div>
+        <div class="tgt" id="talk-tgt" role="group" aria-label="Which agent"></div>
+        <div class="row"><button class="btn" type="submit" id="talk-send">Send</button><button type="button" class="btn-quiet mic" id="talk-mic" aria-pressed="false" hidden>Mic</button><label class="sub"><input type="checkbox" id="talk-near"> Use my location</label><span class="formmsg" id="talk-msg" aria-live="polite"></span></div>
+      </form>
+      <ul class="talk-list" id="talk-list"></ul>
+    </div>
+  </section>
+

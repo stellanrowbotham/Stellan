@@ -1,0 +1,41 @@
+/* ===== agent team (v4) ===== */
+.alertbar { display: grid; gap: 8px; }
+.alertbar .al { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--bad); background: var(--surface); border-radius: 14px; padding: 10px 14px; }
+.alertbar .al b { color: var(--bad); }
+.team-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.tcard { background: var(--raise); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.tcard .ah { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.tcard .last { font-size: 13.5px; color: var(--muted); overflow-wrap: anywhere; }
+.tcard .mail { font: 600 12px var(--font-mono); color: var(--warn); }
+.talk textarea { min-height: 76px; }
+.talk .tgt { display: flex; flex-wrap: wrap; gap: 6px; }
+.talk-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.talk-list li { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 4px; font-size: 14px; }
+.talk-list .res { background: var(--sunk); border-radius: 10px; padding: 8px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.mic[aria-pressed="true"] { border-color: var(--bad); color: var(--bad); }
+.dsec { display: grid; gap: 4px; }
+.dsec h3 { display: flex; gap: 8px; align-items: baseline; }
+.agtag { font: 700 10.5px var(--font-body); text-transform: uppercase; letter-spacing: .08em; color: var(--signal); }
+.statrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.stat { font: 600 12.5px var(--font-body); background: var(--sunk); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); cursor: pointer; }
+.stat[aria-pressed="true"] { color: var(--ink); border-color: var(--signal); }
+.stat b { color: var(--ink); }
+.tbl { list-style: none; margin: 0; padding: 0; display: grid; border: 1px solid var(--line); border-radius: 12px; max-height: 340px; overflow-y: auto; }
+.tbl li { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 2px 10px; padding: 8px 10px; border-top: 1px solid var(--line); font-size: 14px; }
+.tbl li:first-child { border-top: 0; }
+.tbl .sub2 { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+.bar { height: 10px; border-radius: 99px; background: var(--sunk); border: 1px solid var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--signal), var(--halo)); }
+.bars { display: grid; gap: 8px; }
+.bars .bl { display: flex; justify-content: space-between; font-size: 13.5px; }
+.flag { border-left: 3px solid var(--warn); background: var(--sunk); border-radius: 0 10px 10px 0; padding: 8px 10px; font-size: 14px; }
+.subform { display: grid; gap: 8px; background: var(--sunk); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.grid2 label { font-size: 13px; font-weight: 600; display: grid; gap: 4px; }
+input[type=number], input[type=datetime-local], input[type=tel], select.fld { width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
+.sw { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
+.sw:first-of-type { border-top: 0; }
+.sw span.d { font-size: 13px; color: var(--muted); display: block; }
+.s-sent, .s-booked, .s-accepted, .s-replied { color: var(--ok); } .s-ready, .s-proposed, .s-contacted { color: var(--run); }
+.s-needs_info, .s-needs_you, .s-drafted, .s-needs_answer, .s-waiting { color: var(--warn); } .s-stopped, .s-declined, .s-bounced, .s-failed, .s-cancelled { color: var(--bad); } .s-new, .s-planned, .s-pending, .s-skipped { color: var(--idle); } .s-done { color: var(--ok); }
+#p-team a, #p-outreach a, #p-cos a, #p-rb a, #p-perf a, .tbl a { color: var(--signal); }

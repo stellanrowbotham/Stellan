@@ -4,16 +4,17 @@ section: brain
 title: Index
 tags: [meta]
 created: 2026-10-01
-updated: 2026-10-10
+updated: 2026-11-08
 ---
 
 # Index
 Catalog of every page in Stellan's Brain. Claude reads this first on every query and updates it on every operation.
 
-**Totals:** 5 hubs · 1 entity · 0 daily pages · 3 sources · last updated 2026-10-10
+**Totals:** 6 hubs · 1 entity · 0 daily pages · 3 sources · last updated 2026-11-08
 
 ## Home
 - [[overview]]: Stellan's Brain home page, with all three sections, this week's focus, and open loops
+- [[agent-team]]: the four-agent team (Chief of Staff, Research Brain, Outreach, Performance), how they share memory and what each may do
 - [[connected-apps]]: every app, site, doc and agent the brain connects to, plus who runs when
 - [[log]]: record of every operation, oldest first
 
