@@ -26,7 +26,7 @@ If `settings/training.needsParse == true`: parse `rawSchedule` (free text Stella
 1. Each run, for blocks that ended and are `planned`, leave them `planned` until Stellan marks them `done` or `skipped` on the page (never assume he practiced). Count only `done`.
 2. Weekly totals by sport and weekday/time slot go to `training/summary` `{week, hockeyDone, golfDone, targets, flags: [{day, slot, sport, shortByHours, suggestion}]}`.
    A **flag** = a specific day/time pattern where he keeps missing the target (e.g. "Wednesday evenings: 0 of 2 h golf planned in 3 weeks - practice more here") or a sport more than 25% behind target by Thursday.
-3. Mirror to the Sheet `settings/team.sync.trainingSheetFileId` (tabs `Practice log` rows: date, sport, focus, hours, status; `Weekly`: week, hours by sport, targets, flags). Highlight flagged days in the `flag` column. Log activity `kind: sheet`.
+3. Mirror to the Sheet `settings/team.sync.trainingSheetFileId` (one tab, columns `Row type` (practice or weekly), `Date or week`, Sport, Focus, Hours, Status, `Target hours`, Flag; weekly rows carry the target and any flag text). Write it through Composio Google Sheets (`GOOGLESHEETS_UPSERT_ROWS` or `..._VALUES_APPEND`); the Google Drive connector cannot change a Sheet's contents. If Composio Sheets is not connected, skip the mirror and add a non-urgent alert "Needs you: connect Google Sheets". Log activity `kind: sheet`.
 
 ## 3. Mental game
 - **Daily check-in:** create `mental/<date>` `{checkin: null}` each day; the page asks 3 quick questions (focus 1-10, nerves 1-10, one intention). Read answers next run and keep `memory/mental-trends` short.
