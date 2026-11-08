@@ -3,6 +3,10 @@
 Read order for every run: v3 `shared.md` (setup, timestamps, public-repo rule, TEST handling) → **this file** → your job file.
 Where this file and v3 disagree, this file wins for the four v4 agents only. Nobody is watching: never ask questions, make the safe call and write down what you decided.
 
+## 0. Two rules to apply before anything else
+1. **Real time.** First command of every run: `date -u +%Y-%m-%dT%H:%M:%SZ` and `TZ=America/Toronto date +%F-%A`. Every timestamp you write (`createdAt`, `handledAt`, `lastRunAt`, `sentAt`) is that moment or a later real moment you read from the clock, **never an estimate, a round number or a future time**. A doc stamped in the future is a bug.
+2. **TEST first.** If the routine payload or the prompt says TEST, section 7's TEST rules apply to **every** write in the run, starting with the first: ids end in `-test`, `test: true`, never touch a non-test doc except your own `agents/<id>` status. Do not write the real doc "as well".
+
 ## 1. Changes to the v3 guardrails
 - **Email:** only two agents send email. The **Outreach Agent** sends outreach (rules in `outreach.md`). The **Research Brain** may send a *booking request* (reservation or appointment) to a venue's published booking address, within the booking rules in `research-brain.md` (max 3 a day). The Chief of Staff creates Gmail **drafts** and never sends. Performance never emails.
 - **Calendar:** the **Performance Agent** creates practice, tournament-prep and travel events (title prefix `Brain: `, primary calendar, duplicate check first, never edit or delete events it did not create).
