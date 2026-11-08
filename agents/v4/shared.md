@@ -25,6 +25,7 @@ If a tool is missing, do what you can, record `Needs you: <connector> not attach
 
 ## 3. Switch check (first thing, every run)
 Read `settings/team`. If `paused == true`: set your agent doc `idle` with "Paused by Stellan" and stop. Missing doc = defaults: everything in draft, no SMS.
+**`dryRun == true` means this whole run is a TEST** (section 7's TEST rules, from your very first write). This is how Stellan and Claude test safely: a fire-time message such as "TEST" reaches you only *after* you have started, so it cannot be relied on. Check `dryRun` before touching anything.
 
 ## 4. The bus (see ARCHITECTURE.md §3)
 - Read: `ArtifactData query messages where to == <you> and status == new` (limit 20), oldest first.
@@ -51,7 +52,7 @@ Non-urgent things never text. Reminders marked `channel: sms` count toward the s
 
 ## 7. Status etiquette
 Start: `agents/<id>` → `status: running`, `lastRunAt` now. End: `ok | attention | error` + one plain sentence `lastSummary`. `attention` means Stellan has something to do.
-Update `usage/<date>` `runs.<id>` (+1). TEST runs: write "(test)" in `lastSummary`, send **no** email, SMS, push, booking or Calendar event (describe what you would have done in the doc instead), and mark every doc you create `test: true`. Real data may be read and plans may be written, but nothing leaves the database. Give every doc you create an id ending in `-test` (for example `daily/2026-11-09-test`) so it can be deleted afterwards, and never change a non-test doc except your own `agents/<id>` status. For due reminders and undelivered alerts in a TEST run, set `testWouldDeliver: true` on the doc instead of sending.
+Update `usage/<date>` `runs.<id>` (+1). TEST runs (the payload says TEST **or** `settings/team.dryRun == true`): write "(test)" in `lastSummary`, send **no** email, SMS, push, booking or Calendar event (describe what you would have done in the doc instead), and mark every doc you create `test: true`. Real data may be read and plans may be written, but nothing leaves the database. Give every doc you create an id ending in `-test` (for example `daily/2026-11-09-test`) so it can be deleted afterwards, and never change a non-test doc except your own `agents/<id>` status. For due reminders and undelivered alerts in a TEST run, set `testWouldDeliver: true` on the doc instead of sending.
 
 ## 8. Dates and ids
 The Brain page orders collections by a timestamp, so **always set** `createdAt` (messages, alerts, reminders, bookings, opportunities), `updatedAt` (contacts, memory), `flaggedAt` (mail), `start` (practice, tournaments), `week` (meals) and `date` (daily, activity). A doc without its ordering field never appears on the page.

@@ -13,7 +13,7 @@ const nameOf = id => (TEAM.find(t => t.id === id) || {}).name || (id === "stella
 const nowIso = () => new Date().toISOString();
 const link = (u, t) => { const s = safeUrl(u); return s ? `<a href="${esc(s)}" target="_blank" rel="noopener">${esc(t || "Open")}</a>` : ""; };
 const pill = (st, label) => `<span class="pill s-${esc(slug(st || "new").replace(/-/g, "_"))}">${esc(label || String(st || "new").replace(/_/g, " "))}</span>`;
-const defaultsTeam = () => ({ paused: false, outreach: { send_mode: "DRAFT_ONLY", daily_send_limit: 10, per_run_limit: 4, max_followups: 2, paused: false },
+const defaultsTeam = () => ({ paused: false, dryRun: false, outreach: { send_mode: "DRAFT_ONLY", daily_send_limit: 10, per_run_limit: 4, max_followups: 2, paused: false },
   notify: { push: true, sms: { enabled: false, provider: "ifttt", to: "", maxPerDay: 3 } }, booking: { autoBookMaxCad: 40, requireSpecificAbove: 40 }, calendar: { autoAddPractice: true }, sync: {} });
 const cfg = () => { const d = defaultsTeam(), t = T.team || {}; return { ...d, ...t, outreach: { ...d.outreach, ...(t.outreach || {}) }, notify: { ...d.notify, ...(t.notify || {}), sms: { ...d.notify.sms, ...((t.notify || {}).sms || {}) } }, booking: { ...d.booking, ...(t.booking || {}) }, calendar: { ...d.calendar, ...(t.calendar || {}) }, sync: t.sync || {} }; };
 async function saveCfg(patch) { const c = cfg(); const next = { ...c, ...patch, updatedAt: nowIso() }; try { await dbRef.doc("settings/team").set(next); return true; } catch { return false; } }
@@ -208,6 +208,7 @@ function renderSettings() {
   const sw = (id, title, desc, on, btn) => `<div class="sw"><div><b>${title}</b><span class="d">${desc}</span></div><button type="button" class="btn-quiet" data-sw="${id}" aria-pressed="${on}">${btn}</button></div>`;
   body.innerHTML =
     sw("paused", "Pause all agents", "Stops every agent run (also saves usage).", !!c.paused, c.paused ? "Paused: resume" : "Pause") +
+    sw("dry", "Dry run", "Agents plan and write to the database but send nothing: no email, texts, push, bookings or Calendar events. Use it for the first runs.", !!c.dryRun, c.dryRun ? "Dry run ON: turn off" : "Turn dry run on") +
     sw("send", "Outreach sending", o.send_mode === "SEND" ? "ON: the Outreach Agent emails contacts on its own, within the limits below, and stops after follow-ups." : "OFF: it only writes drafts. Turn on when you have reviewed the first drafts and filled in your outreach profile.", o.send_mode === "SEND", o.send_mode === "SEND" ? "Sending ON: turn off" : "Turn sending on") +
     sw("sms", "Text alerts", "Urgent only: a sponsor/program reply, a schedule conflict, a deadline within 48 h, and reminders you set.", !!n.sms.enabled, n.sms.enabled ? "Texts ON: turn off" : "Turn texts on") +
     sw("cal", "Auto-add practice to Google Calendar", "The Performance Agent adds blocks titled \"Brain: …\".", !!c.calendar.autoAddPractice, c.calendar.autoAddPractice ? "On" : "Off") +
@@ -238,6 +239,7 @@ document.addEventListener("click", async e => {
     else if (ds.sw) {
       const c = cfg();
       if (ds.sw === "paused") await saveCfg({ paused: !c.paused });
+      if (ds.sw === "dry") await saveCfg({ dryRun: !c.dryRun });
       if (ds.sw === "cal") await saveCfg({ calendar: { ...c.calendar, autoAddPractice: !c.calendar.autoAddPractice } });
       if (ds.sw === "send") { if (c.outreach.send_mode === "SEND") await saveCfg({ outreach: { ...c.outreach, send_mode: "DRAFT_ONLY" } }); else confirmTwice(t, "Tap again: agents will email real people", () => saveCfg({ outreach: { ...c.outreach, send_mode: "SEND" } })); }
       if (ds.sw === "sms") { if (c.notify.sms.enabled) await saveCfg({ notify: { ...c.notify, sms: { ...c.notify.sms, enabled: false } } }); else if (!c.notify.sms.to) $("set-meta").textContent = "Add your mobile number below first."; else confirmTwice(t, "Tap again to allow texts", () => saveCfg({ notify: { ...c.notify, sms: { ...c.notify.sms, enabled: true } } })); }

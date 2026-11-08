@@ -80,7 +80,7 @@ Urgent means exactly: a **reply from a sponsor or program**, a **schedule confli
 No private detail goes in the text ("A sponsor replied. Open your Brain.").
 
 ## 5. Switches and limits (`settings/team`, set from the Brain page)
-`paused` (stops everything), `outreach {send_mode: DRAFT_ONLY|SEND, daily_send_limit, per_run_limit, max_followups: 3}`,
+`paused` (stops everything), `dryRun` (every run is a TEST: plans and writes to the database, sends nothing), `outreach {send_mode: DRAFT_ONLY|SEND, daily_send_limit, per_run_limit, max_followups: 3}`,
 `notify {push, sms {enabled, provider, maxPerDay}}`, `booking {autoBookMaxCad, requireSpecificAbove}`,
 `calendar {autoAddPractice}`. Everything ships **off or in draft** and Stellan turns it on.
 
@@ -91,3 +91,16 @@ No private detail goes in the text ("A sponsor replied. Open your Brain.").
 - **Booking**: agents can request reservations and appointments by email or no-payment forms. They cannot enter card details; anything that needs payment becomes `needs_you` with the link.
 - **Phone call**: the 6:45 "call" is the Brain page speaking aloud (free). Talking back works by voice or typing on the page. A real phone call needs Twilio + a voice agent (optional upgrade).
 - **Instant answers**: Routines cannot be woken instantly; the Dispatcher runs hourly.
+
+## 7. Test results (2026-11-08, against the live database, no connectors attached)
+| Check | Result |
+|---|---|
+| Brain page: 41 UI checks against a fake database (rendering, filters, forms, two-step switches, UTC conversion, phone width) | all pass (`dashboard/team-v4/test/run.js`) |
+| Chief of Staff: read a bus task from Performance, put it in the daily plan, surfaced the pending booking and an overdue reminder, told the truth about missing Gmail/Calendar | works |
+| Research Brain: on-demand question answered with three dated, sourced options and a clear "not verified" list; expensive unspecific booking left as `needs_info`, nothing booked | works |
+| Outreach handoff: example page was a 404, so it created no contact and invented nothing | works |
+| Performance: planned 14 days from default hours, kept it provisional, told the Chief of Staff, honest about missing Calendar | works |
+| **Defects found and fixed** | agents wrote guessed (future) timestamps; a fire-time "TEST" message arrives *after* the agent has started, so agents ran for real first. Fix: section 0 of `shared.md` (real clock) and the `settings/team.dryRun` switch (read before any write). |
+| Not tested (needs connectors/credentials): Gmail drafts and sending, Calendar events, Notion/Sheets mirrors, SMS, LinkedIn, real bookings | see `CHECKLIST.md` |
+
+Test method for the future: turn **Dry run** on from the page, fire the routine, read the database, turn it off.

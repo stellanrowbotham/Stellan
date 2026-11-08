@@ -47,6 +47,7 @@ let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); 
   ok(await pg.evaluate(() => Object.values(window.__DB.reminders).some(r => r.text === 'Call coach' && r.dueAt.startsWith('2099-02-02T14:30'))), 'reminder form: Toronto time -> UTC');
   await pg.fill('[data-bk] input', 'Example Inn, Fri 7pm, $240 total'); await pg.click('[data-bk] button'); await pg.waitForTimeout(200);
   ok(await pg.evaluate(() => window.__DB.bookings.b2.specific === true && window.__DB.bookings.b2.status === 'proposed'), 'expensive booking: exact spec flips it to proposed');
+  await pg.click('[data-sw="dry"]'); await pg.waitForTimeout(150); ok(await pg.evaluate(() => window.__DB.settings.team.dryRun) === true, 'dry-run switch');
   await pg.click('[data-sw="send"]'); ok(await pg.evaluate(() => window.__DB.settings.team.outreach.send_mode) === 'DRAFT_ONLY', 'sending needs a second tap');
   await pg.click('[data-sw="send"]'); await pg.waitForTimeout(200); ok(await pg.evaluate(() => window.__DB.settings.team.outreach.send_mode) === 'SEND', 'second tap turns sending on');
   await pg.click('[data-sw="sms"]'); ok(!(await pg.evaluate(() => window.__DB.settings.team.notify.sms.enabled)), 'texts refuse to arm without a phone number');

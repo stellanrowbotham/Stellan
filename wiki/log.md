@@ -51,3 +51,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ⚠️ v3 rules changed: Outreach (and Research, for booking requests only) may send email; Performance owns hockey and golf calendar blocks. Both recorded in `agents/v4/shared.md` §1.
 - ⚠️ No texting provider is connected yet, and LinkedIn messages cannot be sent automatically (queued for a one-tap send instead).
 - → Stellan: choose the text provider, fill in the outreach profile and schedule on the Brain page, decide on Brain page sharing
+
+## [2026-11-08] edit | Agent team: tests, dry-run switch, checklist
+- Tested each agent against the live database with no connectors attached (results in `agents/v4/ARCHITECTURE.md` §7). Found and fixed two defects: guessed timestamps, and TEST instructions arriving after a run had started.
+- + `agents/v4/CHECKLIST.md`, `settings/team.dryRun` (on) and a Dry run switch on the Brain page; Notion tracker and two Google Sheets created (ids in `settings/team.sync`, in the database only)
+- ~ five routines created **disabled** (Dispatcher, Chief of Staff plan and inbox sweep, Outreach, Performance): the API cannot attach connectors in this organization
+- ⚠️ The test runs sent one real push notification ("TEST: a sponsor replied") before the dry-run fix. All test data was deleted afterwards.
+- → Stellan: attach connectors, choose a text provider, fill in profile and schedule, then turn routines on (see CHECKLIST)
