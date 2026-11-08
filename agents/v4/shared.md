@@ -47,7 +47,7 @@ Non-urgent things never text. Reminders marked `channel: sms` count toward the s
 
 ## 7. Status etiquette
 Start: `agents/<id>` → `status: running`, `lastRunAt` now. End: `ok | attention | error` + one plain sentence `lastSummary`. `attention` means Stellan has something to do.
-Update `usage/<date>` `runs.<id>` (+1). TEST runs: write "(test)" in `lastSummary`, send no email/SMS/push, and mark every doc you create `test: true`.
+Update `usage/<date>` `runs.<id>` (+1). TEST runs: write "(test)" in `lastSummary`, send **no** email, SMS, push, booking or Calendar event (describe what you would have done in the doc instead), and mark every doc you create `test: true`. Real data may be read and drafts may be planned, but nothing leaves the database.
 
 ## 8. Dates and ids
 The Brain page orders collections by a timestamp, so **always set** `createdAt` (messages, alerts, reminders, bookings, opportunities), `updatedAt` (contacts, memory), `flaggedAt` (mail), `start` (practice, tournaments), `week` (meals) and `date` (daily, activity). A doc without its ordering field never appears on the page.
