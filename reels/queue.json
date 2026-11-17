@@ -1,0 +1,32 @@
+{
+ "_about": "Posting queue for @flowpilot2026. The PRODUCER (agents/flowpilot-reels.md) appends 'ready' items; the POSTER (agents/flowpilot-poster.md) publishes the first 'ready' item whose caption's first line is not already on Instagram, at most one per Toronto day. 'reserve' is only used if no ready item is left.",
+ "items": [
+  {
+   "id": "ep01-plumber-race",
+   "video": "reels/out/ep01-plumber-race.mp4",
+   "thumb_ms": 28500,
+   "status": "posted",
+   "posted_at": "2026-11-17",
+   "permalink": "https://www.instagram.com/reel/Df2nZLWiDyC/",
+   "caption": "You missed this call… because you were literally under a sink. 🔧📞"
+  },
+  {
+   "id": "ep02-salon-midnight",
+   "video": "reels/out/ep02-salon-midnight.mp4",
+   "thumb_ms": 23500,
+   "status": "posted",
+   "posted_at": "2026-11-17",
+   "permalink": "https://www.instagram.com/reel/Df2nlAUnK7A/",
+   "caption": "11:52 PM. \"hiii do u have anything saturday??\" 💬"
+  }
+ ],
+ "reserve": [
+  {
+   "id": "ep00-second-shift-voiced",
+   "video": "reels/out/ep00-second-shift-voiced.mp4",
+   "thumb_ms": 50000,
+   "status": "ready",
+   "caption": "\"Good evening. This is your FlowPilot speaking.\" ✈️\n\nIt's 11:47 PM and the messages haven't stopped: inquiries, missed calls, booking requests, reminders you forgot to send.\n\nSo we let the Pilot take the night shift. Inquiries answered, leads sorted, confirmations and reminders sent, and you're still the captain of every decision.\n\n👉 DM us the word PLAN and we'll map out your first automation for free.\n\n#smallbusiness #smallbusinessowner #automation #AIagents #entrepreneur"
+  }
+ ]
+}

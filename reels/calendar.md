@@ -1,7 +1,7 @@
 # FlowPilot reels calendar
 
-One reel a day at 7:00 AM Toronto on Instagram @flowpilot2026. The daily agent takes the **first row whose
-status is `planned`**, makes it, posts it, and sets the status to `posted <date> <permalink>`.
+One reel a day at 7:00 AM Toronto on Instagram @flowpilot2026. The **producer** takes the first `planned` row, builds it
+(`building` → `ready`, and adds it to `queue.json`); the **poster** publishes it; the producer then marks it `posted <date> <permalink>`.
 Every row has a different **niche**, **bot**, **visual format**, **promo tactic** and **voice idea** (ElevenLabs cast in README), so no two reels look or
 sell the same way. When fewer than 7 rows are left `planned`, the agent adds 14 new rows following the same
 rules (no niche, bot or format repeated within 7 days; see README "Formats" and "Tactics").
@@ -9,8 +9,8 @@ rules (no niche, bot or format repeated within 7 days; see README "Formats" and 
 | # | Status | Niche | Bot | Format | Tactic | Hook (first 2 seconds) | Voice & funny idea |
 |---|---|---|---|---|---|---|---|
 | 00 | posted 2026-11-17 https://www.instagram.com/reel/Df0oPRxnKNr/ | All local businesses | Inquiry → reply → organize → confirm → remind | F1 Night-shift chaos to flow | DM "PLAN" for a free plan | "Every small business has a second shift." | Owner + Pilot PA announcement |
-| 01 | planned | Plumber | Missed-call text-back | F4 Race: human vs bot | DM "CALL" | "You missed this call while under a sink." | Sports commentary (Ian) on the race: plumber's voicemail vs the bot's text-back; Pilot calls the winner |
-| 02 | planned | Hair salon | Booking + reminder bot | F2 Phone chat demo | Comment "BOOK" | "She asked for Saturday at 11:52 PM." | Skit: impatient Customer (Laura) texts at midnight, bot replies instantly; Owner wakes up to a full calendar |
+| 01 | posted 2026-11-17 https://www.instagram.com/reel/Df2nZLWiDyC/ | Plumber | Missed-call text-back | F4 Race: human vs bot | DM "CALL" | "You missed this call while under a sink." | Sports commentary (Ian) on the race: plumber's voicemail vs the bot's text-back; Pilot calls the winner |
+| 02 | posted 2026-11-17 https://www.instagram.com/reel/Df2nlAUnK7A/ | Hair salon | Booking + reminder bot | F2 Phone chat demo | Comment "BOOK" | "She asked for Saturday at 11:52 PM." | Skit: impatient Customer (Laura) texts at midnight, bot replies instantly; Owner wakes up to a full calendar |
 | 03 | planned | Dental clinic | No-show reducer (confirm + reschedule) | F3 Split screen: without vs with | Save this post | "Empty chair at 9 AM. Again." | Villain: 'The No-Show' (Grav) monologue gets defeated by the confirm-and-reschedule bot |
 | 04 | planned | Landscaping | Quote request intake bot | F7 Robot assembles from parts | Send to a business-owner friend | "Let's build a quote bot in 20 seconds." | Cooking-show host assembles the bot like a recipe; Pilot taste-tests |
 | 05 | planned | Bakery | Pre-order + pickup reminder bot | F12 Receipt printing | DM "PLAN" | "Order #47 printed itself at 5 AM." | Nature documentary: 'the baker, rising before the bread'; Pilot sign-off |
