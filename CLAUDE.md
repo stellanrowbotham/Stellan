@@ -36,7 +36,8 @@ It is not re-derived on every question.
 /
 ├── CLAUDE.md                 ← this schema
 ├── tools/wiki.py             ← helper CLI: search · lint · stats · graph (stdlib Python)
-├── agents/                   ← standing instructions for the scheduled agents (protocol, inbox, morning brief)
+├── agents/                   ← standing instructions for the scheduled agents (protocol, inbox, morning brief, flowpilot-reels)
+├── reels/                    ← FlowPilot Instagram reels: engine, calendar, episodes, rendered videos (see reels/README.md)
 ├── raw/                      ← LAYER 1: immutable inputs (Claude only creates new files, never edits)
 │   ├── assets/               ← images/attachments (Obsidian attachment folder)
 │   ├── daily/                ← Stellan's check-in answers, verbatim: YYYY-MM-DD-morning.md / -evening.md
@@ -256,6 +257,8 @@ Make the change, keep links, the index, and frontmatter consistent, log an `edit
   email ~6:30 to rowbs34@gmail.com) are claude.ai Routines. Each starts a fresh session that follows
   `agents/protocol.md`, then `agents/inbox-agent.md` or `agents/morning-brief.md`.
 - Agent runs are ingests done unsupervised. They follow §6.3 and log `ingest` entries noting "agent run".
+- **FlowPilot daily Instagram post** (daily, posts 7:00 AM Toronto) makes and posts one new animated reel to
+  Instagram @flowpilot2026 following `agents/flowpilot-reels.md` and `reels/calendar.md`. See [[instagram-reels]].
 - In chat, when Stellan pastes a link, Claude can handle it directly (as an ingest), or add it to the inbox when Stellan says "queue it".
 - Any session that changes the hubs refreshes the app's `brain/snapshot` so the app stays in sync.
 - To change agent behaviour, edit the file in `agents/` and log a `schema` entry.
@@ -308,6 +311,9 @@ check-in works through them one at a time.
     Added [[connected-apps]]. The Command Centre's agents are synced into the app each run.
     **The repo is public**, so personal and third-party details live only in the app database
     (source pages may use `raw: app:<db path>`), and the wiki holds aggregates.
+
+  - 2026-11-17: **v2.3. Daily reels.** Added `reels/` (code-rendered Instagram reels: engine, calendar, episodes,
+    videos), `agents/flowpilot-reels.md`, and [[instagram-reels]]. The daily Instagram task now posts a new reel at 7:00 AM.
 
 ---
 

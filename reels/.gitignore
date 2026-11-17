@@ -1,0 +1,4 @@
+episodes/*/audio.wav
+episodes/*/seg*.mp4
+episodes/*/list.txt
+episodes/*/prev/

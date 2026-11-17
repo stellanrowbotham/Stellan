@@ -5,7 +5,7 @@ title: FlowPilot
 aliases: ["FlowPilot Automation", "Flow Pilot"]
 tags: [business, ai, automation]
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-11-17
 sources: [src-flowpilot-request-page, src-ace-outreach-log, src-command-centre]
 ---
 
@@ -16,6 +16,7 @@ FlowPilot Automation, Stellan's AI automations business for local small business
 - **Offer:** "Get a simple automation plan for your business." A business describes one repetitive process and gets a plan for a first automation workflow. ([[src-flowpilot-request-page]])
 - **Funnel:** [[ace]] cold-emails local businesses, which can request a plan on the request page, and an n8n workflow emails Stellan and confirms with the visitor. ([[src-ace-outreach-log]], [[src-flowpilot-request-page]])
 - **Pipeline:** 69 businesses emailed in 4 batches (2026-09-13 to 09-15). Replies aren't recorded in the brain yet. ([[src-ace-outreach-log]])
+- **Social:** a new animated reel posts to Instagram @flowpilot2026 every day at 7:00 AM, each with a different niche, bot, format and promo tactic ([[instagram-reels]]). The first went up 2026-11-17 *(Stellan, 2026-11-17)*.
 - **Health:** the n8n workflow's last known run was 2026-09-30, and the n8n connector has been failing since about 2026-10-10, so the workflow can't be checked. ([[src-command-centre]])
 
 ## What FlowPilot sells
@@ -40,6 +41,7 @@ A first automation for a repetitive process. The page's examples are responding 
 - **WebsitePublisher:** hosts the request page (free plan). ([[src-flowpilot-request-page]])
 - **Manus:** hosts the FlowPilot website *(Stellan, 2026-10-10)*. The agents can't open it from the cloud environment yet.
 - **Claude:** [[ace]] for outreach, Gmail for sending.
+- **Instagram @flowpilot2026** (via Composio): daily reels made in code, see [[instagram-reels]].
 
 ## Processes
 1. **Outreach** ([[ace]]): find local businesses, check the no-repeat log, send one email each, then log the batch. ([[src-ace-outreach-log]])
@@ -60,5 +62,6 @@ A first automation for a repetitive process. The page's examples are responding 
 
 ## Pages
 - [[ace]]: outreach agent
+- [[instagram-reels]]: daily 7:00 AM animated reels on Instagram
 - Sources: [[src-flowpilot-request-page]] · [[src-ace-outreach-log]] · [[src-command-centre]]
 - Related: [[connected-apps]] · [[investing-apprentice]] · [[daily-run-through]] · [[overview]]

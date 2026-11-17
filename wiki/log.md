@@ -42,3 +42,11 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-11-17] schema | FlowPilot daily Instagram reels
+- + `reels/` (engine, calendar of 30 episodes, brand kit, posted log), `agents/flowpilot-reels.md`
+- + [[instagram-reels]]
+- ~ [[flowpilot]] (Snapshot, Tool stack, Pages), [[index]], CLAUDE.md (§2 layout, §6.7, changelog v2.3)
+- ep00 "The Second Shift" made in chat and posted to Instagram @flowpilot2026: https://www.instagram.com/reel/Df0oPRxnKNr/
+- ~ the "FlowPilot daily Instagram post" scheduled task: Canva image at 8:32 → a new code-rendered reel at 7:00 AM Toronto
+- → ⚠️ videos are committed to the public repo (~12 MB/day); a cheaper host is an open question
