@@ -1,0 +1,149 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep02 · Hair salon · Booking + reminder bot · F2 Phone chat demo · midnight skit
+const PX = 190, PY = 300, PW = 700, PH = 1120;
+
+function sky(t) {
+  const m = eIO(seg(t, TL.lapse, TL.morning));          // 0 night -> 1 morning
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, mix('#05061A', '#3B2A6E', m)); g.addColorStop(.6, mix('#0D0B2E', '#E0679A', m)); g.addColorStop(1, mix('#07061C', '#FFC07A', m));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  for (const s of STARS) { ctx.fillStyle = `rgba(220,220,255,${(.3 + .3 * Math.sin(t * s.s * .3 + s.p)) * (1 - m)})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill(); }
+  // moon -> sun
+  const ang = lerp(-.3, 3.4, eIO(seg(t, TL.lapse, TL.morning)));
+  if (m < 1) { ctx.save(); ctx.globalAlpha = 1 - m; ctx.fillStyle = '#F4F1D8'; ctx.shadowColor = '#F4F1D8'; ctx.shadowBlur = 50; ctx.beginPath(); ctx.arc(900 - ang * 60, 170 + ang * 120, 54, 0, 7); ctx.fill(); ctx.restore(); }
+  if (m > 0) { ctx.save(); ctx.globalAlpha = m; const sg = ctx.createRadialGradient(W / 2, 1850, 30, W / 2, 1850, 700); sg.addColorStop(0, 'rgba(255,240,200,1)'); sg.addColorStop(.3, 'rgba(255,190,100,.6)'); sg.addColorStop(1, 'rgba(255,150,100,0)'); ctx.fillStyle = sg; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  return m;
+}
+
+function sleeper(t) {   // the owner, asleep in a picture-in-picture bubble
+  const awake = seg(t, TL.morning, TL.morning + .3);
+  const k = eBack(seg(t, .6, 1.1)); if (k <= 0) return;
+  ctx.save(); ctx.translate(890, 205); ctx.scale(k, k);
+  ctx.beginPath(); ctx.arc(0, 0, 110, 0, 7); ctx.fillStyle = mix('#1A1A40', '#FFE2B0', awake); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.amber; ctx.stroke();
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 106, 0, 7); ctx.clip();
+  ctx.fillStyle = '#5B6BC0'; ctx.fillRect(-120, 40, 240, 100);                      // blanket
+  ctx.fillStyle = '#F0F0FF'; rr(-80, -10, 110, 50, 24); ctx.fill();                 // pillow
+  ctx.fillStyle = '#E8B48F'; ctx.beginPath(); ctx.arc(-20, 10 - awake * 30, 40, 0, 7); ctx.fill();   // head (sits up when awake)
+  ctx.fillStyle = '#3B2414'; ctx.beginPath(); ctx.arc(-20, -4 - awake * 30, 42, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+  ctx.strokeStyle = '#222'; ctx.lineWidth = 4;
+  if (awake < .5) { for (const ex of [-34, -6]) { ctx.beginPath(); ctx.arc(ex, 12, 7, .1 * Math.PI, .9 * Math.PI); ctx.stroke(); } }
+  else { ctx.fillStyle = '#222'; for (const ex of [-34, -6]) { ctx.beginPath(); ctx.arc(ex, -18, 6, 0, 7); ctx.fill(); } ctx.beginPath(); ctx.arc(-20, 2, 8, 0, 7); ctx.stroke(); }
+  ctx.restore();
+  ctx.restore();
+  if (awake < 1) for (let i = 0; i < 3; i++) { const k2 = ((t * .45 + i / 3) % 1); ctx.save(); ctx.globalAlpha = (1 - k2) * (1 - awake); ctx.font = `900 ${36 + i * 8}px ${FONT}`; ctx.fillStyle = C.white; ctx.fillText('z', 960 + k2 * 60 + i * 10, 140 - k2 * 120 - i * 20); ctx.restore(); }
+  if (awake > 0) { ctx.save(); ctx.globalAlpha = awake * (1 - seg(t, 17.6, 18.2)); ctx.font = `900 70px ${FONT}`; ctx.fillStyle = C.amber; ctx.textAlign = 'center'; ctx.fillText('?!', 990, 120 - eBack(awake) * 20); ctx.restore(); }
+}
+
+function phoneFrame() {
+  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 60; rr(PX - 16, PY - 16, PW + 32, PH + 32, 80); ctx.fillStyle = '#0A0B14'; ctx.fill(); ctx.restore();
+  rr(PX, PY, PW, PH, 64); ctx.fillStyle = '#0E1226'; ctx.fill();
+  rr(W / 2 - 80, PY + 16, 160, 38, 19); ctx.fillStyle = '#000'; ctx.fill();          // notch
+}
+function clockText(t) {
+  if (t < TL.lapse) { const mins = 52 + Math.floor(seg(t, 0, TL.lapse) * 6); return [`11:${mins}`, 'PM']; }
+  if (t < TL.morning) { const k = seg(t, TL.lapse, TL.morning); const tot = (23 * 60 + 58) + eIO(k) * (7 * 60 + 2); const h = Math.floor(tot / 60) % 24, mm = Math.floor(tot % 60); const h12 = ((h + 11) % 12) + 1; return [`${h12}:${String(mm).padStart(2, '0')}`, h >= 12 ? 'PM' : 'AM']; }
+  return ['7:00', 'AM'];
+}
+
+function lockScreen(t) {
+  const [tm, ap] = clockText(t);
+  glowText(tm, W / 2, PY + 260, 170, C.white, 200, 'center', 25, 1, -4);
+  glowText(ap + ' · Friday', W / 2, PY + 370, 38, C.grey, 600, 'center', 0);
+  const k = eBack(seg(t, TL.notif, TL.notif + .4));
+  if (k > 0) {
+    ctx.save(); ctx.translate(W / 2, PY + 560); ctx.scale(k, k);
+    rr(-310, -90, 620, 180, 36); ctx.fillStyle = 'rgba(255,255,255,.14)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(-240, -24, 34, 0, 7); ctx.fillStyle = C.pink; ctx.fill(); ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('M', -240, -22);
+    ctx.textAlign = 'left'; ctx.font = `800 32px ${FONT}`; ctx.fillText('Mia (new client)', -190, -40); ctx.font = `600 29px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.85)';
+    ctx.fillText('hiii do u have anything saturday??', -190, 4); ctx.font = `600 24px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillText('now · Salon DMs', -190, 46);
+    ctx.restore();
+  }
+}
+
+const CHAT = [
+  ['cust', 'hiii do u have anything saturday??', 3.9],
+  ['bot', 'Hi Mia! Saturday I have 10:30 AM or 2:15 PM. Which works?', 'reply'],
+  ['cust', 'wait it answered?? at midnight??', 'c1'],
+  ['cust', '2:15 please!!', 'c2'],
+  ['bot', 'Booked: Saturday 2:15 PM. Reminder coming Friday.', 'booked'],
+];
+function chat(t) {
+  ctx.save(); rr(PX, PY, PW, PH, 64); ctx.clip();
+  ctx.fillStyle = '#0E1226'; ctx.fillRect(PX, PY, PW, PH);
+  // header
+  ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(PX, PY, PW, 170);
+  ctx.beginPath(); ctx.arc(PX + 90, PY + 110, 38, 0, 7); ctx.fillStyle = C.violet; ctx.fill(); robot(PX + 90, PY + 120, 46, t, '#fff');
+  ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Studio Salon', PX + 150, PY + 96);
+  ctx.font = `600 24px ${FONT}`; ctx.fillStyle = C.mint; ctx.fillText('● Booking bot · replies instantly', PX + 150, PY + 132);
+  const [tm, ap] = clockText(t); ctx.textAlign = 'right'; ctx.fillStyle = C.grey; ctx.font = `700 26px ${FONT}`; ctx.fillText(`${tm} ${ap}`, PX + PW - 40, PY + 96);
+  // messages
+  ctx.font = `600 34px ${FONT}`; let y = PY + 210;
+  const items = CHAT.filter(m => t >= (typeof m[2] === 'string' ? TL[m[2]] : m[2]));
+  const lay = items.map(([who, txt, at]) => { const t0 = typeof at === 'string' ? TL[at] : at; const lines = wrapText(txt, 460); const h = lines.length * 46 + 34; const it = { who, lines, h, t0, y }; y += h + 18; return it; });
+  const sc = Math.max(0, y - (PY + PH - 190));
+  for (const it of lay) {
+    const k = eBack(seg(t, it.t0, it.t0 + .3)); const bw = Math.max(...it.lines.map(l => ctx.measureText(l).width)) + 50;
+    const right = it.who === 'bot'; const bx = right ? PX + PW - 30 - bw : PX + 30, by = it.y - sc;
+    ctx.save(); ctx.translate(bx + (right ? bw : 0), by + it.h); ctx.scale(k, k); ctx.translate(-(right ? bw : 0), -it.h);
+    rr(0, 0, bw, it.h, 30); ctx.fillStyle = right ? C.violet : '#2A3050'; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; it.lines.forEach((l, j) => ctx.fillText(l, 25, 40 + j * 46));
+    if (it.t0 === TL.booked) { ctx.beginPath(); ctx.arc(bw - 4, 4, 22, 0, 7); ctx.fillStyle = C.mint; ctx.fill(); icon('check', bw - 4, 4, 24, '#06102A'); }
+    ctx.restore();
+  }
+  // typing dots
+  if (t > TL.typing && t < TL.reply) { const bx = PX + PW - 150, by = y - sc; rr(bx, by, 120, 66, 33); ctx.fillStyle = C.violet; ctx.fill(); for (let i = 0; i < 3; i++) { ctx.fillStyle = `rgba(255,255,255,${.4 + .6 * Math.max(0, Math.sin(t * 10 - i))})`; ctx.beginPath(); ctx.arc(bx + 35 + i * 25, by + 33, 8, 0, 7); ctx.fill(); } }
+  // quick-reply chips
+  const ck = seg(t, TL.chips, TL.chips + .3) * (1 - seg(t, TL.c2, TL.c2 + .2));
+  if (ck > 0) ['10:30 AM', '2:15 PM'].forEach((s, i) => { ctx.save(); ctx.globalAlpha = ck; const x = PX + 120 + i * 270, yy = PY + PH - 120; ctx.translate(x + 110, yy); ctx.scale(.8 + .2 * eBack(ck), .8 + .2 * eBack(ck)); rr(-110, -38, 220, 76, 38); ctx.strokeStyle = C.violet; ctx.lineWidth = 3; ctx.stroke(); if (i === 1 && t > TL.c2 - .4) { ctx.fillStyle = 'rgba(139,108,255,.5)'; ctx.fill(); } ctx.font = `700 30px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 2); ctx.restore(); });
+  ctx.restore();
+}
+
+function calendar(t) {
+  ctx.save(); rr(PX, PY, PW, PH, 64); ctx.clip();
+  ctx.fillStyle = '#FBF7F2'; ctx.fillRect(PX, PY, PW, PH);
+  ctx.fillStyle = '#1B1B2E'; ctx.font = `900 54px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Saturday', PX + 50, PY + 130);
+  ctx.font = `600 28px ${FONT}`; ctx.fillStyle = '#7A7A8E'; ctx.fillText('Studio Salon · bookings', PX + 50, PY + 185);
+  const slots = [['10:30 AM', 'Jordan · Cut + style'], ['11:45 AM', 'Priya · Colour'], ['2:15 PM', 'Mia · Cut'], ['4:00 PM', 'Sam · Blowout']];
+  for (let i = 0; i < 6; i++) { const yy = PY + 260 + i * 140; ctx.strokeStyle = '#E6E1DA'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(PX + 40, yy); ctx.lineTo(PX + PW - 40, yy); ctx.stroke(); }
+  slots.forEach(([tm, who], i) => {
+    const k = eBack(seg(t, TL.slots[i], TL.slots[i] + .3)); if (k <= 0) return;
+    const yy = PY + 280 + i * 190; ctx.save(); ctx.translate(PX + 40, yy); ctx.scale(1, k);
+    rr(0, 0, PW - 80, 160, 26); ctx.fillStyle = ['#8B6CFF', '#FF6FB5', '#3CCBE0', '#FFB547'][i]; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = `800 36px ${FONT}`; ctx.fillText(tm, 30, 52); ctx.font = `600 30px ${FONT}`; ctx.fillText(who, 30, 104);
+    ctx.beginPath(); ctx.arc(PW - 140, 80, 30, 0, 7); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fill(); icon('check', PW - 140, 80, 30, '#2B8A57');
+    ctx.font = `700 22px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'right'; ctx.fillText('booked by bot', PW - 190, 110); ctx.textAlign = 'left';
+    ctx.restore();
+  });
+  const fk = eBack(seg(t, 17.2, 17.6));
+  if (fk > 0) { ctx.save(); ctx.translate(W / 2, PY + PH - 90); ctx.rotate(-.08); ctx.scale(fk, fk); rr(-250, -48, 500, 96, 48); ctx.fillStyle = '#1B1B2E'; ctx.fill(); ctx.font = `900 46px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.fillText('FULLY BOOKED', 0, 3); ctx.restore(); }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    const m = sky(t);
+    const enter = eOut(seg(t, 0, .5));
+    ctx.save(); ctx.translate(0, (1 - enter) * 200); ctx.globalAlpha = enter;
+    phoneFrame();
+    if (t < TL.open) { ctx.save(); rr(PX, PY, PW, PH, 64); ctx.clip(); const g = ctx.createLinearGradient(0, PY, 0, PY + PH); g.addColorStop(0, '#1A1446'); g.addColorStop(1, '#3A1E5E'); ctx.fillStyle = g; ctx.fillRect(PX, PY, PW, PH); lockScreen(t); ctx.restore(); }
+    else if (t < TL.morning) { chat(t); if (t > TL.lapse) { ctx.save(); rr(PX, PY, PW, PH, 64); ctx.clip(); ctx.fillStyle = `rgba(6,8,24,${.75 * seg(t, TL.lapse, TL.lapse + .4)})`; ctx.fillRect(PX, PY, PW, PH); const [tm, ap] = clockText(t); glowText(tm, W / 2, PY + PH / 2 - 40, 170, C.white, 200, 'center', 25, 1, -4); glowText(ap, W / 2, PY + PH / 2 + 80, 44, C.grey, 600, 'center', 0); ctx.font = `700 32px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; const n = Math.min(3, Math.floor(seg(t, TL.lapse + .4, TL.morning - .2) * 4)); if (n > 0) ctx.fillText(`+${n} more booked overnight`, W / 2, PY + PH / 2 + 180); ctx.restore(); } }
+    else calendar(t);
+    ctx.restore();
+    if (t > TL.booked && t < TL.booked + 3) confetti(t, TL.booked, W / 2, PY + 700, 50, 3);
+    sleeper(t);
+    flash = .45 * (1 - seg(t, TL.morning, TL.morning + .3)) * (t >= TL.morning ? 1 : 0);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment “BOOK”  →', footer: 'Bookings while you sleep. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1560 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>
