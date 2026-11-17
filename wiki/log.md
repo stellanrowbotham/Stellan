@@ -50,3 +50,11 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - ep00 "The Second Shift" made in chat and posted to Instagram @flowpilot2026: https://www.instagram.com/reel/Df0oPRxnKNr/
 - ~ the "FlowPilot daily Instagram post" scheduled task: Canva image at 8:32 → a new code-rendered reel at 7:00 AM Toronto
 - → ⚠️ videos are committed to the public repo (~12 MB/day); a cheaper host is an open question
+
+## [2026-11-17] schema | Voices for the daily reels + monetization
+- + `reels/engine/voice.py` (ElevenLabs lines mixed with music ducking, plus captions), ep00 `voice.json` + `vo/`
+- ~ `agents/flowpilot-reels.md` (step 3b: script, generate, download, mix, captions), `reels/README.md` (voice cast, voice styles), `reels/calendar.md` (voice idea per episode)
+- + `reels/out/ep00-second-shift-voiced.mp4`: voiced remake of ep00 (Owner + Pilot)
+- + [[reels-monetization]] (query filed back) · ~ [[instagram-reels]], [[flowpilot]] (open question 5), [[index]]
+- research: Buffer, Hootsuite and WERSM on 2026 monetization; 2026 lists of AI business ideas
+- ⚠️ ElevenLabs account usage couldn't be read (the connector needs extra permissions), so the credit budget is unknown

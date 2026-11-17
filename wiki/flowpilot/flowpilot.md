@@ -58,10 +58,12 @@ A first automation for a repetitive process. The page's examples are responding 
 1. Have any of the 69 businesses replied or booked a call?
 2. What do you charge for a first automation build?
 3. What's the 90-day goal (clients, revenue)?
+5. Should FlowPilot sell "animated AI reels with voiceover" as an offer, and at what price? ([[reels-monetization]])
 4. Should the n8n connector be reconnected in claude.ai Settings → Connectors so the agents can check the workflow again?
 
 ## Pages
 - [[ace]]: outreach agent
 - [[instagram-reels]]: daily 7:00 AM animated reels on Instagram
+- [[reels-monetization]]: ways the reels can make money
 - Sources: [[src-flowpilot-request-page]] · [[src-ace-outreach-log]] · [[src-command-centre]]
 - Related: [[connected-apps]] · [[investing-apprentice]] · [[daily-run-through]] · [[overview]]

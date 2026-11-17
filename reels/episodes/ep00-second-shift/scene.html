@@ -303,6 +303,25 @@ function trailPlane(t, dfun, len = 0.6, size = 46, alpha = 1) {
   plane(p.x, p.y, Math.atan2(p.y - q.y, p.x - q.x), size, alpha);
 }
 
+
+// ---------- captions (from voice.py) ----------
+function captions(t) {
+  if (!TL.captions || t >= 44) return;
+  const c = TL.captions.find(c => t >= c.t0 && t < c.t1 + 0.12);
+  if (!c) return;
+  const k = eBack(seg(t, c.t0, c.t0 + .18));
+  const pilot = c.who === 'pilot';
+  ctx.save(); ctx.font = `800 54px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = Math.min(980, ctx.measureText(c.text).width + 80), y = 1530;
+  ctx.translate(W / 2, y); ctx.scale(.85 + .15 * k, .85 + .15 * k); ctx.globalAlpha = clamp(k * 1.5);
+  rr(-w / 2, -50, w, 100, 50); ctx.fillStyle = 'rgba(5,8,26,.88)'; ctx.fill();
+  ctx.lineWidth = 3; ctx.strokeStyle = pilot ? C.cyan : 'rgba(255,255,255,.25)'; ctx.stroke();
+  ctx.fillStyle = pilot ? C.cyan : C.white; ctx.fillText(c.text, 0, 3);
+  if (pilot) { ctx.font = `800 26px ${FONT}`; ctx.letterSpacing = '6px'; ctx.fillStyle = C.cyan; ctx.fillText('YOUR PILOT', 0, -78); }
+  else { ctx.font = `800 26px ${FONT}`; ctx.letterSpacing = '6px'; ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 12; ctx.fillStyle = C.amber; ctx.fillText('THE OWNER', 0, -78); }
+  ctx.restore();
+}
+
 // ---------- main render ----------
 function render(t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
@@ -476,9 +495,10 @@ function render(t) {
   }
 
   ctx.restore(); // shake
+  captions(t);
   post(t, flash);
   // fade in/out
-  const fadeBlack = 1 - seg(t, 0, .6) + seg(t, 50.8, 52);
+  const fadeBlack = 1 - seg(t, 0, .6) + seg(t, TL.dur - 1.4, TL.dur);
   if (fadeBlack > 0) { ctx.fillStyle = `rgba(0,0,0,${clamp(fadeBlack)})`; ctx.fillRect(0, 0, W, H); }
   // hard black at freeze moment
   if (t >= 11.95 && t < 12.12) { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); }

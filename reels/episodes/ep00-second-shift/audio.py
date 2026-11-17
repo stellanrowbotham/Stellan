@@ -3,7 +3,7 @@ import json, wave
 import numpy as np
 
 SR = 44100
-DUR = 52.0
+DUR = 54.5
 N = int(SR * DUR)
 L = np.zeros(N); R = np.zeros(N)
 rng = np.random.default_rng(7)
@@ -184,9 +184,9 @@ boom = np.sin(2*np.pi*np.cumsum(35 + 80*np.exp(-t_*12))/SR) * env_exp(d, 1.8)
 crash = lowpass(hp(rng.standard_normal(len(t_))), 0.6) * env_exp(d, 2.2)
 add(boom, 44.0, 0.9); add(crash, 44.0, 0.2, pan=0.2); add(crash[::-1][::-1], 44.01, 0.2, pan=-0.2)
 for m, p in [(48, 0), (55, -0.3), (64, 0.3), (67, -0.5), (71, 0.5), (74, 0)]:
-    d = 8.0
+    d = 10.5
     s = saw(note(m), d, 4) * 0.5 + np.sin(2*np.pi*note(m)*tt(d))
-    s = lowpass(s, 0.06) * np.exp(-tt(d)*0.35)
+    s = lowpass(s, 0.06) * np.exp(-tt(d)*0.22)
     add(fade(s, 0.02, 2.0), 44.0, 0.07, pan=p)
 for i, m in enumerate([84, 88, 91, 95, 96]):
     add(bell(note(m), 2.0), 44.0 + i*0.11, 0.06, pan=-0.6 + i*0.3)
