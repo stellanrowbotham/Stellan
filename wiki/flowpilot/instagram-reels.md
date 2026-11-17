@@ -15,7 +15,7 @@ FlowPilot's daily animated reels on Instagram @flowpilot2026, made in code and p
 ## Summary
 - **What:** one new 20–52 s vertical reel a day. Each one is a different niche (plumber, salon, dentist…), a different bot (missed-call text-back, booking, review requests…), a different visual format (chat demo, race, split screen, terminal, map…) and a different promo tactic (DM keyword, save, share, quiz, myth-busting…). *(Stellan, 2026-11-17)*
 - **How:** the animation is an HTML canvas rendered frame by frame with Playwright, and the music is synthesized with Python. Files live in `reels/` (engine, `calendar.md`, `posted.md`, one folder per episode). *(synthesis)*
-- **Who runs it:** the "FlowPilot daily Instagram post" scheduled task, which follows `agents/flowpilot-reels.md`. It replaced the earlier daily Canva image post at 8:32 AM on 2026-11-17. *(synthesis)*
+- **Who runs it:** two jobs, so a post is never missed. The **producer** (7:37 PM daily) builds voiced reels ahead into `reels/queue.json` and keeps 3 ready. The **poster** (6:57 AM, with backups at 9:57 AM and 12:57 PM) publishes one a day from the queue, skips if today's post is already up, and sends a push alert if it can't post. Files: `agents/flowpilot-reels.md`, `agents/flowpilot-poster.md`. *(synthesis)*
 - **Voices (from 2026-11-17):** every reel has ElevenLabs voices and captions. There is a recurring cast: **the Pilot** (a calm airline-captain mascot with a PA chime, sign-off "you're still the captain"), the Owner, customers and villains such as the Missed Call. Narration styles rotate between parodies (nature documentary, movie trailer, sports commentary, true crime, game show). *(Stellan, 2026-11-17)*
 - **Rules:** no prices, invented stats, fake testimonials, promised results or real business names. "You stay in control" in every reel. *(synthesis)*
 
@@ -34,3 +34,4 @@ FlowPilot's daily animated reels on Instagram @flowpilot2026, made in code and p
 ## Timeline
 - 2026-11-17: ep00 posted; daily 7:00 AM reel series set up.
 - 2026-11-17: voices added (ElevenLabs), with a voiced remake of ep00 as the reference.
+- 2026-11-17: the first 7 AM run missed (it fired at 5:42 AM but never posted). The same day ep01 (plumber race, [reel](https://www.instagram.com/reel/Df2nZLWiDyC/)) and ep02 (salon midnight skit, [reel](https://www.instagram.com/reel/Df2nlAUnK7A/)) were posted by hand, and the job was split into producer + poster with a queue. *(Stellan, 2026-11-17)*

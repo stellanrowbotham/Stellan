@@ -257,8 +257,10 @@ Make the change, keep links, the index, and frontmatter consistent, log an `edit
   email ~6:30 to rowbs34@gmail.com) are claude.ai Routines. Each starts a fresh session that follows
   `agents/protocol.md`, then `agents/inbox-agent.md` or `agents/morning-brief.md`.
 - Agent runs are ingests done unsupervised. They follow §6.3 and log `ingest` entries noting "agent run".
-- **FlowPilot daily Instagram post** (daily, posts 7:00 AM Toronto) makes and posts one new animated reel to
-  Instagram @flowpilot2026 following `agents/flowpilot-reels.md` and `reels/calendar.md`. See [[instagram-reels]].
+- **FlowPilot reels** run as two jobs so a post is never missed. The **producer** (daily 7:37 PM Toronto, fires into the
+  chat session that set it up) builds voiced reels into `reels/queue.json` and keeps 3 ready, following `agents/flowpilot-reels.md`.
+  The **poster** (`trig_01RiisScy1jaMD4NbRrRSxNA`, 6:57 AM with backups at 9:57 and 12:57) publishes one per day from the queue,
+  following `agents/flowpilot-poster.md`, and sends a push alert if it can't. See [[instagram-reels]].
 - In chat, when Stellan pastes a link, Claude can handle it directly (as an ingest), or add it to the inbox when Stellan says "queue it".
 - Any session that changes the hubs refreshes the app's `brain/snapshot` so the app stays in sync.
 - To change agent behaviour, edit the file in `agents/` and log a `schema` entry.
@@ -314,6 +316,8 @@ check-in works through them one at a time.
 
   - 2026-11-17: **v2.3. Daily reels.** Added `reels/` (code-rendered Instagram reels: engine, calendar, episodes,
     videos), `agents/flowpilot-reels.md`, and [[instagram-reels]]. The daily Instagram task now posts a new reel at 7:00 AM.
+  - 2026-11-17: **v2.4. Reel queue.** The 7 AM run missed (it tried to build and post in one go). Split into a producer
+    (evening, builds ahead into `reels/queue.json`) and a light poster (6:57 AM plus two backups, push alert on failure).
 
 ---
 

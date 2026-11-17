@@ -58,3 +58,10 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + [[reels-monetization]] (query filed back) · ~ [[instagram-reels]], [[flowpilot]] (open question 5), [[index]]
 - research: Buffer, Hootsuite and WERSM on 2026 monetization; 2026 lists of AI business ideas
 - ⚠️ ElevenLabs account usage couldn't be read (the connector needs extra permissions), so the credit budget is unknown
+
+## [2026-11-17] schema | Reel queue: producer + poster (never miss a post)
+- ⚠️ The 2026-11-17 5:41 AM run fired but never posted or pushed anything (it had to clone, design, voice, render and post in one session)
+- + ep01-plumber-race (sports commentary) and ep02-salon-midnight (midnight booking skit), both voiced, posted by hand: https://www.instagram.com/reel/Df2nZLWiDyC/ · https://www.instagram.com/reel/Df2nlAUnK7A/
+- + `reels/queue.json`, `agents/flowpilot-poster.md`, `reels/engine/lib.js` (shared drawing), `reels/engine/music.py` (shared synth)
+- ~ `agents/flowpilot-reels.md` is now the producer (keeps 3 ready, never posts); the poster task runs 6:57 AM with backups at 9:57 and 12:57 and alerts by push
+- ~ [[instagram-reels]], CLAUDE.md §6.7 + changelog v2.4, `reels/calendar.md`, `reels/posted.md`
