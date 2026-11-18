@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep03 · Dental clinic · No-show reducer · F3 split screen · villain parody
+WHO.villain = ['THE NO-SHOW', C.red];
+const HW = W / 2;
+
+function villain(t, x, y, s, mood) {   // a hooded ghost with glowing eyes holding an empty calendar
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 2.2) * 10 * s); ctx.scale(s, s);
+  const g = ctx.createLinearGradient(0, -260, 0, 260); g.addColorStop(0, '#2B1240'); g.addColorStop(1, 'rgba(20,6,30,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, -260); ctx.bezierCurveTo(170, -250, 190, -40, 200, 230);
+  for (let i = 0; i < 6; i++) { const xx = 200 - (i + 1) * 66; ctx.quadraticCurveTo(xx + 33, 200 + (i % 2 ? 50 : -10) + Math.sin(t * 4 + i) * 12, xx, 230); }
+  ctx.bezierCurveTo(-190, -40, -170, -250, 0, -260); ctx.fill();
+  ctx.fillStyle = '#05010A'; ctx.beginPath(); ctx.ellipse(0, -120, 100, 115, 0, 0, 7); ctx.fill();   // hood opening
+  const eye = mood === 'shock' ? 1.6 : 1; ctx.fillStyle = C.red; ctx.shadowColor = C.red; ctx.shadowBlur = 40;
+  for (const ex of [-38, 38]) { ctx.beginPath(); ctx.ellipse(ex, -125, 14 * eye, (mood === 'shock' ? 22 : 9) * (Math.floor(t * 1.7) % 6 === 0 && (t * 1.7) % 1 < .15 ? .1 : 1), mood === 'shock' ? 0 : (ex < 0 ? .25 : -.25), 0, 7); ctx.fill(); }
+  ctx.shadowBlur = 0;
+  if (mood === 'shock') { ctx.strokeStyle = C.red; ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(0, -60, 18, 26, 0, 0, 7); ctx.stroke(); }
+  // calendar it holds
+  ctx.save(); ctx.translate(120, 40); ctx.rotate(.15); rr(-70, -60, 140, 130, 14); ctx.fillStyle = '#EDE6F5'; ctx.fill(); ctx.fillStyle = C.red; ctx.fillRect(-70, -60, 140, 32);
+  ctx.font = `900 40px ${FONT}`; ctx.fillStyle = '#2B1240'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('9:00', 0, 20); ctx.restore();
+  ctx.restore();
+}
+
+function chair(x, y, s, filled, t) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.strokeStyle = '#9AA6C8'; ctx.lineWidth = 10; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-120, -210); ctx.quadraticCurveTo(-60, -260, 60, -230); ctx.stroke();                  // lamp arm
+  ctx.beginPath(); ctx.arc(70, -225, 26, 0, 7); ctx.fillStyle = filled ? '#FFF3B0' : '#5A6488'; if (filled) { ctx.shadowColor = '#FFF3B0'; ctx.shadowBlur = 40; } ctx.fill(); ctx.shadowBlur = 0;
+  ctx.fillStyle = '#4FB3C9'; rr(-150, -20, 230, 46, 22); ctx.fill();                                                  // seat
+  ctx.save(); ctx.translate(-150, 0); ctx.rotate(-.9); rr(-10, -20, 170, 42, 20); ctx.fill(); ctx.restore();          // backrest
+  ctx.save(); ctx.translate(70, 0); ctx.rotate(.5); rr(0, -14, 110, 34, 16); ctx.fill(); ctx.restore();                // leg rest
+  ctx.fillStyle = '#7A86A8'; ctx.fillRect(-40, 26, 30, 90); rr(-110, 110, 170, 26, 12); ctx.fill();                   // base
+  if (filled) {
+    const k = eBack(clamp(filled)); ctx.save(); ctx.globalAlpha = clamp(filled * 2); ctx.translate(0, (1 - k) * -60);
+    ctx.fillStyle = '#F2C29B'; ctx.beginPath(); ctx.arc(-218, -128, 38, 0, 7); ctx.fill();                              // head
+    ctx.fillStyle = '#6E4AA8'; ctx.save(); ctx.translate(-170, -60); ctx.rotate(-.8); rr(-30, -30, 130, 64, 30); ctx.fill(); ctx.restore();
+    rr(-90, -46, 190, 56, 26); ctx.fill(); ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-206, -136, 5, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#222'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(-214, -118, 10, .2, Math.PI - .2); ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
+}
+
+function bubble(x, y, txt, right, k, col, maxW = 420) {
+  if (k <= 0) return 0;
+  ctx.save(); ctx.font = `600 27px ${FONT}`; const lines = wrapText(txt, maxW - 40); const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 40, bh = lines.length * 36 + 26;
+  const bx = right ? x - bw : x; ctx.translate(bx + (right ? bw : 0), y); ctx.scale(eBack(k), eBack(k)); ctx.translate(-(right ? bw : 0), 0);
+  rr(0, 0, bw, bh, 22); ctx.fillStyle = col; ctx.fill(); ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  lines.forEach((l, i) => ctx.fillText(l, 20, 31 + i * 36)); ctx.restore(); return bh + 14;
+}
+
+function clockFace(x, y, t, hm) {
+  ctx.save(); ctx.translate(x, y); ctx.beginPath(); ctx.arc(0, 0, 62, 0, 7); ctx.fillStyle = 'rgba(10,12,34,.9)'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.stroke();
+  const mins = hm; const ma = (mins % 60) / 60 * Math.PI * 2 - Math.PI / 2, ha = ((mins / 60) % 12) / 12 * Math.PI * 2 - Math.PI / 2;
+  ctx.lineCap = 'round'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ha) * 32, Math.sin(ha) * 32); ctx.stroke();
+  ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ma) * 48, Math.sin(ma) * 48); ctx.stroke(); ctx.restore();
+}
+
+function intro(t) {
+  bgNight(t, '#0A0210', '#1C0826', '#09020E', false);
+  const fl = Math.max(0, 1 - seg(t, .15, .5)) + Math.max(0, 1 - seg(t, 3.9, 4.2));
+  if (fl > 0) { ctx.fillStyle = `rgba(200,180,255,${fl * .35})`; ctx.fillRect(0, 0, W, H); }
+  // fog
+  for (let i = 0; i < 6; i++) { const g = ctx.createRadialGradient(((i * 230 + t * 40) % 1400) - 160, 1500 + (i % 3) * 120, 10, ((i * 230 + t * 40) % 1400) - 160, 1500 + (i % 3) * 120, 400); g.addColorStop(0, 'rgba(120,80,160,.18)'); g.addColorStop(1, 'rgba(120,80,160,0)'); ctx.fillStyle = g; ctx.fillRect(0, 900, W, 1020); }
+  const k = eOut(seg(t, .2, 1.2)); villain(t, W / 2, 900 + (1 - k) * 300, 1.6 * (.8 + .2 * k), 'evil');
+  const tk = seg(t, 1.4, 1.9);
+  if (tk > 0) { ctx.save(); ctx.globalAlpha = tk; ctx.translate(W / 2, 330); const s = lerp(1.5, 1, eOut(tk)); ctx.scale(s, s); ctx.font = `900 120px ${FONT}`; ctx.letterSpacing = '10px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.red; ctx.shadowColor = C.red; ctx.shadowBlur = 50 + 20 * Math.sin(t * 9); ctx.fillText('THE NO-SHOW', 0, 0); ctx.font = `700 34px ${FONT}`; ctx.letterSpacing = '8px'; ctx.shadowBlur = 0; ctx.fillStyle = '#C9A9E9'; ctx.fillText('A DENTAL HORROR STORY', 0, 100); ctx.restore(); }
+}
+
+function split(t) {
+  const enter = eOut(seg(t, TL.split, TL.split + .45));
+  ctx.save(); ctx.translate(0, (1 - enter) * H);
+  // halves
+  let g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1A0A18'); g.addColorStop(1, '#2A0E1C'); ctx.fillStyle = g; ctx.fillRect(0, 0, HW, H);
+  g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#071630'); g.addColorStop(1, '#0B2440'); ctx.fillStyle = g; ctx.fillRect(HW, 0, HW, H);
+  ctx.fillStyle = '#fff'; ctx.fillRect(HW - 3, 0, 6, H);
+  for (const [x, lab, col] of [[HW / 2, 'WITHOUT A BOT', C.red], [HW + HW / 2, 'WITH FLOWPILOT', C.cyan]]) { ctx.font = `900 40px ${FONT}`; ctx.letterSpacing = '3px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 20; ctx.fillText(lab, x, 250); ctx.shadowBlur = 0; }
+  // clocks run from 8:58 to 9:00 (night before -> morning on the right is a story beat)
+  const mins = 9 * 60 - 2 + 2 * seg(t, TL.split, TL.nine);
+  if (t < TL.poof + .3) for (const x of [HW / 2, HW + HW / 2]) { clockFace(x - 130, 400, t, mins); ctx.font = `800 52px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(t < TL.nine ? '8:5' + (mins < 539 ? '8' : '9') : '9:00', x - 50, 402); ctx.font = `600 26px ${FONT}`; ctx.fillStyle = C.grey; ctx.fillText('AM · Tuesday', x - 50, 446); }
+  // chairs
+  chair(HW / 2 + 40, 830, .95, 0, t);
+  chair(HW + HW / 2 + 40, 830, .95, seg(t, TL.filled, TL.filled + .5), t);
+  // left: nothing. tumbleweed + empty stamp
+  if (t > 11.5) { const k = seg(t, 11.5, 15.0); const x = lerp(-80, HW + 40, k); ctx.save(); ctx.beginPath(); ctx.rect(0, 0, HW - 3, H); ctx.clip(); ctx.translate(x, 1010 - Math.abs(Math.sin(k * 12)) * 50); ctx.rotate(k * 14); ctx.strokeStyle = '#A88B5A'; ctx.lineWidth = 4; for (let i = 0; i < 7; i++) { ctx.beginPath(); ctx.arc(0, 0, 30 + i * 4, i, i + 4); ctx.stroke(); } ctx.restore(); }
+  ctx.font = `600 28px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.textAlign = 'center'; ctx.fillText('no messages', HW / 2, 1150);
+  const es = seg(t, TL.nine, TL.nine + .3);
+  if (es > 0) { ctx.save(); ctx.translate(HW / 2, 1330); ctx.rotate(-.12); const s = lerp(2.2, 1, eOut(es)); ctx.scale(s, s); ctx.globalAlpha = clamp(es * 3); ctx.lineWidth = 8; ctx.strokeStyle = C.red; rr(-210, -56, 420, 112, 18); ctx.stroke(); ctx.font = `900 58px ${FONT}`; ctx.fillStyle = C.red; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('EMPTY CHAIR', 0, 4); ctx.restore(); }
+  // right: the reminder conversation
+  let y = 1010; const R = W - 30, L = HW + 30;
+  y += bubble(R, y, 'Reminder: cleaning tomorrow at 9:00 AM. Reply C to confirm or R to reschedule.', true, seg(t, TL.remind, TL.remind + .3), '#1F7CF2');
+  y += bubble(L, y, 'R', false, seg(t, TL.reply, TL.reply + .3), '#2A3050');
+  y += bubble(R, y, 'No problem! How about Thursday at 2:00 PM?', true, seg(t, TL.offer, TL.offer + .3), '#1F7CF2');
+  y += bubble(L, y, 'Perfect', false, seg(t, TL.ok, TL.ok + .3), '#2A3050');
+  const wk = seg(t, TL.wait, TL.wait + .3);
+  if (wk > 0) { ctx.save(); ctx.translate(HW + HW / 2, 1520); ctx.scale(eBack(wk), eBack(wk)); rr(-240, -40, 480, 80, 40); ctx.fillStyle = 'rgba(61,255,168,.18)'; ctx.fill(); ctx.strokeStyle = C.mint; ctx.lineWidth = 3; ctx.stroke(); ctx.font = `800 28px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Waitlist: 9:00 AM slot filled', 0, 2); ctx.restore(); }
+  // villain reacts
+  const vk = seg(t, TL.villain2, TL.villain2 + .4), poof = seg(t, TL.poof, TL.poof + .5);
+  if (vk > 0 && poof < 1) { ctx.save(); ctx.globalAlpha = 1 - poof; villain(t, HW / 2, 1150 - eBack(vk) * 120 + (t > 19 ? Math.sin(t * 30) * 6 : 0), .75 * (1 - poof * .6), 'shock'); ctx.restore(); }
+  if (poof > 0 && poof < 1) for (let i = 0; i < 18; i++) { const a = i / 18 * 6.283, r = 60 + poof * 260; ctx.fillStyle = `rgba(190,150,230,${(1 - poof) * .7})`; ctx.beginPath(); ctx.arc(HW / 2 + Math.cos(a) * r, 1030 + Math.sin(a) * r * .7, 40 * (1 - poof) + 10, 0, 7); ctx.fill(); }
+  if (t > TL.poof + .3) { const k = eBack(seg(t, TL.poof + .3, TL.poof + .8)); ctx.save(); ctx.translate(W / 2, 400); ctx.scale(k, k); rr(-330, -48, 660, 96, 48); ctx.fillStyle = C.mint; ctx.shadowColor = C.mint; ctx.shadowBlur = 30; ctx.fill(); ctx.shadowBlur = 0; ctx.font = `900 40px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('NO-SHOW DEFEATED', 0, 3); ctx.restore(); }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    if (t < TL.split + .5) intro(t);
+    if (t >= TL.split) split(t);
+    flash = .35 * (1 - seg(t, TL.filled, TL.filled + .3)) * (t >= TL.filled ? 1 : 0);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Save this for later  →', footer: 'Reminders, rescheduling, waitlist. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.split ? 1560 : t < TL.logo ? 1650 : 1580 });
+  post(t, flash, .2);
+}
+FP.init(render);
+</script></body></html>
