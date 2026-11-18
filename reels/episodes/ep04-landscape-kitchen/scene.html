@@ -1,0 +1,140 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep04 · Landscaping · Quote request intake bot · F7 bot assembled from parts · cooking-show parody
+WHO.host = ['BOT KITCHEN HOST', C.amber];
+const BX = W / 2, BY = 1190;          // bowl position
+const INGS = [['WEB FORM', 'mail', '#3CCBE0'], ['PHOTO UPLOAD', 'cam', '#FF6FB5'], ['YARD SIZE?', 'q', C.mint], ['WHAT JOB?', 'q', C.amber], ['WHEN?', 'cal', C.violet]];
+
+function kitchen(t) {
+  // tiled wall
+  ctx.fillStyle = '#123B44'; ctx.fillRect(0, 0, W, H);
+  for (let y = 0; y < 1420; y += 90) for (let x = (y / 90) % 2 ? -45 : 0; x < W; x += 90) { rr(x + 4, y + 4, 82, 82, 10); ctx.fillStyle = (Math.floor(x / 90 + y / 90) % 3) ? '#16505C' : '#1A5B68'; ctx.fill(); }
+  // warm studio light
+  const g = ctx.createRadialGradient(W / 2, 500, 50, W / 2, 500, 1100); g.addColorStop(0, 'rgba(255,220,160,.25)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // counter
+  ctx.fillStyle = '#C98E52'; ctx.fillRect(0, 1380, W, 40); ctx.fillStyle = '#8E5B2F'; ctx.fillRect(0, 1420, W, 500);
+  for (let x = 30; x < W; x += 260) { rr(x, 1470, 220, 380, 14); ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 5; ctx.stroke(); }
+  // little plant (it's a landscaping episode)
+  ctx.fillStyle = '#B5562D'; rr(880, 1290, 110, 92, 12); ctx.fill();
+  ctx.fillStyle = '#3FAE5B'; for (let i = 0; i < 5; i++) { ctx.save(); ctx.translate(935, 1290); ctx.rotate(-.9 + i * .45 + Math.sin(t * 2 + i) * .05); ctx.beginPath(); ctx.ellipse(0, -60, 22, 62, 0, 0, 7); ctx.fill(); ctx.restore(); }
+}
+
+function titleCard(t) {
+  const k = eBack(seg(t, 0, .5)), out = seg(t, 5.6, 6.1);
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(W / 2, 480 - out * 200); ctx.scale(k, k);
+  rr(-440, -230, 880, 460, 60); ctx.fillStyle = '#FFF4E0'; ctx.fill(); ctx.lineWidth = 14; ctx.strokeStyle = '#E2463C'; ctx.stroke();
+  for (let i = 0; i < 22; i++) { const a = i / 22 * 6.283 + t; ctx.fillStyle = Math.floor(t * 6 + i) % 2 ? '#FFD34E' : '#fff'; ctx.beginPath(); ctx.arc(Math.cos(a) * 470, Math.sin(a) * 260, 10, 0, 7); ctx.fill(); }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `900 132px ${FONT}`; ctx.letterSpacing = '-3px'; ctx.fillStyle = '#E2463C'; ctx.fillText('BOT', 0, -80); ctx.fillStyle = '#1D3A6E'; ctx.fillText('KITCHEN', 0, 50);
+  ctx.font = `700 30px ${FONT}`; ctx.letterSpacing = '1px'; ctx.fillStyle = '#7A5A3A'; ctx.fillText("TODAY: A QUOTE BOT FOR LANDSCAPERS", 0, 170);
+  ctx.restore();
+}
+
+function bowl(t, x, y, s, swirl) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = '#E8EEF8'; ctx.beginPath(); ctx.ellipse(0, -20, 230, 50, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#F7C548'; ctx.beginPath(); ctx.ellipse(0, -20, 205, 38, 0, 0, 7); ctx.fill();       // batter
+  if (swirl > 0) { ctx.strokeStyle = 'rgba(160,100,20,.6)'; ctx.lineWidth = 6; for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.ellipse(0, -20, 50 + i * 50, 9 + i * 9, 0, t * 4 * swirl + i, t * 4 * swirl + i + 3.5); ctx.stroke(); } }
+  ctx.fillStyle = '#C7D2E6'; ctx.beginPath(); ctx.moveTo(-230, -20); ctx.quadraticCurveTo(-210, 150, 0, 160); ctx.quadraticCurveTo(210, 150, 230, -20); ctx.ellipse(0, -20, 230, 50, 0, 0, Math.PI); ctx.fill();
+  ctx.restore();
+}
+
+function ingCard(t, i) {
+  const t0 = TL.ing[i], [lab, ic, col] = INGS[i];
+  const k = seg(t, t0 - 1.1, t0 - .8), drop = seg(t, t0, t0 + .45);
+  if (k <= 0 || drop >= 1) return;
+  const x = lerp(BX + 20 + (i % 2) * 40, BX, eIn(drop)), y = lerp(780 + Math.sin(t * 3 + i) * 10, BY - 40, eIn(drop));
+  ctx.save(); ctx.translate(x, y); ctx.rotate((i - 2) * .12 + drop * 2.5); const s = eBack(k) * (1 - drop * .7); ctx.scale(s, s);
+  ctx.font = `900 40px ${FONT}`; const w = ctx.measureText(lab).width + 130; rr(-w / 2, -55, w, 110, 26); ctx.fillStyle = '#fff'; ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 25; ctx.fill(); ctx.shadowBlur = 0;
+  ctx.beginPath(); ctx.arc(-w / 2 + 55, 0, 32, 0, 7); ctx.fillStyle = col; ctx.fill();
+  if (ic === 'cam') { ctx.fillStyle = '#fff'; rr(-w / 2 + 33, -15, 44, 32, 6); ctx.fill(); ctx.beginPath(); ctx.arc(-w / 2 + 55, 1, 9, 0, 7); ctx.fillStyle = col; ctx.fill(); }
+  else if (ic === 'q') { ctx.font = `900 42px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('?', -w / 2 + 55, 2); }
+  else icon(ic, -w / 2 + 55, 0, 30, '#fff');
+  ctx.font = `900 40px ${FONT}`; ctx.fillStyle = '#1D2440'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(lab, -w / 2 + 100, 3);
+  ctx.restore();
+}
+
+function oven(t, k) {
+  ctx.save(); ctx.translate(BX, 1020); ctx.scale(k, k);
+  rr(-300, -320, 600, 660, 40); ctx.fillStyle = '#D9DEE8'; ctx.fill(); ctx.fillStyle = '#B8C0CE'; rr(-300, -320, 600, 110, 40); ctx.fill();
+  for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(-200 + i * 110, -265, 26, 0, 7); ctx.fillStyle = '#4A5470'; ctx.fill(); }
+  // timer dial
+  const dial = seg(t, TL.oven + .2, TL.ding); ctx.save(); ctx.translate(230, -265); ctx.rotate(-dial * 6.283); ctx.fillStyle = '#E2463C'; ctx.fillRect(-4, -24, 8, 22); ctx.restore();
+  const open = eOut(seg(t, TL.ding, TL.ding + .4));
+  const glow = seg(t, TL.oven + .3, TL.ding);
+  rr(-240, -170, 480, 420, 30); ctx.fillStyle = '#20263C'; ctx.fill();
+  rr(-200, -130, 400, 300, 24); ctx.fillStyle = `rgba(255,${150 - glow * 40},60,${.25 + glow * .6})`; ctx.shadowColor = '#FF9A3C'; ctx.shadowBlur = 60 * glow; ctx.fill(); ctx.shadowBlur = 0;
+  if (open > 0) { ctx.save(); ctx.translate(0, 250); ctx.scale(1, 1 - open * 1.4); rr(-240, -420, 480, 420, 30); ctx.fillStyle = '#C4CAD6'; ctx.fill(); ctx.restore(); }
+  ctx.restore();
+}
+
+function inboxCard(t) {
+  const k = seg(t, TL.card, TL.inbox);
+  if (k <= 0) return;
+  const land = eOut(k);
+  // inbox panel
+  ctx.save(); ctx.globalAlpha = clamp(k * 3); ctx.translate(W / 2, 330);
+  rr(-440, -150, 880, 330, 36); ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.fill();
+  ctx.font = `800 30px ${FONT}`; ctx.fillStyle = '#1D2440'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Inbox · Quote requests', -400, -105);
+  ctx.fillStyle = C.mint; ctx.beginPath(); ctx.arc(380, -105, 14, 0, 7); ctx.fill();
+  ctx.restore();
+  // the card flies from the robot's tray up into the inbox
+  const x = lerp(BX, W / 2, land), y = lerp(860, 400, land), s = lerp(.6, 1, land);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-400, -85, 800, 190, 24); ctx.fillStyle = '#F3F7FF'; ctx.fill(); ctx.strokeStyle = '#3CCBE0'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#1D2440'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('New quote request · Backyard cleanup', -370, -42);
+  ctx.font = `600 27px ${FONT}`; ctx.fillStyle = '#56607E'; ctx.fillText('Yard: medium · 3 photos attached · Wants: next week', -370, 6);
+  const tags = [['Lawn & garden', C.mint], ['Ready to quote', '#3CCBE0']]; let tx = -370;
+  ctx.font = `800 24px ${FONT}`; for (const [tg, col] of tags) { const w = ctx.measureText(tg).width + 30; rr(tx, 36, w, 44, 22); ctx.fillStyle = col; ctx.fill(); ctx.fillStyle = '#06102A'; ctx.fillText(tg, tx + 15, 59); tx += w + 14; }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    kitchen(t);
+    if (t < 6.2) titleCard(t);
+    const inOven = seg(t, TL.oven, TL.oven + .5);
+    if (t < TL.oven + .5) {
+      const bk = eBack(seg(t, 5.8, 6.3));
+      const swirl = TL.ing.filter(x => t > x + .45).length / 5;
+      bowl(t, lerp(BX, BX, inOven), lerp(BY, 1000, eIn(inOven)), bk * (1 - inOven * .6), swirl);
+      for (let i = 0; i < 5; i++) ingCard(t, i);
+      // recipe checklist
+      const lk = seg(t, 6.0, 6.4);
+      if (lk > 0 && t < TL.oven) { ctx.save(); ctx.globalAlpha = lk; ctx.translate(70, 330); rr(0, 0, 400, 330, 26); ctx.fillStyle = 'rgba(255,248,232,.95)'; ctx.fill(); ctx.font = `900 32px ${FONT}`; ctx.fillStyle = '#E2463C'; ctx.textBaseline = 'middle'; ctx.fillText('RECIPE', 30, 42);
+        INGS.forEach(([lab], i) => { const done = t > TL.ing[i] + .45; ctx.font = `700 26px ${FONT}`; ctx.fillStyle = done ? '#2B8A57' : '#7A6A58'; ctx.fillText((done ? '✓ ' : '○ ') + lab, 30, 95 + i * 46); }); ctx.restore(); }
+    }
+    if (t >= TL.oven) {
+      oven(t, eBack(seg(t, TL.oven, TL.oven + .4)));
+      if (t > TL.ding) {
+        const rk = eBack(seg(t, TL.ding + .2, TL.ding + .7)); const hop = Math.abs(Math.sin((t - TL.ding) * 5)) * 20 * Math.exp(-(t - TL.ding));
+        ctx.save(); ctx.translate(BX, 1060 - rk * 150 - hop); ctx.scale(rk, rk); robot(0, 0, 200, t); ctx.fillStyle = '#9AA6C8'; rr(-150, 100, 300, 24, 12); ctx.fill(); ctx.restore();
+        for (let i = 0; i < 5; i++) { const k = ((t - TL.ding) * .6 + i / 5) % 1; ctx.fillStyle = `rgba(255,255,255,${(1 - k) * .35})`; ctx.beginPath(); ctx.arc(BX - 120 + i * 60 + Math.sin(k * 6 + i) * 20, 800 - k * 400, 30 + k * 30, 0, 7); ctx.fill(); }
+      }
+      inboxCard(t);
+    }
+    // owner taste test
+    const ok = seg(t, TL.taste, TL.taste + .4);
+    if (ok > 0) {
+      ctx.save(); ctx.translate(200, 1600 - eBack(ok) * 40); ctx.globalAlpha = clamp(ok * 2);
+      ctx.beginPath(); ctx.arc(0, 0, 90, 0, 7); ctx.fillStyle = '#F2C29B'; ctx.fill(); ctx.fillStyle = '#2E7D4F'; ctx.beginPath(); ctx.arc(0, -20, 92, Math.PI, 0); ctx.fill(); ctx.fillRect(0, -28, 120, 18);
+      ctx.fillStyle = '#222'; const chew = Math.abs(Math.sin(t * 9)) * 8; ctx.beginPath(); ctx.arc(-30, 12, 7, 0, 7); ctx.arc(30, 12, 7, 0, 7); ctx.fill(); ctx.beginPath(); ctx.ellipse(0, 50, 22, 6 + chew, 0, 0, 7); ctx.fill();
+      ctx.restore();
+      const sk = seg(t, TL.taste + 1.0, TL.taste + 1.3);
+      if (sk > 0) { ctx.save(); ctx.translate(640, 1560); ctx.rotate(-.1); const s = lerp(2, 1, eOut(sk)); ctx.scale(s, s); ctx.globalAlpha = clamp(sk * 3); rr(-250, -60, 500, 120, 60); ctx.fillStyle = '#E2463C'; ctx.fill(); ctx.font = `900 54px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText("CHEF'S KISS", 0, 4); ctx.restore(); }
+    }
+    flash = .45 * (1 - seg(t, TL.ding, TL.ding + .3)) * (t >= TL.ding ? 1 : 0);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Send this to a friend  →', footer: 'Quote requests, sorted. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.taste ? 1560 : t < TL.logo ? 1760 : 1580 });
+  post(t, flash, .2);
+}
+FP.init(render);
+</script></body></html>

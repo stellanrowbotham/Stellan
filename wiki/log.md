@@ -65,3 +65,8 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + `reels/queue.json`, `agents/flowpilot-poster.md`, `reels/engine/lib.js` (shared drawing), `reels/engine/music.py` (shared synth)
 - ~ `agents/flowpilot-reels.md` is now the producer (keeps 3 ready, never posts); the poster task runs 6:57 AM with backups at 9:57 and 12:57 and alerts by push
 - ~ [[instagram-reels]], CLAUDE.md §6.7 + changelog v2.4, `reels/calendar.md`, `reels/posted.md`
+
+## [2026-11-17] edit | Reel producer run (agent run, 7:37 PM)
+- Reconciled `reels/queue.json` with Instagram: no new posts since ep01/ep02
+- + ep03-dental-noshow (villain parody "The No-Show", split screen, 104 BPM A minor) and ep04-landscape-kitchen ("Bot Kitchen" cooking-show parody, 116 BPM F major swing), both voiced, both `ready`
+- Queue: 2 ready + 1 reserve. Next poster run 2026-11-18 6:57 AM picks ep03
