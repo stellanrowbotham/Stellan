@@ -1,0 +1,10 @@
+{
+  "duck_db": -9,
+  "pa_chime": [24.3],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "narrator", "text": "Here we observe the baker... in her natural habitat. Rising... before the bread itself."},
+    {"file": "vo/02.mp3", "at": 7.3, "who": "narrator", "text": "But the orders... arrive at night. By text. By DM. An endless flock of \"can I get a dozen?\""},
+    {"file": "vo/03.mp3", "at": 16.0, "who": "narrator", "text": "And yet... the pre-order bot takes each one, prints the ticket, and sends the pickup reminder. Remarkable."},
+    {"file": "vo/04.mp3", "at": 24.8, "who": "pilot", "text": "This is your FlowPilot speaking. Pre-orders, sorted while you sleep. DM us the word PLAN. You're still the captain."}
+  ]
+}

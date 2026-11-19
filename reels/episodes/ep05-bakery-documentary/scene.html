@@ -1,0 +1,113 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep05 · Bakery · Pre-order + pickup reminder bot · F12 receipt printing · nature-documentary parody
+WHO.narrator = ['NARRATOR', '#F4E2C0'];
+const ORDERS = ['can I get a dozen?', '6 croissants for Sat??', 'any sourdough left', 'birthday cake pickup?', 'do u do gluten free', 'can I get a dozen?', '2 baguettes tmrw pls'];
+const TICKETS = [['ORDER #47', '1 dozen croissants', 'Pickup Sat 9:00 AM'], ['ORDER #48', 'Sourdough loaf x2', 'Pickup Sat 10:30 AM'], ['ORDER #49', 'Birthday cake (vanilla)', 'Pickup Sun 11:00 AM']];
+
+function bakery(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1C120C'); g.addColorStop(.6, '#2E1B10'); g.addColorStop(1, '#130C08'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // oven glow on the left
+  const og = ctx.createRadialGradient(120, 900, 20, 120, 900, 700); og.addColorStop(0, `rgba(255,140,60,${.45 + .08 * Math.sin(t * 3)})`); og.addColorStop(1, 'rgba(255,140,60,0)'); ctx.fillStyle = og; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#3B2414'; rr(-60, 620, 300, 560, 30); ctx.fill(); ctx.fillStyle = '#FF8A3D'; ctx.shadowColor = '#FF8A3D'; ctx.shadowBlur = 40; rr(10, 760, 180, 150, 80); ctx.fill(); ctx.shadowBlur = 0;   // brick oven mouth
+  // shelves of bread
+  ctx.fillStyle = '#5A3A22'; ctx.fillRect(600, 520, 420, 18); ctx.fillRect(600, 700, 420, 18);
+  for (let i = 0; i < 4; i++) { ctx.fillStyle = '#D89A54'; ctx.beginPath(); ctx.ellipse(650 + i * 100, 500, 44, 24, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#C47F3A'; ctx.beginPath(); ctx.ellipse(650 + i * 100, 680, 40, 22, 0, 0, 7); ctx.fill(); }
+  // counter
+  ctx.fillStyle = '#6B4428'; ctx.fillRect(0, 1240, W, 30); ctx.fillStyle = '#4A2E1A'; ctx.fillRect(0, 1270, W, 700);
+  // flour drifting
+  for (let i = 0; i < 40; i++) { const x = (hash(i) * W + t * 12 * (hash(i + 3) - .3)) % W, y = (hash(i + 7) * 1300 + t * 18 * hash(i + 9)) % 1240; ctx.fillStyle = `rgba(255,245,225,${.25 * hash(i + 11)})`; ctx.beginPath(); ctx.arc(x, y, 2 + 2 * hash(i + 5), 0, 7); ctx.fill(); }
+}
+
+function baker(t, x, y, mood) {
+  ctx.save(); ctx.translate(x, y);
+  const knead = Math.sin(t * 5) * 8;
+  ctx.fillStyle = '#F5F0E6'; rr(-80, 40, 160, 240, 60); ctx.fill();                       // apron/body
+  ctx.fillStyle = '#E8B48F'; ctx.beginPath(); ctx.arc(0, -20, 62, 0, 7); ctx.fill();      // head
+  ctx.fillStyle = '#fff'; rr(-58, -150, 116, 80, 30); ctx.fill(); ctx.beginPath(); ctx.arc(-35, -150, 34, 0, 7); ctx.arc(0, -165, 38, 0, 7); ctx.arc(35, -150, 34, 0, 7); ctx.fill();   // chef hat
+  ctx.fillStyle = '#4A2E1A'; ctx.beginPath(); ctx.arc(-22, -18, 6, 0, 7); ctx.arc(22, -18, 6, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#4A2E1A'; ctx.lineWidth = 4; ctx.beginPath();
+  if (mood === 'worried') { ctx.arc(0, 26, 14, Math.PI * 1.15, Math.PI * 1.85); } else ctx.arc(0, 6, 16, .2 * Math.PI, .8 * Math.PI);
+  ctx.stroke();
+  // arms kneading dough
+  ctx.fillStyle = '#E8B48F'; rr(-110, 150 + knead, 70, 40, 20); ctx.fill(); rr(40, 150 - knead, 70, 40, 20); ctx.fill();
+  ctx.fillStyle = '#F2DDB3'; ctx.beginPath(); ctx.ellipse(0, 230, 110, 40 + knead * .5, 0, 0, 7); ctx.fill();
+  ctx.restore();
+  if (mood === 'worried') for (let i = 0; i < 3; i++) { const k = (t * .8 + i / 3) % 1; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `900 ${50 + i * 10}px ${FONT}`; ctx.fillStyle = C.amber; ctx.fillText('?', x + 70 + i * 40, y - 150 - k * 100); ctx.restore(); }
+}
+
+function flock(t) {
+  // order bubbles fly in from the right like a flock of birds
+  ORDERS.forEach((s, i) => {
+    const t0 = TL.flock + i * .6, k = t - t0; if (k < 0) return;
+    let x = W + 300 - k * 240 - i * 10, y = 300 + (i * 97) % 380 + Math.sin(k * 3 + i) * 30;
+    const suck = seg(t, TL.print + .3 + i * .25, TL.print + .9 + i * .25);   // sucked into the printer later
+    x = lerp(x, 760, eIn(suck)); y = lerp(y, 1180, eIn(suck)); if (suck >= 1) return;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(k * 4 + i) * .08); ctx.scale(1 - suck * .7, 1 - suck * .7);
+    ctx.font = `700 30px ${FONT}`; const w = ctx.measureText(s).width + 50;
+    rr(-w / 2, -32, w, 64, 32); ctx.fillStyle = i % 2 ? '#2F80ED' : '#E1306C'; ctx.fill();
+    // little wings
+    const fl = Math.sin(k * 14 + i) * .6;
+    ctx.fillStyle = 'rgba(255,255,255,.85)'; for (const side of [-1, 1]) { ctx.save(); ctx.translate(side * (w / 2 - 6), -18); ctx.rotate(side * (.4 + fl)); ctx.beginPath(); ctx.ellipse(side * 18, -6, 24, 10, 0, 0, 7); ctx.fill(); ctx.restore(); }
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 2);
+    ctx.restore();
+  });
+}
+
+function printer(t) {
+  const k = eBack(seg(t, TL.print - .4, TL.print));
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(760, 1170); ctx.scale(k, k);
+  rr(-170, -60, 340, 150, 26); ctx.fillStyle = '#E8ECF4'; ctx.fill(); ctx.fillStyle = '#AEB6C8'; rr(-130, -70, 260, 26, 10); ctx.fill();
+  ctx.fillStyle = C.mint; ctx.beginPath(); ctx.arc(130, 40, 10, 0, 7); ctx.fill(); robot(-80, 30, 60, t, '#2B8A9A');
+  ctx.restore();
+  // tickets feed up out of the printer and stack on the right
+  TICKETS.forEach(([id, item, pick], i) => {
+    const t0 = TL.tickets[i]; const feed = seg(t, t0, t0 + 1.0), fly = seg(t, t0 + 1.1, t0 + 1.6);
+    if (feed <= 0) return;
+    const h = 330 * eOut(feed);
+    let x = lerp(760, 860 - i * 30, eIO(fly)), y = lerp(1110 - h, 470 + i * 60, eIO(fly)), rot = lerp(0, -.08 + i * .07, fly);
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+    ctx.save(); ctx.beginPath(); ctx.rect(-130, 0, 260, h); ctx.clip();
+    ctx.fillStyle = '#FFFDF6'; ctx.fillRect(-130, 0, 260, 330); ctx.fillStyle = '#ECE6D6'; for (let z = -130; z < 130; z += 20) { ctx.beginPath(); ctx.moveTo(z, 330); ctx.lineTo(z + 10, 340); ctx.lineTo(z + 20, 330); ctx.fill(); }
+    ctx.fillStyle = '#222'; ctx.textAlign = 'center'; ctx.font = `800 32px ui-monospace, "DejaVu Sans Mono", monospace`; ctx.fillText(id, 0, 50);
+    ctx.font = `600 22px ui-monospace, "DejaVu Sans Mono", monospace`; ctx.fillText('- - - - - - - - - - -', 0, 84); ctx.fillText(item, 0, 124); ctx.fillText(pick, 0, 164); ctx.fillText('- - - - - - - - - - -', 0, 200);
+    ctx.fillStyle = '#2B8A57'; ctx.font = `800 22px ui-monospace, "DejaVu Sans Mono", monospace`; ctx.fillText('REMINDER SCHEDULED', 0, 240);
+    ctx.restore();
+    const sk = seg(t, t0 + 1.6, t0 + 1.9);
+    if (sk > 0) { ctx.save(); ctx.translate(40, 270); ctx.rotate(-.2); ctx.scale(lerp(2, 1, eOut(sk)), lerp(2, 1, eOut(sk))); ctx.globalAlpha = clamp(sk * 3); ctx.strokeStyle = '#2B8A57'; ctx.lineWidth = 5; rr(-80, -26, 160, 52, 10); ctx.stroke(); ctx.fillStyle = '#2B8A57'; ctx.font = `900 30px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('SORTED', 0, 2); ctx.restore(); }
+    ctx.restore();
+  });
+}
+
+function docOverlay(t) {
+  // letterbox + documentary lower thirds
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, 130); ctx.fillRect(0, H - 150, W, 150);
+  ctx.save(); ctx.font = `600 30px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.textBaseline = 'middle';
+  if (Math.floor(t * 1.5) % 2 === 0) { ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(60, 75, 11, 0, 7); ctx.fill(); }
+  ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.fillText('REC', 82, 76); ctx.textAlign = 'right'; ctx.fillText(t < TL.flock ? '5:02 AM' : t < TL.print ? '11:48 PM · the night before' : '5:30 AM', W - 50, 76);
+  ctx.restore();
+  const lower = (t0, t1, a, b) => { const k = seg(t, t0, t0 + .4) * (1 - seg(t, t1, t1 + .4)); if (k <= 0) return; ctx.save(); ctx.globalAlpha = k; ctx.translate(70 - (1 - k) * 60, 1610); ctx.fillStyle = 'rgba(0,0,0,.6)'; rr(0, -10, 620, 120, 10); ctx.fill(); ctx.fillStyle = '#F4C04E'; ctx.fillRect(0, -10, 10, 120); ctx.font = `900 44px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(a, 30, 30); ctx.font = `italic 600 30px ${FONT}`; ctx.fillStyle = '#F4E2C0'; ctx.fillText(b, 30, 78); ctx.restore(); };
+  lower(1.2, 6.2, 'THE BAKER', 'Panis matutinus'); lower(TL.print + .2, TL.print + 4.5, 'THE PRE-ORDER BOT', 'Botus helpfulis');
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    bakery(t);
+    baker(t, 340, 1000, t > TL.flock + 1.2 && t < TL.print ? 'worried' : 'calm');
+    flock(t); printer(t);
+    docOverlay(t);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'DM us “PLAN”  →', footer: 'Pre-orders sorted while you sleep. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1490 : 1580 });
+  post(t, flash, .6);
+}
+FP.init(render);
+</script></body></html>
