@@ -42,3 +42,31 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - App v2: an Obsidian-style brain map (canvas graph of sections, 10 agents, apps, wiki pages, ACE's 18 industries, 16 towns and 69 businesses, plus inbox and research). Tapping a dot opens a sheet with live status, links and connections. Added a Talk to ACE button and pinned the app to the sidebar for phone use.
 - App database: + `external/commandcentre`, + `ace/outreach`, ~ `brain/snapshot` (filled with real information)
 - ~ `agents/protocol.md` (sync the Command Centre every run, sync the ACE log daily, public-repo guardrail), `CLAUDE.md` §7 and §10, `tools/wiki.py` (`raw: app:<path>`)
+
+## [2026-11-17] schema | FlowPilot daily Instagram reels
+- + `reels/` (engine, calendar of 30 episodes, brand kit, posted log), `agents/flowpilot-reels.md`
+- + [[instagram-reels]]
+- ~ [[flowpilot]] (Snapshot, Tool stack, Pages), [[index]], CLAUDE.md (§2 layout, §6.7, changelog v2.3)
+- ep00 "The Second Shift" made in chat and posted to Instagram @flowpilot2026: https://www.instagram.com/reel/Df0oPRxnKNr/
+- ~ the "FlowPilot daily Instagram post" scheduled task: Canva image at 8:32 → a new code-rendered reel at 7:00 AM Toronto
+- → ⚠️ videos are committed to the public repo (~12 MB/day); a cheaper host is an open question
+
+## [2026-11-17] schema | Voices for the daily reels + monetization
+- + `reels/engine/voice.py` (ElevenLabs lines mixed with music ducking, plus captions), ep00 `voice.json` + `vo/`
+- ~ `agents/flowpilot-reels.md` (step 3b: script, generate, download, mix, captions), `reels/README.md` (voice cast, voice styles), `reels/calendar.md` (voice idea per episode)
+- + `reels/out/ep00-second-shift-voiced.mp4`: voiced remake of ep00 (Owner + Pilot)
+- + [[reels-monetization]] (query filed back) · ~ [[instagram-reels]], [[flowpilot]] (open question 5), [[index]]
+- research: Buffer, Hootsuite and WERSM on 2026 monetization; 2026 lists of AI business ideas
+- ⚠️ ElevenLabs account usage couldn't be read (the connector needs extra permissions), so the credit budget is unknown
+
+## [2026-11-17] schema | Reel queue: producer + poster (never miss a post)
+- ⚠️ The 2026-11-17 5:41 AM run fired but never posted or pushed anything (it had to clone, design, voice, render and post in one session)
+- + ep01-plumber-race (sports commentary) and ep02-salon-midnight (midnight booking skit), both voiced, posted by hand: https://www.instagram.com/reel/Df2nZLWiDyC/ · https://www.instagram.com/reel/Df2nlAUnK7A/
+- + `reels/queue.json`, `agents/flowpilot-poster.md`, `reels/engine/lib.js` (shared drawing), `reels/engine/music.py` (shared synth)
+- ~ `agents/flowpilot-reels.md` is now the producer (keeps 3 ready, never posts); the poster task runs 6:57 AM with backups at 9:57 and 12:57 and alerts by push
+- ~ [[instagram-reels]], CLAUDE.md §6.7 + changelog v2.4, `reels/calendar.md`, `reels/posted.md`
+
+## [2026-11-17] edit | Reel producer run (agent run, 7:37 PM)
+- Reconciled `reels/queue.json` with Instagram: no new posts since ep01/ep02
+- + ep03-dental-noshow (villain parody "The No-Show", split screen, 104 BPM A minor) and ep04-landscape-kitchen ("Bot Kitchen" cooking-show parody, 116 BPM F major swing), both voiced, both `ready`
+- Queue: 2 ready + 1 reserve. Next poster run 2026-11-18 6:57 AM picks ep03

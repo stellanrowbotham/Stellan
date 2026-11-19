@@ -1,0 +1,12 @@
+{
+  "duck_db": -12,
+  "pa_chime": [12.05],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.9,  "who": "owner", "text": "Eleven forty-seven... and I'm still answering messages."},
+    {"file": "vo/02.mp3", "at": 5.0,  "who": "owner", "speed": 1.1, "cut": 11.95, "text": "New inquiry... missed call... booking request... wait, who was that?! Okay. I need help."},
+    {"file": "vo/03.mp3", "at": 12.45, "who": "pilot", "text": "Good evening. This is your FlowPilot speaking."},
+    {"file": "vo/04.mp3", "at": 16.0, "who": "pilot", "text": "We'll be taking the inbox from here. Inquiries answered. Leads sorted. Confirmations and reminders sent. Please remain seated and relax."},
+    {"file": "vo/05.mp3", "at": 39.3, "who": "owner", "text": "Wait... it's all done? Huh."},
+    {"file": "vo/06.mp3", "at": 44.9, "who": "pilot", "speed": 1.05, "text": "This has been FlowPilot. Your free automation plan is now boarding. Just DM us the word PLAN. And remember... you're still the captain."}
+  ]
+}

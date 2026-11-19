@@ -4,13 +4,13 @@ section: brain
 title: Index
 tags: [meta]
 created: 2026-10-01
-updated: 2026-10-10
+updated: 2026-11-17
 ---
 
 # Index
 Catalog of every page in Stellan's Brain. Claude reads this first on every query and updates it on every operation.
 
-**Totals:** 5 hubs · 1 entity · 0 daily pages · 3 sources · last updated 2026-10-10
+**Totals:** 5 hubs · 1 entity · 1 concept · 1 analysis · 0 daily pages · 3 sources · last updated 2026-11-17
 
 ## Home
 - [[overview]]: Stellan's Brain home page, with all three sections, this week's focus, and open loops
@@ -22,6 +22,8 @@ Catalog of every page in Stellan's Brain. Claude reads this first on every query
 
 ## FlowPilot
 - [[ace]]: FlowPilot's outreach agent in Claude chats; 69 businesses emailed (Sep 13–15) · 3 sources
+- [[reels-monetization]]: how the reels can earn money: FlowPilot leads, selling reels as a service, affiliates, Instagram programs · analysis
+- [[instagram-reels]]: daily 7:00 AM animated reels on Instagram @flowpilot2026, made in code (ep00 posted 2026-11-17) · 0 sources
 - [[flowpilot]]: hub for FlowPilot Automation: free automation plan, n8n intake, ACE outreach
 
 ## Daily

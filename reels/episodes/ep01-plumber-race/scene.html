@@ -1,0 +1,168 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep01 · Plumber · Missed-call text-back · F4 Race · sports commentary
+const LANE1 = 650, LANE2 = 850, X0 = 150, XF = 935;
+
+function hook(t, ox) {
+  ctx.save(); ctx.translate(ox, 0);
+  bgNight(t, '#0A0614', '#1A0F2E', '#0A0A1C', false);
+  // ---- incoming call card ----
+  const ringing = t < TL.missed;
+  const shake = ringing ? Math.sin(t * 60) * 7 * (Math.sin(t * 6) > 0 ? 1 : .2) : 0;
+  const ck = eBack(seg(t, 0, .45));
+  ctx.save(); ctx.translate(W / 2 + shake, 560); ctx.scale(ck, ck);
+  if (ringing) for (let i = 0; i < 3; i++) { const k = ((t * 1.4 + i / 3) % 1); ctx.strokeStyle = `rgba(61,255,168,${(1 - k) * .5})`; ctx.lineWidth = 6; rr(-380 - k * 90, -210 - k * 90, 760 + k * 180, 420 + k * 180, 60 + k * 40); ctx.stroke(); }
+  rr(-380, -210, 760, 420, 60); ctx.fillStyle = ringing ? 'rgba(18,26,56,.96)' : 'rgba(48,14,30,.96)'; ctx.fill();
+  ctx.lineWidth = 3; ctx.strokeStyle = ringing ? 'rgba(61,255,168,.6)' : C.red; ctx.stroke();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `600 36px ${FONT}`; ctx.fillStyle = C.grey; ctx.fillText(ringing ? 'Incoming call…' : 'Missed call · 2:14 PM', 0, -125);
+  ctx.font = `800 76px ${FONT}`; ctx.fillStyle = C.white; ctx.fillText('New customer', 0, -40);
+  // buttons
+  const pulse = ringing ? 1 + .08 * Math.sin(t * 14) : 1;
+  ctx.save(); ctx.translate(-150, 105); ctx.scale(pulse, pulse); ctx.beginPath(); ctx.arc(0, 0, 58, 0, 7); ctx.fillStyle = C.red; ctx.fill(); icon('x', 0, 0, 44, '#fff'); ctx.restore();
+  ctx.save(); ctx.translate(150, 105); ctx.scale(pulse, pulse); ctx.beginPath(); ctx.arc(0, 0, 58, 0, 7); ctx.fillStyle = ringing ? '#2BD67B' : '#2a3a33'; ctx.fill(); icon('phone', 0, 0, 52, '#fff'); ctx.restore();
+  ctx.restore();
+  // MISSED stamp
+  const sk = seg(t, TL.missed, TL.missed + .35);
+  if (sk > 0) {
+    ctx.save(); ctx.translate(W / 2, 560); ctx.rotate(-.14); const s = lerp(2.6, 1, eOut(sk)); ctx.scale(s, s); ctx.globalAlpha = clamp(sk * 3);
+    ctx.lineWidth = 12; ctx.strokeStyle = C.red; rr(-330, -80, 660, 160, 24); ctx.stroke();
+    ctx.font = `900 112px ${FONT}`; ctx.fillStyle = C.red; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.letterSpacing = '6px'; ctx.shadowColor = C.red; ctx.shadowBlur = 30; ctx.fillText('MISSED', 0, 6);
+    ctx.restore();
+  }
+  // ---- sink cabinet with a plumber underneath ----
+  ctx.save();
+  ctx.fillStyle = '#2A3566'; ctx.fillRect(200, 1210, 680, 46);                       // counter
+  ctx.fillStyle = '#1A2350'; ctx.fillRect(230, 1256, 620, 430);                       // cabinet
+  ctx.fillStyle = '#0B1030'; ctx.fillRect(300, 1300, 480, 386);                       // opening
+  ctx.fillStyle = '#243070'; ctx.beginPath(); ctx.moveTo(230, 1256); ctx.lineTo(160, 1290); ctx.lineTo(160, 1720); ctx.lineTo(230, 1686); ctx.fill();   // left door
+  ctx.beginPath(); ctx.moveTo(850, 1256); ctx.lineTo(920, 1290); ctx.lineTo(920, 1720); ctx.lineTo(850, 1686); ctx.fill();                             // right door
+  // U-trap pipe
+  ctx.strokeStyle = '#9AA6C8'; ctx.lineWidth = 34; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(540, 1300); ctx.lineTo(540, 1420); ctx.arc(600, 1420, 60, Math.PI, 0, true); ctx.lineTo(660, 1360); ctx.lineTo(760, 1360); ctx.stroke();
+  // drips
+  for (let k = 0; k < 6; k++) { const ph = ((t - 3.1 - k * .38) % 2.28); if (t < 3.1 + k * .38) continue; const y = 1480 + ph * 260; if (y > 1650) continue; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.ellipse(600, y, 9, 14, 0, 0, 7); ctx.fill(); }
+  // wrench waggling
+  ctx.save(); ctx.translate(650, 1500); ctx.rotate(-.6 + Math.sin(t * 9) * .35); ctx.fillStyle = '#C9D2EE'; rr(-10, 0, 20, 120, 8); ctx.fill(); ctx.beginPath(); ctx.arc(0, 0, 26, 0, 7); ctx.fill(); ctx.fillStyle = '#0B1030'; ctx.fillRect(-9, -30, 18, 26); ctx.restore();
+  // legs sticking out
+  ctx.fillStyle = '#2E4C8A';
+  rr(455, 1600, 70, 250, 26); ctx.fill(); rr(565, 1600, 70, 250, 26); ctx.fill();
+  ctx.save(); ctx.translate(490, 1850); ctx.rotate(Math.sin(t * 5) * .12); ctx.fillStyle = '#3A2414'; rr(-48, -10, 100, 58, 24); ctx.fill(); ctx.restore();   // tapping boot
+  ctx.fillStyle = '#3A2414'; rr(552, 1840, 100, 58, 24); ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+
+function lanes(t, ox) {
+  ctx.save(); ctx.translate(ox, 0);
+  bgNight(t, '#06081C', '#120C2E', '#07091E', true);
+  // stadium lights
+  for (const [x, a] of [[60, .5], [1020, -.5]]) { const g = ctx.createRadialGradient(x, 0, 10, x, 0, 1300); g.addColorStop(0, 'rgba(255,230,180,.22)'); g.addColorStop(1, 'rgba(255,230,180,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + a * 1400 - 300, 1300); ctx.lineTo(x + a * 1400 + 300, 1300); ctx.fill(); }
+  // scoreboard
+  ctx.save(); ctx.translate(W / 2, 250); rr(-430, -85, 860, 170, 30); ctx.fillStyle = 'rgba(8,10,30,.92)'; ctx.fill(); ctx.strokeStyle = C.amber; ctx.lineWidth = 3; ctx.stroke();
+  ctx.font = `900 54px ${FONT}`; ctx.letterSpacing = '4px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.amber; ctx.shadowColor = C.amber; ctx.shadowBlur = 20; ctx.fillText('THE MISSED-CALL DASH', 0, -18); ctx.shadowBlur = 0;
+  ctx.font = `700 30px ${FONT}`; ctx.letterSpacing = '3px'; ctx.fillStyle = C.white; ctx.fillText('LANE 1: YOU    ·    LANE 2: THE BOT', 0, 40);
+  if (Math.floor(t * 2) % 2 === 0) { ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(-360, -18, 12, 0, 7); ctx.fill(); }
+  ctx.restore();
+  // track
+  for (const [y, label, col] of [[LANE1, '1  ·  YOU (under a sink)', C.orange], [LANE2, '2  ·  TEXT-BACK BOT', C.cyan]]) {
+    ctx.fillStyle = '#3A1E36'; ctx.fillRect(60, y - 70, 960, 140);
+    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(60, y - 70); ctx.lineTo(1020, y - 70); ctx.moveTo(60, y + 70); ctx.lineTo(1020, y + 70); ctx.stroke();
+    ctx.font = `800 28px ${FONT}`; ctx.letterSpacing = '2px'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillStyle = col; ctx.fillText(label, 80, y - 100);
+  }
+  // finish line
+  for (let i = 0; i < 14; i++) for (let j = 0; j < 2; j++) { ctx.fillStyle = (i + j) % 2 ? '#fff' : '#111'; ctx.fillRect(XF - 20 + j * 20, LANE1 - 70 + i * 24.3, 20, 24.3); }
+  for (let i = 0; i < 6; i++) for (let j = 0; j < 2; j++) { ctx.fillStyle = (i + j) % 2 ? '#fff' : '#111'; ctx.fillRect(XF - 20 + j * 20, LANE2 - 70 + i * 23.3, 20, 23.3); }
+  // checkpoints on lane 2
+  [['TEXTED', 430], ['ASKED', 600], ['BOOKED', 780]].forEach(([s, x], i) => {
+    const on = seg(t, TL.cp[i], TL.cp[i] + .25), col = on > 0 ? C.mint : 'rgba(255,255,255,.35)';
+    ctx.strokeStyle = col; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x, LANE2 + 70); ctx.lineTo(x, LANE2 - 70); ctx.stroke();
+    ctx.save(); ctx.translate(x, LANE2 + 105); const s2 = .9 + .25 * eBack(on); ctx.scale(s2, s2);
+    ctx.font = `800 24px ${FONT}`; const w = ctx.measureText(s).width + 36; rr(-w / 2, -22, w, 44, 22); ctx.fillStyle = on > 0 ? 'rgba(61,255,168,.2)' : 'rgba(10,12,34,.85)'; ctx.fill(); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = on > 0 ? C.mint : C.grey; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 2); ctx.restore();
+  });
+  // racer 1: the plumber (barely moves)
+  const p1 = X0 + 45 * seg(t, TL.go, 22) + Math.sin(t * 3) * 6;
+  ctx.save(); ctx.translate(p1, LANE1 + Math.abs(Math.sin(t * 2)) * -6);
+  ctx.beginPath(); ctx.arc(0, 0, 44, 0, 7); ctx.fillStyle = '#F2C29B'; ctx.fill();
+  ctx.fillStyle = C.orange; ctx.beginPath(); ctx.arc(0, -10, 46, Math.PI, 0); ctx.fill(); ctx.fillRect(0, -16, 64, 12);
+  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-14, 6, 5, 0, 7); ctx.arc(14, 6, 5, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#222'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 26, 10, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+  ctx.restore();
+  const bub = (txt, t0, t1, x, y, col) => { const k = seg(t, t0, t0 + .3) * (1 - seg(t, t1, t1 + .3)); if (k <= 0) return; ctx.save(); ctx.globalAlpha = k; ctx.translate(x, y); ctx.scale(.8 + .2 * eBack(k), .8 + .2 * eBack(k)); ctx.font = `700 30px ${FONT}`; const w = ctx.measureText(txt).width + 44; rr(0, -30, w, 60, 30); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fill(); ctx.beginPath(); ctx.moveTo(18, 22); ctx.lineTo(4, 50); ctx.lineTo(42, 26); ctx.fill(); ctx.fillStyle = col; ctx.textBaseline = 'middle'; ctx.fillText(txt, 22, 2); ctx.restore(); };
+  bub('…still under the sink', 7.2, 12.6, p1 + 40, LANE1 - 120 + 36, '#3A1E36');
+  bub('did I miss something?', 19.2, 22.6, p1 + 40, LANE1 - 120 + 36, '#3A1E36');
+  // racer 2: the bot
+  const keys = [[TL.go + .3, X0], [TL.cp[0], 430], [TL.cp[1], 600], [TL.cp[2], 780], [TL.finish, XF + 30], [TL.finish + 1.2, XF + 52]];
+  let p2 = X0; for (let i = 0; i < keys.length - 1; i++) { const [a, xa] = keys[i], [b, xb] = keys[i + 1]; if (t >= a && t <= b) { const k = seg(t, a, b); p2 = lerp(xa, xb, i === 0 ? k * k * .5 + k * .5 : eIO(k)); } else if (t > b) p2 = xb; }
+  const run = t > TL.go && t < TL.finish ? Math.abs(Math.sin(t * 16)) * -14 : 0, jump = t > TL.finish ? -Math.abs(Math.sin((t - TL.finish) * 6)) * 60 * Math.exp(-(t - TL.finish) * 1.1) : 0;
+  if (t > TL.go + .3 && t < TL.finish + .3) for (let i = 0; i < 5; i++) { ctx.strokeStyle = `rgba(60,242,255,${.5 - i * .08})`; ctx.lineWidth = 5; const y = LANE2 - 40 + i * 20; ctx.beginPath(); ctx.moveTo(p2 - 70 - i * 6, y); ctx.lineTo(p2 - 190 - (i * 37) % 70, y); ctx.stroke(); }
+  robot(p2, LANE2 + run + jump + 20, 92, t);
+  // WINNER
+  const wk = seg(t, TL.finish + .1, TL.finish + .7);
+  if (wk > 0) { ctx.save(); ctx.translate(XF - 150, LANE2 - 160); ctx.rotate(-.06); ctx.scale(eElastic(wk), eElastic(wk)); rr(-150, -42, 300, 84, 42); ctx.fillStyle = C.mint; ctx.shadowColor = C.mint; ctx.shadowBlur = 30; ctx.fill(); ctx.shadowBlur = 0; ctx.font = `900 46px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.letterSpacing = '4px'; ctx.fillText('WINNER', 0, 3); ctx.restore(); }
+  // ---- the actual text thread ----
+  phone(t);
+  confetti(t, TL.finish, XF, LANE2, 90, 7);
+  ctx.restore();
+}
+
+const MSGS = [
+  ['bot', 'Sorry we missed your call! What do you need help with?', 0],
+  ['cust', 'Leaky pipe under the kitchen sink', 1],
+  ['bot', 'We can come Thursday, 9 to 11 AM. Does that work?', 2],
+  ['cust', 'Yes please!', 3],
+  ['bot', 'Booked! You\'ll get a reminder Wednesday.', 4],
+];
+function phone(t) {
+  const times = [TL.cp[0], TL.cp[0] + .45, TL.cp[1], TL.cp[1] + .85, TL.cp[2]];
+  const px = 190, py = 1080, pw = 700, ph = 640;
+  const k0 = eOut(seg(t, TL.go, TL.go + .5));
+  ctx.save(); ctx.globalAlpha = k0; ctx.translate(0, (1 - k0) * 120);
+  rr(px, py, pw, ph, 46); ctx.fillStyle = 'rgba(10,14,36,.96)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.font = `700 28px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = C.grey; ctx.textBaseline = 'middle'; ctx.fillText('Messages · New customer', W / 2, py + 44);
+  ctx.fillStyle = 'rgba(255,77,109,.9)'; ctx.font = `700 24px ${FONT}`; ctx.fillText('Missed call · 2:14 PM', W / 2, py + 90);
+  ctx.save(); rr(px, py + 110, pw, ph - 120, 0); ctx.clip();
+  ctx.font = `600 30px ${FONT}`; const items = [];
+  for (let i = 0; i < MSGS.length; i++) if (t >= times[i]) items.push([...MSGS[i], times[i]]);
+  // typing dots before the first reply
+  let y = py + 140; const lay = items.map(([who, txt, , t0]) => { const lines = wrapText(txt, 420); const h = lines.length * 40 + 30; const it = { who, lines, h, t0, y }; y += h + 16; return it; });
+  const over = Math.max(0, y - (py + ph - 20)); const sc = over;
+  for (const it of lay) {
+    const k = eBack(seg(t, it.t0, it.t0 + .3)); const bw = Math.max(...it.lines.map(l => ctx.measureText(l).width)) + 44;
+    const bx = it.who === 'bot' ? px + pw - 30 - bw : px + 30, by = it.y - sc;
+    ctx.save(); ctx.translate(bx + (it.who === 'bot' ? bw : 0), by); ctx.scale(k, k); ctx.translate(-(it.who === 'bot' ? bw : 0), 0);
+    rr(0, 0, bw, it.h, 26); ctx.fillStyle = it.who === 'bot' ? '#1F7CF2' : '#2A3050'; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; it.lines.forEach((l, j) => ctx.fillText(l, 22, 35 + j * 40));
+    ctx.restore();
+  }
+  if (t > TL.cp[0] - .9 && t < TL.cp[0]) { const bx = px + pw - 140; rr(bx, py + 140, 110, 60, 30); ctx.fillStyle = '#1F7CF2'; ctx.fill(); for (let i = 0; i < 3; i++) { ctx.fillStyle = `rgba(255,255,255,${.4 + .6 * Math.max(0, Math.sin(t * 10 - i))})`; ctx.beginPath(); ctx.arc(bx + 32 + i * 23, py + 170, 7, 0, 7); ctx.fill(); } }
+  ctx.restore();
+  // BOOKED stamp
+  const sk = seg(t, TL.finish + .9, TL.finish + 1.2);
+  if (sk > 0) { ctx.save(); ctx.translate(W / 2, py + ph / 2 + 40); ctx.rotate(-.12); const s = lerp(2.2, 1, eOut(sk)); ctx.scale(s, s); ctx.globalAlpha = clamp(sk * 3); ctx.lineWidth = 10; ctx.strokeStyle = C.mint; rr(-280, -70, 560, 140, 22); ctx.stroke(); ctx.font = `900 84px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = C.mint; ctx.shadowBlur = 25; ctx.letterSpacing = '4px'; ctx.fillText('JOB BOOKED', 0, 4); ctx.restore(); }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    const wh = eIn(seg(t, TL.whip, TL.whip + .4));
+    if (t < TL.whip + .45) hook(t, -W * wh);
+    if (t > TL.whip) lanes(t, W * (1 - eOut(seg(t, TL.whip + .05, TL.whip + .45))));
+    const shake = t > TL.finish && t < TL.finish + .6 ? 14 * (1 - seg(t, TL.finish, TL.finish + .6)) : 0;
+    if (shake) { const img = ctx.getImageData(0, 0, 1, 1); }
+    flash = Math.max(.5 * (1 - seg(t, TL.finish, TL.finish + .35)) * (t >= TL.finish ? 1 : 0), .35 * (1 - seg(t, TL.missed, TL.missed + .25)) * (t >= TL.missed ? 1 : 0));
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'DM us “CALL”  →', footer: 'Missed calls, texted back. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  if (t > TL.logo - .3 && t < TL.logo) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .3, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  captions(t, { y: t => t < TL.whip ? 1080 : t < TL.logo ? 450 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>

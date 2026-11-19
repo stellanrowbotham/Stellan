@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [19.0],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.35, "who": "customer", "text": "Hiii! Do you have anything... Saturday?"},
+    {"file": "vo/02.mp3", "at": 7.2, "who": "customer", "text": "Wait... it answered? At midnight? Two-fifteen, please!"},
+    {"file": "vo/03.mp3", "at": 15.2, "who": "owner", "text": "Mmm... who booked my whole Saturday?"},
+    {"file": "vo/04.mp3", "at": 19.5, "who": "pilot", "text": "That would be your booking bot. Comment BOOK and we'll show you how it works. You're still the captain."}
+  ]
+}

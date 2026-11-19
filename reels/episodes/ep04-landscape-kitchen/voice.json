@@ -1,0 +1,11 @@
+{
+  "duck_db": -10,
+  "pa_chime": [23.15],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.3, "who": "host", "text": "Welcome back to Bot Kitchen! Today: a quote bot for landscapers. In twenty seconds!"},
+    {"file": "vo/02.mp3", "at": 6.2, "who": "host", "text": "First, a web form. Add a pinch of photo upload. Then fold in the questions: yard size, the job, and when."},
+    {"file": "vo/03.mp3", "at": 13.3, "who": "host", "text": "Pop it in the oven and... ding! The quote request lands in your inbox, sorted and ready."},
+    {"file": "vo/04.mp3", "at": 19.75, "who": "owner", "text": "Mmm... that's actually delicious."},
+    {"file": "vo/05.mp3", "at": 23.65, "who": "pilot", "text": "This is your FlowPilot speaking. Know a business owner buried in quote requests? Send them this. You're still the captain."}
+  ]
+}

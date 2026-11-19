@@ -1,0 +1,11 @@
+{
+  "duck_db": -10,
+  "pa_chime": [22.35],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.25, "who": "narrator", "text": "You missed this call. Because you were literally... under a sink."},
+    {"file": "vo/02.mp3", "at": 5.7, "who": "commentator", "text": "And they're OFF! In lane one, the plumber... still elbow-deep in a pipe!"},
+    {"file": "vo/03.mp3", "at": 11.3, "who": "commentator", "text": "But in lane two, the text-back bot! Text sent! Question asked! Job... BOOKED!"},
+    {"file": "vo/04.mp3", "at": 17.4, "who": "commentator", "text": "IT'S OVER! The bot takes it! What a finish!"},
+    {"file": "vo/05.mp3", "at": 22.9, "who": "pilot", "text": "This is your FlowPilot speaking. Missed calls... texted back, automatically. DM us the word CALL. And remember, you're still the captain."}
+  ]
+}

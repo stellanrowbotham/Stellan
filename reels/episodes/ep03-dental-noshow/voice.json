@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [23.15],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.3, "who": "villain", "text": "I am... the No-Show. Your nine A.M. appointment... will never arrive."},
+    {"file": "vo/02.mp3", "at": 11.0, "who": "customer", "text": "Oh! I totally forgot. Can we do Thursday instead?"},
+    {"file": "vo/03.mp3", "at": 16.0, "who": "villain", "text": "What?! They... rescheduled? And someone from the waitlist took my slot?!"},
+    {"file": "vo/04.mp3", "at": 23.65, "who": "pilot", "text": "This is your FlowPilot speaking. Reminders, confirmations, rescheduling... handled. Save this one for later. You're still the captain."}
+  ]
+}
