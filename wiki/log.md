@@ -70,3 +70,8 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - Reconciled `reels/queue.json` with Instagram: no new posts since ep01/ep02
 - + ep03-dental-noshow (villain parody "The No-Show", split screen, 104 BPM A minor) and ep04-landscape-kitchen ("Bot Kitchen" cooking-show parody, 116 BPM F major swing), both voiced, both `ready`
 - Queue: 2 ready + 1 reserve. Next poster run 2026-11-18 6:57 AM picks ep03
+
+## [2026-11-18] edit | Reel producer run (agent run, 7:37 PM)
+- Reconciled the queue: ep03-dental-noshow posted 2026-11-18 at 6:58 AM by the poster (https://www.instagram.com/reel/Df4c5y2lm1x/), the first fully automatic post
+- + ep05-bakery-documentary (nature-documentary parody, receipt printer, 80 BPM G major) and ep06-gym-levelup (arcade level-up, chiptune 128 BPM), both voiced, both `ready`
+- Queue: 3 ready (ep04, ep05, ep06) + 1 reserve

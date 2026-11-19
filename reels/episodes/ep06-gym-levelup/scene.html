@@ -1,0 +1,111 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep06 · Fitness studio · Lead follow-up bot · F13 game level-up · arcade announcer
+WHO.announcer = ['ANNOUNCER', C.amber];
+const MONO = '"DejaVu Sans Mono", ui-monospace, monospace';
+
+function arcadeBg(t) {
+  ctx.fillStyle = '#0A0420'; ctx.fillRect(0, 0, W, H);
+  // neon perspective floor + sun
+  const sun = ctx.createLinearGradient(0, 300, 0, 800); sun.addColorStop(0, '#FF6FB5'); sun.addColorStop(1, '#FFB547');
+  ctx.save(); ctx.globalAlpha = .35; ctx.fillStyle = sun; ctx.beginPath(); ctx.arc(W / 2, 760, 330, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = '#0A0420'; for (let i = 0; i < 7; i++) ctx.fillRect(W / 2 - 340, 470 + i * 44, 680, 6 + i * 3); ctx.restore();
+  ctx.save(); ctx.strokeStyle = 'rgba(255,111,181,.45)'; ctx.lineWidth = 2; const hz = 760;
+  for (let i = -14; i <= 14; i++) { ctx.beginPath(); ctx.moveTo(W / 2 + i * 26, hz); ctx.lineTo(W / 2 + i * 220, H); ctx.stroke(); }
+  for (let j = 0; j < 16; j++) { const k = (j + (t * 1.2) % 1) / 16; const y = hz + Math.pow(k, 2.3) * (H - hz); ctx.globalAlpha = k; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  ctx.restore();
+  // scanlines
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; for (let y = 0; y < H; y += 6) ctx.fillRect(0, y, W, 2);
+}
+
+function hud(t) {
+  const lvl = t < TL.levelup ? 1 : 2;
+  const xpTargets = [[0, 0], [TL.combo1, .3], [TL.combo2, .62], [TL.booked, .9], [TL.levelup, 1]];
+  let xp = 0; for (const [tt, v] of xpTargets) if (t > tt) xp = lerp(xp, v, clamp((t - tt) / .5));
+  if (t > TL.levelup + .6) xp = .15 * seg(t, TL.levelup + .6, TL.logo);
+  ctx.save(); ctx.font = `900 46px ${MONO}`; ctx.textBaseline = 'middle'; ctx.fillStyle = C.cyan; ctx.shadowColor = C.cyan; ctx.shadowBlur = 20;
+  ctx.fillText(`LVL ${lvl}`, 60, 120); ctx.textAlign = 'right'; ctx.fillStyle = C.amber; ctx.shadowColor = C.amber;
+  const score = Math.round(10000 * (t < TL.levelup ? xp : 1 + (t > TL.levelup + .6 ? xp : 0))); ctx.fillText(String(score).padStart(6, '0'), W - 60, 120); ctx.shadowBlur = 0;
+  rr(60, 170, W - 120, 44, 22); ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 3; ctx.stroke();
+  if (xp > 0) { const g = ctx.createLinearGradient(60, 0, W - 60, 0); g.addColorStop(0, C.mint); g.addColorStop(1, C.cyan); rr(64, 174, (W - 128) * xp, 36, 18); ctx.fillStyle = g; ctx.shadowColor = C.mint; ctx.shadowBlur = 20; ctx.fill(); ctx.shadowBlur = 0; }
+  ctx.font = `800 24px ${MONO}`; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText('XP', W / 2, 193);
+  ctx.restore();
+}
+
+function player(t) {
+  const k = eBack(seg(t, TL.enter, TL.enter + .5)); if (k <= 0) return;
+  // warmth meter decays unless follow-ups refill it
+  let warm = 1; const hits = [TL.fu1, TL.fu2, TL.reply];
+  let last = TL.enter; for (const h of hits) if (t > h) last = h; warm = clamp(1 - (t - last) * .22, .15, 1); if (t > TL.booked) warm = 1;
+  ctx.save(); ctx.translate(W / 2, 420); ctx.scale(k, k);
+  rr(-420, -130, 840, 260, 30); ctx.fillStyle = 'rgba(20,10,50,.92)'; ctx.fill(); ctx.strokeStyle = C.pink; ctx.lineWidth = 4; ctx.stroke();
+  // pixel avatar
+  const px = 14, sprite = ['..xxxx..', '.xxxxxx.', '.x.xx.x.', '.xxxxxx.', '..x..x..', '.xxxxxx.', 'xx.xx.xx', '..x..x..'];
+  sprite.forEach((row, r) => [...row].forEach((c, ci) => { if (c === 'x') { ctx.fillStyle = r < 4 ? '#F2C29B' : r === 4 ? '#F2C29B' : '#3CF2FF'; ctx.fillRect(-380 + ci * px, -60 + r * px + Math.round(Math.sin(t * 6)) * 3, px - 1, px - 1); } }));
+  ctx.font = `900 40px ${MONO}`; ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText('NEW LEAD: JORDAN', -230, -55);
+  ctx.font = `700 28px ${MONO}`; ctx.fillStyle = C.grey; ctx.fillText('wants: free trial class', -230, -10);
+  // warmth meter
+  ctx.font = `800 24px ${MONO}`; ctx.fillStyle = '#fff'; ctx.fillText(t > TL.booked ? 'WARMTH: ON FIRE' : warm < .4 ? 'WARMTH: GOING COLD...' : 'WARMTH', -230, 40);
+  rr(-230, 62, 600, 30, 15); ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.fill();
+  const col = mix('#3C7BFF', '#FF6A3D', warm); rr(-230, 62, 600 * warm, 30, 15); ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 20; ctx.fill(); ctx.shadowBlur = 0;
+  ctx.restore();
+  const bk = seg(t, TL.enter + .2, TL.enter + .5) * (1 - seg(t, 5.0, 5.4));
+  if (bk > 0) { ctx.save(); ctx.globalAlpha = bk; ctx.translate(W / 2, 640); ctx.scale(.9 + .1 * eBack(bk), .9 + .1 * eBack(bk)); ctx.font = `900 58px ${MONO}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.amber; ctx.shadowColor = C.amber; ctx.shadowBlur = 30 * (Math.floor(t * 4) % 2); ctx.fillText('PLAYER 2 HAS ENTERED', 0, 0); ctx.restore(); }
+}
+
+function msg(t, t0, txt, who, y) {
+  const k = seg(t, t0, t0 + .35); if (k <= 0) return;
+  const bot = who === 'bot';
+  ctx.save(); ctx.font = `700 32px ${FONT}`; const lines = wrapText(txt, 640); const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 60, bh = lines.length * 44 + 40;
+  const x = bot ? W - 60 - bw : 60; ctx.translate(bot ? x + bw : x, y); ctx.scale(eBack(k), eBack(k)); ctx.translate(bot ? -bw : 0, 0);
+  rr(0, 0, bw, bh, 28); ctx.fillStyle = bot ? 'rgba(60,242,255,.18)' : 'rgba(255,111,181,.2)'; ctx.fill(); ctx.strokeStyle = bot ? C.cyan : C.pink; ctx.lineWidth = 3; ctx.stroke();
+  ctx.font = `800 22px ${MONO}`; ctx.fillStyle = bot ? C.cyan : C.pink; ctx.fillText(bot ? 'BOT' : 'JORDAN', 30, -14);
+  ctx.font = `700 32px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; lines.forEach((l, i) => ctx.fillText(l, 30, 42 + i * 44));
+  ctx.restore();
+}
+
+function popText(t, t0, txt, y, col, size = 110) {
+  const k = seg(t, t0, t0 + .25), out = seg(t, t0 + 1.1, t0 + 1.5); if (k <= 0 || out >= 1) return;
+  ctx.save(); ctx.translate(W / 2, y - out * 80); ctx.rotate(-.06); const s = eBack(k) * (1 + .04 * Math.sin(t * 20)); ctx.scale(s, s); ctx.globalAlpha = 1 - out;
+  ctx.font = `900 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 14; ctx.strokeStyle = '#1A0838'; ctx.strokeText(txt, 0, 0);
+  ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 40; ctx.fillText(txt, 0, 0); ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    arcadeBg(t); hud(t); player(t);
+    const fade = 1 - seg(t, TL.levelup + .3, TL.levelup + .8);
+    ctx.save(); ctx.globalAlpha = fade;
+    msg(t, TL.fu1, 'Hi Jordan! Your free trial class is ready. Mornings or evenings?', 'bot', 740);
+    msg(t, TL.fu2, 'Reminder: spin class Tuesday at 6 PM. Reply YES to save your spot.', 'bot', 980);
+    msg(t, TL.reply, 'YES! See you there', 'lead', 1220);
+    ctx.restore();
+    popText(t, TL.combo1, 'COMBO x1', 900, C.amber); popText(t, TL.combo2, 'COMBO x2!', 1140, C.pink);
+    const bk = seg(t, TL.booked, TL.booked + .3);
+    if (bk > 0 && t < TL.levelup + .8) { ctx.save(); ctx.globalAlpha = fade; ctx.translate(W / 2, 1380); ctx.rotate(-.1); const s = lerp(2.2, 1, eOut(bk)); ctx.scale(s, s); ctx.strokeStyle = C.mint; ctx.lineWidth = 10; rr(-250, -64, 500, 128, 20); ctx.stroke(); ctx.font = `900 80px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('BOOKED', 0, 4); ctx.restore(); }
+    // LEVEL UP
+    const lk = seg(t, TL.levelup, TL.levelup + .4);
+    if (lk > 0) {
+      for (let i = 0; i < 16; i++) { const a = i / 16 * 6.283 + t * .5; ctx.save(); ctx.globalAlpha = .25 * lk; ctx.fillStyle = i % 2 ? C.amber : C.pink; ctx.beginPath(); ctx.moveTo(W / 2, 1000); ctx.arc(W / 2, 1000, 1400, a, a + .2); ctx.fill(); ctx.restore(); }
+      ctx.save(); ctx.translate(W / 2, 960); const s = eElastic(lk) * (1 + .03 * Math.sin(t * 8)); ctx.scale(s, s);
+      ctx.font = `900 170px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 18; ctx.strokeStyle = '#1A0838'; ctx.strokeText('LEVEL UP!', 0, 0);
+      const g = ctx.createLinearGradient(-400, 0, 400, 0); g.addColorStop(0, C.amber); g.addColorStop(1, C.pink); ctx.fillStyle = g; ctx.shadowColor = C.amber; ctx.shadowBlur = 50; ctx.fillText('LEVEL UP!', 0, 0); ctx.restore();
+      const sk = seg(t, TL.secured, TL.secured + .3);
+      if (sk > 0) { ctx.save(); ctx.translate(W / 2, 1180); ctx.scale(eBack(sk), eBack(sk)); rr(-330, -54, 660, 108, 54); ctx.fillStyle = C.mint; ctx.shadowColor = C.mint; ctx.shadowBlur = 30; ctx.fill(); ctx.shadowBlur = 0; ctx.font = `900 50px ${MONO}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('LEAD SECURED', 0, 3); ctx.restore(); }
+      confetti(t, TL.levelup, W / 2, 960, 110, 9);
+    }
+    flash = .55 * (1 - seg(t, TL.levelup, TL.levelup + .35)) * (t >= TL.levelup ? 1 : 0);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment your business  →', footer: 'Follow-ups on autopilot. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1610 : 1580 });
+  post(t, flash, .2);
+}
+FP.init(render);
+</script></body></html>

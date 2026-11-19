@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [19.3],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.4, "who": "announcer", "text": "A new lead has entered the gym! Free trial class... REQUESTED!"},
+    {"file": "vo/02.mp3", "at": 5.6, "who": "announcer", "text": "Follow-up one: welcome text! COMBO! Follow-up two: class reminder! DOUBLE COMBO!"},
+    {"file": "vo/03.mp3", "at": 12.8, "who": "announcer", "text": "Follow-up three... they BOOKED! LEVEL UP! That lead never went cold!"},
+    {"file": "vo/04.mp3", "at": 19.8, "who": "pilot", "text": "This is your FlowPilot speaking. Comment your type of business, and we'll reply with a bot idea for you. You're still the captain."}
+  ]
+}
