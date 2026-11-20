@@ -1,18 +1,18 @@
-# Strategy lab results (2026-11-19)
+# Strategy lab results (2026-11-20)
 
 Every number below comes from test years the rule was **not** tuned on, after trading costs.
 
-## us_stocks_etfs (2007-01-05 to 2026-11-18, 25 assets)
+## us_stocks_etfs (2007-01-08 to 2026-11-19, 25 assets)
 
 | Rule | Test folds | Trades | Yearly return | Worst drop | Sharpe | Buy & hold yearly | Buy & hold worst drop | Index only yearly | If USD held: yearly | Passes? |
 |---|---|---|---|---|---|---|---|---|---|---|
-| trend | 16 | 3306 | -2.3% | -41.6% | -0.17 | +16.1% | -30.1% | +9.7% (SPY) | +9.8% | ❌ |
-| sma_cross | 16 | 855 | +8.7% | -25.5% | 0.74 | +16.1% | -30.1% | +9.7% (SPY) | +11.0% | ❌ |
-| momentum | 16 | 379 | +14.6% | -47.2% | 0.58 | +16.1% | -30.1% | +9.7% (SPY) | +33.1% | ❌ |
-| momentum_buffer | 16 | 408 | +13.7% | -41.6% | 0.60 | +16.1% | -30.1% | +9.7% (SPY) | +28.7% | ❌ |
-| rsi2 | 16 | 6712 | -70.8% | -100.0% | -6.34 | +16.1% | -30.1% | +9.7% (SPY) | +5.3% | ❌ |
+| trend | 16 | 3313 | -2.4% | -41.8% | -0.18 | +16.0% | -30.1% | +9.6% (SPY) | +9.8% | ❌ |
+| sma_cross | 16 | 860 | +8.6% | -25.5% | 0.74 | +16.0% | -30.1% | +9.6% (SPY) | +11.0% | ❌ |
+| momentum | 16 | 300 | +21.9% | -42.2% | 0.75 | +16.0% | -30.1% | +9.6% (SPY) | +36.5% | ✅ |
+| momentum_buffer | 16 | 380 | +15.1% | -39.5% | 0.64 | +16.0% | -30.1% | +9.6% (SPY) | +30.5% | ❌ |
+| rsi2 | 16 | 6714 | -70.9% | -100.0% | -6.36 | +16.0% | -30.1% | +9.6% (SPY) | +5.0% | ❌ |
 
-Passing rules: none
+Passing rules: momentum
 
 ## Limits
 
