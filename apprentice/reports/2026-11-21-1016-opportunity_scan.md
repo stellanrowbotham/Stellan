@@ -1,0 +1,29 @@
+# Research report: Saturday November 21, 2026, 10:16 AM ET
+
+Account: **$905.38 CAD** · Profit/loss: **−$94.62** · Cash $818.03
+
+> Every idea below is a *guess with reasons*, not a promise. A high score does not mean a trade will work.
+
+## What's happening in the markets (in plain words)
+Saturday Nov 21, 10:15 AM in Toronto; markets are closed. The momentum rule signalled AMD again, still using Thursday's 489.19 close. VETOED for the same reason as this morning: AMD fell 7.7% on Thursday and 13.25% on Friday to 424.39 after two short-seller reports about China chip exports, and no trading day has passed since, so the bad news has not settled (guide 5b). Weekend commentary is mixed (Motley Fool calls AMD expensive at about 29 times next year's earnings; MarketBeat says the analyst consensus is still Moderate Buy). The account is C$905.38 with C$818.03 cash; only Exxon (XOM) is held. No exits.
+
+## Bottom line
+
+**No trade: current opportunities do not meet the required criteria.**
+
+## What I actually checked
+- apprentice signals (1 buy: AMD momentum, vetoed; 0 exits)
+- Firecrawl news search: AMD weekend news (Benzinga, Yahoo Finance, Motley Fool, MarketBeat, Globe and Mail)
+
+## Limits of this report
+- Weekend scan: the signal uses Thursday's close until history refreshes on Monday
+- The veto rests on short-seller allegations that AMD disputes; nothing is proven
+- CoinGecko failing
+
+## Words to know
+- Stop-loss: a price where we sell automatically to stop a loss from getting bigger.
+- Target: the price where we plan to take the profit.
+- Reward-to-risk: how much we could win for each $1 we could lose. 2 means win $2 for every $1 risked.
+- RSI: a 0-100 score of how fast the price has been rising. Over 70 can mean 'ran up too fast'; under 30 'fell too fast'.
+- Moving average: the average price over the last N days. It shows the trend.
+- Brier score: how good the predictions are. 0 is perfect, and 0.25 is what guessing 50/50 would get.
