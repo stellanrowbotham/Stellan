@@ -1,0 +1,11 @@
+{
+  "duck_db": -10,
+  "pa_chime": [12.45],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.4, "who": "narrator", "text": "POV: It's ten P.M. A buyer just found their dream house... and texted you."},
+    {"file": "vo/02.mp3", "at": 6.8, "who": "narrator", "text": "You're asleep. Most agents reply tomorrow. By then... they've called someone else."},
+    {"file": "vo/03.mp3", "at": 12.95, "who": "pilot", "text": "Not tonight. Your inquiry bot replies right away, answers the basics, and books the showing."},
+    {"file": "vo/04.mp3", "at": 19.1, "who": "customer", "text": "Saturday at ten? Perfect!"},
+    {"file": "vo/05.mp3", "at": 21.7, "who": "pilot", "text": "Showing booked. Cleared for landing. DM us the word TOUR. You're still the captain."}
+  ]
+}

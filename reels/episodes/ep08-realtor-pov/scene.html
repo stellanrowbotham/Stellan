@@ -1,0 +1,113 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep08 · Realtor · Instant inquiry reply + showing scheduler · F9 POV text story · whispered POV
+WHO.narrator = ['', '#E8E4FF'];
+const PX = 170, PY = 330, PW = 740, PH = 1150;
+
+function room(t, warm) {
+  ctx.fillStyle = mix('#05040C', '#120A1E', warm); ctx.fillRect(0, 0, W, H);
+  // window with moon and city lights
+  ctx.save(); ctx.globalAlpha = .55; rr(640, 120, 360, 260, 12); ctx.fillStyle = '#0C1230'; ctx.fill();
+  ctx.fillStyle = '#F4F1D8'; ctx.beginPath(); ctx.arc(960, 330, 30, 0, 7); ctx.fill();
+  for (let i = 0; i < 14; i++) { ctx.fillStyle = `rgba(255,210,120,${.4 + .4 * hash(i)})`; ctx.fillRect(660 + (i * 23) % 330, 300 + (i * 37) % 60, 8, 12); }
+  ctx.restore();
+  // phone glow on the "face"
+  const g = ctx.createRadialGradient(W / 2, 900, 100, W / 2, 900, 900); g.addColorStop(0, 'rgba(120,140,255,.22)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function hands() {
+  ctx.fillStyle = '#C99A7A';
+  ctx.beginPath(); ctx.ellipse(PX - 10, PY + PH - 120, 70, 160, -.25, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(PX + PW + 10, PY + PH - 160, 70, 170, .25, 0, 7); ctx.fill();
+  ctx.fillStyle = '#B88A6A'; for (let i = 0; i < 3; i++) { rr(PX + PW - 10, PY + 380 + i * 110, 70, 80, 36); ctx.fill(); }
+}
+
+function phoneShell() {
+  ctx.save(); ctx.shadowColor = 'rgba(120,140,255,.5)'; ctx.shadowBlur = 80; rr(PX - 16, PY - 16, PW + 32, PH + 32, 80); ctx.fillStyle = '#0A0B14'; ctx.fill(); ctx.restore();
+  rr(PX, PY, PW, PH, 64); ctx.fillStyle = '#0F1324'; ctx.fill(); rr(W / 2 - 80, PY + 16, 160, 38, 19); ctx.fillStyle = '#000'; ctx.fill();
+}
+
+function house(x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = '#7FB3FF'; ctx.fillRect(-140, -60, 280, 140); ctx.fillStyle = '#4C6FD8'; ctx.beginPath(); ctx.moveTo(-170, -50); ctx.lineTo(0, -170); ctx.lineTo(170, -50); ctx.fill();
+  ctx.fillStyle = '#FFE08A'; ctx.fillRect(-100, -20, 60, 50); ctx.fillRect(40, -20, 60, 50); ctx.fillStyle = '#3A2A1A'; ctx.fillRect(-25, 10, 50, 70);
+  ctx.fillStyle = '#3FAE5B'; ctx.fillRect(-200, 80, 400, 30);
+  ctx.fillStyle = '#fff'; ctx.fillRect(150, 20, 6, 70); rr(110, 0, 90, 40, 6); ctx.fill(); ctx.fillStyle = '#E2463C'; ctx.font = `900 18px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('FOR SALE', 155, 26);
+  ctx.restore();
+}
+
+function bubble(t, t0, txt, right, y, col) {
+  const k = seg(t, t0, t0 + .3); if (k <= 0) return 0;
+  ctx.save(); ctx.textAlign = 'left'; ctx.font = `600 32px ${FONT}`; const lines = wrapText(txt, 460); const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 50, bh = lines.length * 44 + 32;
+  const x = right ? PX + PW - 30 - bw : PX + 30; ctx.translate(right ? x + bw : x, y + bh); ctx.scale(eBack(k), eBack(k)); ctx.translate(right ? -bw : 0, -bh);
+  rr(0, 0, bw, bh, 28); ctx.fillStyle = col; ctx.fill(); ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; lines.forEach((l, i) => ctx.fillText(l, 25, 38 + i * 44)); ctx.restore();
+  return bh + 18;
+}
+
+function clockText(t) {
+  if (t < TL.skip) return '10:04 PM';
+  if (t < TL.rewind) { const k = seg(t, TL.skip, TL.skip + 2.6); const tot = 22 * 60 + 4 + eIO(k) * (11 * 60 + 10); const h = Math.floor(tot / 60) % 24, m = Math.floor(tot % 60); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`; }
+  return '10:04 PM';
+}
+
+function screen(t) {
+  ctx.save(); rr(PX, PY, PW, PH, 64); ctx.clip();
+  const detour = t >= TL.skip && t < TL.rewind;
+  ctx.fillStyle = detour ? '#1A0E14' : '#0F1324'; ctx.fillRect(PX, PY, PW, PH);
+  // header
+  ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(PX, PY, PW, 160);
+  ctx.beginPath(); ctx.arc(PX + 85, PY + 100, 36, 0, 7); ctx.fillStyle = '#8B6CFF'; ctx.fill(); ctx.font = `800 30px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('?', PX + 85, PY + 102);
+  ctx.textAlign = 'left'; ctx.font = `800 32px ${FONT}`; ctx.fillText('New buyer', PX + 140, PY + 88); ctx.font = `600 24px ${FONT}`; ctx.fillStyle = C.grey; ctx.fillText('via your listing', PX + 140, PY + 124);
+  ctx.textAlign = 'right'; ctx.font = `800 30px ${FONT}`; ctx.fillStyle = detour ? C.red : '#fff'; ctx.fillText(clockText(t), PX + PW - 40, PY + 100);
+  // listing card + first message
+  let y = PY + 190;
+  const lk = seg(t, TL.notif, TL.notif + .4);
+  if (lk > 0) { ctx.save(); ctx.globalAlpha = lk; rr(PX + 30, y, 480, 300, 26); ctx.fillStyle = '#1C2440'; ctx.fill(); ctx.save(); rr(PX + 30, y, 480, 220, 26); ctx.clip(); ctx.fillStyle = '#9FD0FF'; ctx.fillRect(PX + 30, y, 480, 220); house(PX + 270, y + 130, .8); ctx.restore(); ctx.font = `800 28px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText('42 Maple St · 3 bed · 2 bath', PX + 55, y + 260); ctx.restore(); }
+  y += 320;
+  y += bubble(t, TL.notif + .6, 'Hi! Is this still available? Can I see it this weekend?', false, y, '#2A3050');
+  if (detour) {
+    const dk = seg(t, TL.skip + 2.7, TL.skip + 3.0);
+    ctx.save(); ctx.globalAlpha = .9; ctx.font = `700 26px ${FONT}`; ctx.fillStyle = C.grey; ctx.textAlign = 'center'; ctx.fillText('...no reply all night...', W / 2, y + 30); ctx.restore();
+    y += 70; y += bubble(t, TL.lost, 'nvm, found another agent', false, y, '#5A2030');
+    if (dk > 0) { ctx.save(); ctx.translate(W / 2, PY + PH - 160); ctx.rotate(-.1); ctx.scale(lerp(2, 1, eOut(dk)), lerp(2, 1, eOut(dk))); ctx.globalAlpha = clamp(dk * 3); ctx.strokeStyle = C.red; ctx.lineWidth = 8; rr(-230, -50, 460, 100, 16); ctx.stroke(); ctx.font = `900 56px ${FONT}`; ctx.fillStyle = C.red; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('LEAD LOST', 0, 3); ctx.restore(); }
+  } else if (t >= TL.rewind) {
+    y += bubble(t, TL.reply, 'Hi! Yes, it is. 3 bed, 2 bath, big backyard. Want to see it Saturday at 10 AM or 2 PM?', true, y, '#2F80ED');
+    y += bubble(t, TL.buyer, 'Saturday at ten? Perfect!', false, y, '#2A3050');
+    y += bubble(t, TL.booked, 'Booked: Sat 10:00 AM. Reminder coming Friday.', true, y, '#2F80ED');
+    const sk = seg(t, TL.stamp, TL.stamp + .3);
+    if (sk > 0) { ctx.save(); ctx.translate(W / 2, PY + PH - 55); ctx.rotate(-.05); ctx.scale(lerp(2, 1, eOut(sk)), lerp(2, 1, eOut(sk))); ctx.globalAlpha = clamp(sk * 3); ctx.strokeStyle = C.mint; ctx.lineWidth = 8; rr(-280, -50, 560, 100, 16); ctx.stroke(); ctx.font = `900 54px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('SHOWING BOOKED', 0, 3); ctx.restore(); }
+  }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    const warm = seg(t, TL.reply, TL.reply + 2);
+    room(t, warm);
+    const k = eOut(seg(t, 0, .6)); ctx.save(); ctx.translate(0, (1 - k) * 300);
+    phoneShell(); screen(t); hands(); ctx.restore();
+    // top POV caption, TikTok-style
+    const pk = seg(t, .2, .5) * (1 - seg(t, 6.3, 6.7));
+    if (pk > 0) { ctx.save(); ctx.globalAlpha = pk; ctx.font = `900 64px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 12; ctx.strokeStyle = '#000'; ctx.strokeText('POV: it\'s 10 PM', W / 2, 190); ctx.fillStyle = '#fff'; ctx.fillText('POV: it\'s 10 PM', W / 2, 190); ctx.restore(); }
+    const dk = seg(t, TL.skip, TL.skip + .3) * (1 - seg(t, TL.rewind - .2, TL.rewind));
+    if (dk > 0) { ctx.save(); ctx.globalAlpha = dk; ctx.font = `900 54px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 12; ctx.strokeStyle = '#000'; ctx.strokeText('the version without a bot', W / 2, 190); ctx.fillStyle = C.red; ctx.fillText('the version without a bot', W / 2, 190); ctx.restore(); }
+    const ak = seg(t, TL.reply - .3, TL.reply) * (1 - seg(t, 20.9, 21.3));
+    if (ak > 0) { ctx.save(); ctx.globalAlpha = ak; ctx.font = `900 54px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 12; ctx.strokeStyle = '#000'; ctx.strokeText('the version with FlowPilot', W / 2, 190); ctx.fillStyle = C.mint; ctx.fillText('the version with FlowPilot', W / 2, 190); ctx.restore(); }
+    // VHS rewind
+    const rw = seg(t, TL.rewind, TL.rewind + .8);
+    if (rw > 0 && rw < 1) { for (let i = 0; i < 14; i++) { const y = (hash(i + Math.floor(t * 30)) * H); ctx.fillStyle = `rgba(255,255,255,${.25 * (1 - rw)})`; ctx.fillRect(0, y, W, 6 + hash(i) * 20); } ctx.save(); ctx.font = `900 80px ${MONO = '"DejaVu Sans Mono", monospace'}`; ctx.fillStyle = '#fff'; ctx.globalAlpha = 1 - rw; ctx.fillText('◀◀ REWIND', 60, 300); ctx.restore(); }
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'DM us “TOUR”  →', footer: 'Every late-night lead, answered. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1600 : 1580 });
+  post(t, flash, .3);
+}
+let MONO;
+FP.init(render);
+</script></body></html>
