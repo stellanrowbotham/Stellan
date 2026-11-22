@@ -30,7 +30,7 @@ Recurring characters build a series people recognise:
 | Character | Voice (id) | Personality / running gags |
 |---|---|---|
 | **The Pilot** (mascot) | Brian `nPczCjzI2devNBz1zQrb` | Calm airline captain over the PA, with a "ding-dong" chime (`pa_chime`). "This is your FlowPilot speaking." Sign-off: "You're still the captain." |
-| **The Owner** | Jacob L. `bcXKpJEti28IoAWz1NfD` | Frazzled, relatable, talks too fast, small wins at the end |
+| **The Owner** | Jacob L. `bcXKpJEti28IoAWz1NfD` (⚠️ failed every take on 2026-11-21; if it fails, show the owner's line as on-screen text or pick another voice with `creative_list_voices`) | Frazzled, relatable, talks too fast, small wins at the end |
 | Customer (impatient) | Laura `FGY2WhTYpPnrIDTdsKH5` | Texts at midnight, "hellooo??" |
 | The Old-School Owner | Bill `pqHfZKP75CvOlQylNhV4` | "Back in my day we answered every call ourselves…" |
 | The Missed Call (villain) | Callum `N2lVS1w4EtoT3dr4eOWO` | Sneaky gremlin who steals leads |

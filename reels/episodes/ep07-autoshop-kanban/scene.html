@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep07 · Auto repair · Job-status updates bot · F14 kanban board that moves itself · poll CTA
+const COLS = ['CHECKED IN', 'DIAGNOSED', 'PARTS ORDERED', 'READY'];
+const COLW = 235, COLX0 = 70, BOARD_Y = 330;
+
+function garage(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#15181F'); g.addColorStop(1, '#0B0D12'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // corrugated garage door stripes + hazard tape
+  ctx.fillStyle = 'rgba(255,255,255,.03)'; for (let y = 0; y < H; y += 46) ctx.fillRect(0, y, W, 20);
+  ctx.save(); ctx.beginPath(); ctx.rect(0, H - 70, W, 70); ctx.clip(); for (let x = -80; x < W + 80; x += 80) { ctx.fillStyle = '#F4C04E'; ctx.beginPath(); ctx.moveTo(x, H - 70); ctx.lineTo(x + 40, H - 70); ctx.lineTo(x, H); ctx.lineTo(x - 40, H); ctx.fill(); } ctx.restore();
+}
+
+function callStorm(t) {
+  // phone calls stacking up, call counter
+  const n = T_calls(t);
+  ctx.save(); ctx.translate(W / 2, 640);
+  const shake = n > 0 && t < TL.owner + .6 ? Math.sin(t * 50) * 6 : 0; ctx.translate(shake, 0);
+  rr(-360, -200, 720, 400, 50); ctx.fillStyle = 'rgba(28,32,44,.96)'; ctx.fill(); ctx.strokeStyle = C.orange; ctx.lineWidth = 4; ctx.stroke();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `700 34px ${FONT}`; ctx.fillStyle = C.grey; ctx.fillText('Incoming call', 0, -120);
+  ctx.font = `900 72px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('"Is my car done?"', 0, -30);
+  ctx.font = `900 120px ${FONT}`; ctx.fillStyle = C.orange; ctx.shadowColor = C.orange; ctx.shadowBlur = 30; ctx.fillText(`CALL #${Math.max(1, n)}`, 0, 100); ctx.shadowBlur = 0;
+  ctx.restore();
+  // little phone icons piling up
+  for (let i = 1; i < n; i++) { const k = eBack(seg(t, TL.calls[i], TL.calls[i] + .25)); ctx.save(); ctx.translate(140 + (i - 1) * 200, 1000); ctx.rotate((i % 2 ? -1 : 1) * .15); ctx.scale(k, k); ctx.beginPath(); ctx.arc(0, 0, 70, 0, 7); ctx.fillStyle = C.red; ctx.fill(); icon('phone', 0, 0, 64, '#fff'); ctx.restore(); }
+  // owner thought (on-screen text)
+  const ok = seg(t, TL.owner, TL.owner + .3);
+  if (ok > 0) {
+    ctx.save(); ctx.translate(W / 2, 1290); ctx.scale(eBack(ok), eBack(ok));
+    ctx.beginPath(); ctx.arc(-330, 0, 80, 0, 7); ctx.fillStyle = '#E8B48F'; ctx.fill(); ctx.fillStyle = '#2F5DA8'; ctx.beginPath(); ctx.arc(-330, -20, 82, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-355, 10, 6, 0, 7); ctx.arc(-305, 10, 6, 0, 7); ctx.fill(); ctx.strokeStyle = '#222'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-350, 45); ctx.lineTo(-310, 45); ctx.stroke();
+    rr(-220, -90, 600, 180, 40); ctx.fillStyle = '#fff'; ctx.fill(); ctx.beginPath(); ctx.moveTo(-220, -10); ctx.lineTo(-250, 20); ctx.lineTo(-220, 30); ctx.fill();
+    ctx.font = `800 40px ${FONT}`; ctx.fillStyle = '#1B1B2E'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('6th call today.', -190, -30); ctx.fillText("And it's 10 AM.", -190, 30);
+    ctx.font = `800 24px ${FONT}`; ctx.fillStyle = C.amber; ctx.textAlign = 'center'; ctx.fillText('THE OWNER', -330, 115);
+    ctx.restore();
+  }
+}
+function T_calls(t) { return TL.calls.filter(c => t >= c).length; }
+
+function board(t) {
+  const k = eOut(seg(t, TL.board, TL.board + .5));
+  ctx.save(); ctx.translate(0, (1 - k) * 300); ctx.globalAlpha = k;
+  ctx.font = `900 50px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText('Job board · Bay 2', W / 2, BOARD_Y - 80);
+  COLS.forEach((c, i) => {
+    const x = COLX0 + i * COLW; rr(x, BOARD_Y, COLW - 20, 520, 22); ctx.fillStyle = 'rgba(255,255,255,.05)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.font = `800 22px ${FONT}`; ctx.fillStyle = i === 3 ? C.mint : C.grey; ctx.textAlign = 'center'; ctx.fillText(c, x + (COLW - 20) / 2, BOARD_Y + 40);
+  });
+  // the car card slides column to column
+  let col = 0; for (const m of TL.moves) if (t > m) col++;
+  const prev = Math.max(0, col - 1), mt = col > 0 ? TL.moves[col - 1] : 0, mk = col > 0 ? eIO(seg(t, mt, mt + .45)) : 1;
+  const x = lerp(COLX0 + prev * COLW, COLX0 + col * COLW, col > 0 ? mk : 1) + 10, y = BOARD_Y + 80 - (col > 0 ? Math.sin(mk * Math.PI) * 40 : 0);
+  ctx.save(); ctx.translate(x, y); rr(0, 0, COLW - 40, 210, 18); ctx.fillStyle = col === 3 ? '#1E5A44' : '#232A3C'; ctx.fill(); ctx.strokeStyle = col === 3 ? C.mint : C.orange; ctx.lineWidth = 3; ctx.stroke();
+  // tiny car
+  ctx.fillStyle = col === 3 ? C.mint : C.orange; rr(30, 40, 135, 40, 14); ctx.fill(); rr(55, 15, 80, 35, 12); ctx.fill(); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(60, 82, 15, 0, 7); ctx.arc(135, 82, 15, 0, 7); ctx.fill();
+  ctx.font = `800 24px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText('2019 sedan', 18, 135); ctx.font = `600 21px ${FONT}`; ctx.fillStyle = C.grey; ctx.fillText('Brakes + oil', 18, 168);
+  ctx.restore();
+  ctx.restore();
+  // texts the bot sends as the card moves
+  const msgs = ['Update: we diagnosed your car. Front brakes need new pads.', 'Parts are ordered. We\'ll text you as soon as it\'s done.', 'Your car is ready for pickup! Open until 6 PM.'];
+  let yy = 920;
+  msgs.forEach((m, i) => {
+    const kk = seg(t, TL.moves[i] + .25, TL.moves[i] + .55); if (kk <= 0) return;
+    ctx.save(); ctx.font = `600 30px ${FONT}`; const lines = wrapText(m, 640); const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 60, bh = lines.length * 40 + 30;
+    ctx.translate(W - 60 - bw, yy); ctx.scale(eBack(kk), eBack(kk)); rr(0, 0, bw, bh, 26); ctx.fillStyle = i === 2 ? '#2B8A57' : '#2F80ED'; ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; lines.forEach((l, j) => ctx.fillText(l, 30, 34 + j * 40)); ctx.restore();
+    yy += bh + 16;
+  });
+  const tk = seg(t, TL.thanks, TL.thanks + .3);
+  if (tk > 0) { ctx.save(); ctx.font = `600 30px ${FONT}`; const txt = 'Oh! It\'s ready? Thanks for the text!'; const bw = ctx.measureText(txt).width + 60; ctx.translate(60, yy); ctx.scale(eBack(tk), eBack(tk)); rr(0, 0, bw, 70, 26); ctx.fillStyle = '#3A3F55'; ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(txt, 30, 36); ctx.restore(); }
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    garage(t);
+    if (t < TL.board + .2) { ctx.save(); ctx.globalAlpha = 1 - seg(t, TL.board - .3, TL.board + .1); callStorm(t); ctx.restore(); }
+    if (t > TL.board) board(t);
+    // poll card
+    const pk = seg(t, TL.poll, TL.poll + .3);
+    if (pk > 0) { ctx.save(); ctx.fillStyle = `rgba(0,0,0,${.6 * pk})`; ctx.fillRect(0, 0, W, H); ctx.translate(W / 2, 900); ctx.scale(eBack(pk), eBack(pk)); rr(-420, -230, 840, 460, 40); ctx.fillStyle = '#fff'; ctx.fill(); ctx.font = `900 54px ${FONT}`; ctx.fillStyle = '#1B1B2E'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('QUICK POLL', 0, -150);
+      [['A', '6 calls a day', C.red], ['B', '0 calls a day', C.mint]].forEach(([l, s, c], i) => { rr(-360, -70 + i * 140, 720, 110, 55); ctx.fillStyle = c; ctx.fill(); ctx.font = `900 50px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(l, -320, -14 + i * 140); ctx.font = `800 44px ${FONT}`; ctx.fillText(s, -250, -14 + i * 140); }); ctx.restore(); }
+    if (t > TL.logo - .3) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .3, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Vote A or B in the comments  →', footer: 'Updates that send themselves. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.board ? 1600 : t < TL.logo ? 1700 : 1580 });
+  post(t, flash, .2);
+}
+FP.init(render);
+</script></body></html>

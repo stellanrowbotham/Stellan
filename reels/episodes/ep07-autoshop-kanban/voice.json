@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [8.0, 22.75],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.3, "who": "customer", "text": "Hiii, just checking... is my car done yet?"},
+    {"file": "vo/03.mp3", "at": 8.5, "who": "pilot", "text": "This is your FlowPilot speaking. Your job-status bot texts customers at every step. Diagnosed. Parts ordered. Ready for pickup. Before they even think to call."},
+    {"file": "vo/04.mp3", "at": 19.5, "who": "customer", "text": "Oh! It's ready? Thanks for the text!"},
+    {"file": "vo/05.mp3", "at": 23.25, "who": "pilot", "text": "Quick poll: A, six calls a day... or B, zero? Vote in the comments. You're still the captain."}
+  ]
+}

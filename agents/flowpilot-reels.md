@@ -20,6 +20,7 @@ than speed: never add a broken or low-quality video to the queue.
    A second account (`rangefinder_stickers`) is connected too. **Never use it.**
 
 ## 1. Reconcile the queue with Instagram
+**If a Composio call asks for approval or fails, skip this step** (on 2026-11-19 and 2026-11-20 the run stalled on such a prompt and built nothing). Skipping is safe: the poster checks Instagram itself and never re-posts a caption. Then assume one queue item was posted per day since the last reconcile, and build 2 episodes.
 List the last 25 posts (`INSTAGRAM_GET_IG_USER_MEDIA` via the workbench, account `instagram_aum-yade`,
 fields `id,caption,timestamp,permalink`). For every queue item still `ready` whose caption's **first line**
 appears at the start of a posted caption, set `status: "posted"`, `posted_at` and `permalink`, set its

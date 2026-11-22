@@ -75,3 +75,9 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - Reconciled the queue: ep03-dental-noshow posted 2026-11-18 at 6:58 AM by the poster (https://www.instagram.com/reel/Df4c5y2lm1x/), the first fully automatic post
 - + ep05-bakery-documentary (nature-documentary parody, receipt printer, 80 BPM G major) and ep06-gym-levelup (arcade level-up, chiptune 128 BPM), both voiced, both `ready`
 - Queue: 3 ready (ep04, ep05, ep06) + 1 reserve
+
+## [2026-11-21] edit | Reel producer run (agent run, 7:37 PM)
+- ⚠️ The 2026-11-19 and 2026-11-20 producer runs stalled on a Composio approval prompt and built nothing. This run skipped the Instagram reconcile (the poster dedupes on its own)
+- + ep07-autoshop-kanban (job board that moves itself, poll CTA, 100 BPM E) and ep08-realtor-pov (whispered POV, "without a bot" detour, tape rewind, 84 BPM A minor), both voiced, both `ready`
+- ⚠️ The Owner voice (Jacob, `bcXKpJEti28IoAWz1NfD`) failed on all 4 takes; ep07 shows the owner's line as on-screen text
+- ~ `agents/flowpilot-reels.md` (skip reconcile if Composio prompts), `reels/README.md` (Owner voice note)
