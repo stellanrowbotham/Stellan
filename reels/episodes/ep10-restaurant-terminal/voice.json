@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [19.85],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "computer", "text": "Query: how many times did you answer \"are you open on Sunday\" this week?"},
+    {"file": "vo/02.mp3", "at": 6.6, "who": "computer", "text": "Result: too many. Also detected: \"do you have parking?\" \"Is the patio open?\" \"Do you take reservations?\""},
+    {"file": "vo/03.mp3", "at": 15.2, "who": "owner", "text": "It answered the parking question AGAIN? I love it."},
+    {"file": "vo/04.mp3", "at": 20.35, "who": "pilot", "text": "This is your FlowPilot speaking. Your FAQ bot answers the same questions all day, so your staff can focus on the food. Save this one. You're still the captain."}
+  ]
+}

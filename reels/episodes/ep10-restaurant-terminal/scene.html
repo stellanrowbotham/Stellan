@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep10 · Restaurant · FAQ bot · F15 retro terminal · deadpan computer voice
+WHO.computer = ['TERMINAL', '#7CFF9A'];
+const MONO = '"DejaVu Sans Mono", ui-monospace, monospace';
+const G = '#7CFF9A', GD = 'rgba(124,255,154,.35)';
+const X0 = 110, Y0 = 268, LH = 52;
+
+function crt(t) {
+  ctx.fillStyle = '#1A1612'; ctx.fillRect(0, 0, W, H);
+  rr(50, 180, W - 100, 1360, 60); ctx.fillStyle = '#2A241D'; ctx.fill();          // bezel
+  rr(80, 210, W - 160, 1300, 44); const g = ctx.createRadialGradient(W / 2, 860, 100, W / 2, 860, 900); g.addColorStop(0, '#08240F'); g.addColorStop(1, '#020A04'); ctx.fillStyle = g; ctx.fill();
+  ctx.font = `800 30px ${MONO}`; ctx.fillStyle = '#B8A47A'; ctx.textAlign = 'center'; ctx.fillText('RESTAURANT OS v1.0', W / 2, 1590);
+  ctx.beginPath(); ctx.arc(W - 150, 1590, 12, 0, 7); ctx.fillStyle = (Math.floor(t * 2) % 2) ? '#5CFF7A' : '#1E5A2A'; ctx.fill();
+}
+
+function typed(s, t0, cps = 26) { const n = Math.floor((TLt - t0) * cps); return n <= 0 ? '' : s.slice(0, n); }
+let TLt = 0;
+function line(txt, row, col = G, glow = 16) { ctx.font = `700 36px ${MONO}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = glow; ctx.fillText(txt, X0, Y0 + row * LH); ctx.shadowBlur = 0; }
+
+function screen(t) {
+  TLt = t; ctx.save(); rr(80, 210, W - 160, 1300, 44); ctx.clip();
+  let r = 0;
+  line('RESTAURANT OS  ·  FAQ LOG', r++, GD, 0); r++;
+  const q = typed("> how many times did you answer 'are you open sunday?'", TL.q1, 14);
+  const ql = wrapMono(q, 40); ql.forEach(l => line(l, r++)); if (t < TL.count) { if (Math.floor(t * 3) % 2) line(' '.repeat((ql[ql.length - 1] || '').length) + '█', r - 1); }
+  r++;
+  if (t > TL.count) { const k = seg(t, TL.count, TL.result); line('counting' + '.'.repeat(Math.floor(t * 6) % 4) + (k < 1 ? '  ' + Math.floor(hash(Math.floor(t * 20)) * 999) : ''), r++, GD, 0); }
+  if (t > TL.result) { const blink = Math.floor(t * 3) % 2 ? 1 : .6; ctx.globalAlpha = blink; line('RESULT: TOO MANY.', r++, '#FF6A6A', 24); ctx.globalAlpha = 1; }
+  r++;
+  if (t > TL.also) line('ALSO DETECTED:', r++);
+  const qs = ['"do you have parking?"', '"is the patio open?"', '"do you take reservations?"'];
+  qs.forEach((s, i) => { if (t > TL.list[i]) { line('  ' + typed(s, TL.list[i], 40), r); const bars = Math.min(14, Math.floor((t - TL.list[i]) * 18)); ctx.fillStyle = G; for (let b = 0; b < bars; b++) ctx.fillRect(X0 + 40 + b * 26, Y0 + (r + .55) * LH, 18, 14); r += 2; } });
+  if (t > TL.deploy - .7) { const d = typed('> deploy faq_bot', TL.deploy - .7, 24); line(d, r++); }
+  if (t > TL.deploy) { const p = seg(t, TL.deploy, TL.online); line('[' + '#'.repeat(Math.floor(p * 20)).padEnd(20, '.') + ']', r++, GD, 0); }
+  if (t > TL.online) { const k = eBack(seg(t, TL.online, TL.online + .3)); ctx.save(); ctx.translate(X0 + 300, Y0 + r * LH); ctx.scale(k, k); ctx.translate(-(X0 + 300), -(Y0 + r * LH)); line('FAQ BOT ONLINE ✓', r, '#FFFFFF', 30); ctx.restore(); r += 2; }
+  const chat = [['guest', 'do you have parking?'], ['bot', 'Yes! Free lot right behind us.'], ['guest', 'is the patio open?'], ['bot', 'Yes! Open until 9 PM.']];
+  chat.forEach(([w, s], i) => { if (t > TL.chat[i]) { line((w === 'bot' ? 'bot>   ' : 'guest> ') + typed(s, TL.chat[i], 50), r++, w === 'bot' ? '#FFFFFF' : G, w === 'bot' ? 22 : 12); } });
+  // scanlines + flicker
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; for (let y = 210; y < 1510; y += 6) ctx.fillRect(80, y, W - 160, 2);
+  ctx.fillStyle = `rgba(124,255,154,${.02 + .02 * hash(Math.floor(t * 30))})`; ctx.fillRect(80, 210, W - 160, 1300);
+  ctx.restore();
+}
+function wrapMono(s, n) { const out = []; for (let i = 0; i < s.length; i += n) out.push(s.slice(i, i + n)); return out.length ? out : ['']; }
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    crt(t); screen(t);
+    flash = .25 * (1 - seg(t, TL.online, TL.online + .3)) * (t >= TL.online ? 1 : 0);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Save this one  →', footer: 'FAQs answered all day. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1720 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>

@@ -81,3 +81,8 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + ep07-autoshop-kanban (job board that moves itself, poll CTA, 100 BPM E) and ep08-realtor-pov (whispered POV, "without a bot" detour, tape rewind, 84 BPM A minor), both voiced, both `ready`
 - ⚠️ The Owner voice (Jacob, `bcXKpJEti28IoAWz1NfD`) failed on all 4 takes; ep07 shows the owner's line as on-screen text
 - ~ `agents/flowpilot-reels.md` (skip reconcile if Composio prompts), `reels/README.md` (Owner voice note)
+
+## [2026-11-22] edit | Reel producer run (agent run, 7:37 PM)
+- Skipped the Instagram reconcile (per the playbook; Composio prompts in this session)
+- + ep09-cleaning-mythfact ("Myth or Fact" game show, Old-School Owner loses, 120 BPM Bb) and ep10-restaurant-terminal (retro green terminal, deadpan computer voice, 96 BPM D minor), both voiced, both `ready`
+- Voices used without problems: Ian, Bill, Adam (robotic), Melissa, Brian (Pilot)
