@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep09 · Cleaning service · Review request bot · F5 myth vs fact flip card · game-show parody
+WHO.host = ['GAME SHOW HOST', C.amber];
+WHO.oldtimer = ['OLD-SCHOOL OWNER', '#C9A9E9'];
+
+function studio(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1B0B33'); g.addColorStop(.7, '#2B0F4A'); g.addColorStop(1, '#12061F'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // sweeping spotlights
+  for (let i = 0; i < 4; i++) { const a = Math.sin(t * .8 + i * 1.6) * .35; ctx.save(); ctx.translate(140 + i * 270, -40); ctx.rotate(a); const lg = ctx.createLinearGradient(0, 0, 0, 1500); lg.addColorStop(0, 'rgba(255,220,140,.28)'); lg.addColorStop(1, 'rgba(255,220,140,0)'); ctx.fillStyle = lg; ctx.beginPath(); ctx.moveTo(-20, 0); ctx.lineTo(20, 0); ctx.lineTo(220, 1500); ctx.lineTo(-220, 1500); ctx.fill(); ctx.restore(); }
+  // marquee bulbs frame
+  for (let i = 0; i < 26; i++) { const on = (Math.floor(t * 6) + i) % 3 === 0; ctx.fillStyle = on ? '#FFE27A' : '#5A4220'; ctx.beginPath(); ctx.arc(60 + i * 37.5, 90, 9, 0, 7); ctx.fill(); }
+  ctx.fillStyle = '#3A1460'; ctx.fillRect(0, 1450, W, 470); ctx.fillStyle = '#5B2290'; ctx.fillRect(0, 1450, W, 14);
+}
+
+function title(t) {
+  const k = eBack(seg(t, .1, .6));
+  ctx.save(); ctx.translate(W / 2, 230); ctx.scale(k, k); ctx.rotate(-.04);
+  ctx.font = `900 112px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#12061F';
+  ctx.strokeText('MYTH', -200, 0); ctx.fillStyle = C.red; ctx.fillText('MYTH', -200, 0);
+  ctx.font = `900 60px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('or', 20, 0);
+  ctx.font = `900 112px ${FONT}`; ctx.strokeText('FACT?', 230, 0); ctx.fillStyle = C.mint; ctx.fillText('FACT?', 230, 0);
+  ctx.restore();
+}
+
+function card(t) {
+  const k = eBack(seg(t, TL.card, TL.card + .5)); if (k <= 0) return;
+  const flip = seg(t, TL.flip, TL.flip + .6); const sx = Math.cos(flip * Math.PI); const back = flip > .5;
+  ctx.save(); ctx.translate(W / 2, 620); ctx.scale(k * Math.abs(sx), k);
+  rr(-400, -210, 800, 420, 36); ctx.fillStyle = back ? '#3A0E1C' : '#FFF6E0'; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = back ? C.red : C.amber; ctx.stroke();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (!back) { ctx.font = `800 30px ${FONT}`; ctx.fillStyle = '#8A6A3A'; ctx.fillText('STATEMENT', 0, -140); ctx.font = `900 54px ${FONT}`; ctx.fillStyle = '#1B1B2E'; wrapText('"Happy clients leave reviews on their own."', 680).forEach((l, i, a) => ctx.fillText(l, 0, -10 + (i - (a.length - 1) / 2) * 66)); }
+  else { ctx.font = `900 150px ${FONT}`; ctx.fillStyle = C.red; ctx.shadowColor = C.red; ctx.shadowBlur = 30; ctx.fillText('MYTH', 0, -50); ctx.shadowBlur = 0; ctx.font = `700 36px ${FONT}`; ctx.fillStyle = '#FFD9E0'; ctx.fillText('Happy clients usually just forget.', 0, 90); ctx.fillText('A friendly text gets the review.', 0, 140); }
+  ctx.restore();
+}
+
+function contestant(t) {
+  const k = eOut(seg(t, 5.8, 6.4)); if (k <= 0) return;
+  const sad = t > TL.buzz; const x = 250, y = 1260 + (1 - k) * 400;
+  ctx.save(); ctx.translate(x, y);
+  // podium
+  rr(-170, 40, 340, 190, 20); ctx.fillStyle = '#5B2290'; ctx.fill(); ctx.fillStyle = '#FFE27A'; ctx.font = `800 26px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('OLD-SCHOOL OWNER', 0, 200);
+  // buzzer
+  ctx.fillStyle = '#E2463C'; ctx.beginPath(); ctx.ellipse(110, 40, 46, 18 - (t > TL.answer - .2 && t < TL.answer + .2 ? 8 : 0), 0, 0, 7); ctx.fill();
+  // old-timer face
+  ctx.fillStyle = '#F2C29B'; ctx.beginPath(); ctx.arc(-20, -70, 88, 0, 7); ctx.fill();
+  ctx.fillStyle = '#E8E8E8'; ctx.beginPath(); ctx.arc(-20, -120, 90, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();   // grey hair
+  ctx.fillStyle = '#9A9A9A'; ctx.beginPath(); ctx.ellipse(-20, -30, 60, 18, 0, 0, Math.PI); ctx.fill();               // moustache
+  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-50, -80, 7, 0, 7); ctx.arc(10, -80, 7, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#222'; ctx.lineWidth = 5; ctx.beginPath(); if (sad) ctx.arc(-20, 10, 22, Math.PI * 1.15, Math.PI * 1.85); else ctx.arc(-20, -16, 24, .2 * Math.PI, .8 * Math.PI); ctx.stroke();
+  if (sad) { ctx.fillStyle = '#7FC8FF'; ctx.beginPath(); ctx.ellipse(55, -110, 10, 16, 0, 0, 7); ctx.fill(); }
+  ctx.restore();
+  // his answer sign
+  const ak = seg(t, TL.answer, TL.answer + .3);
+  if (ak > 0) { ctx.save(); ctx.translate(x, 1000); ctx.rotate(-.08); ctx.scale(eBack(ak), eBack(ak)); rr(-130, -60, 260, 120, 20); ctx.fillStyle = C.mint; ctx.fill(); ctx.font = `900 72px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('FACT', 0, 4);
+    if (t > TL.buzz) { ctx.strokeStyle = C.red; ctx.lineWidth = 16; ctx.beginPath(); ctx.moveTo(-120, -55); ctx.lineTo(120, 55); ctx.moveTo(120, -55); ctx.lineTo(-120, 55); ctx.stroke(); } ctx.restore(); }
+}
+
+function phoneDemo(t) {
+  const k = eOut(seg(t, TL.job, TL.job + .5)); if (k <= 0) return;
+  const x0 = 520, y0 = 900;
+  ctx.save(); ctx.translate((1 - k) * 600, 0);
+  rr(x0, y0, 480, 560, 50); ctx.fillStyle = '#0E1226'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.font = `800 26px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('✓ Job complete: deep clean', x0 + 30, y0 + 50);
+  const tk = seg(t, TL.text, TL.text + .3);
+  if (tk > 0) { ctx.save(); ctx.translate(x0 + 30, y0 + 90); ctx.scale(eBack(tk), eBack(tk)); rr(0, 0, 420, 190, 24); ctx.fillStyle = '#2F80ED'; ctx.fill(); ctx.font = `600 27px ${FONT}`; ctx.fillStyle = '#fff'; wrapText('Thanks for choosing us! Mind leaving a quick review? It really helps a small team.', 380).forEach((l, i) => ctx.fillText(l, 20, 34 + i * 36)); ctx.restore(); }
+  const sk = seg(t, TL.stars, TL.stars + .9);
+  if (sk > 0) for (let i = 0; i < 5; i++) { const s = eBack(seg(t, TL.stars + i * .16, TL.stars + i * .16 + .25)); ctx.save(); ctx.translate(x0 + 70 + i * 85, y0 + 360); ctx.scale(s, s); ctx.fillStyle = '#FFD34E'; ctx.beginPath(); for (let j = 0; j < 10; j++) { const r = j % 2 ? 16 : 36, a = -Math.PI / 2 + j * Math.PI / 5; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); } ctx.fill(); ctx.restore(); }
+  const pk = seg(t, TL.posted, TL.posted + .3);
+  if (pk > 0) { ctx.save(); ctx.translate(x0 + 240, y0 + 470); ctx.scale(eBack(pk), eBack(pk)); rr(-170, -40, 340, 80, 40); ctx.fillStyle = C.mint; ctx.fill(); ctx.font = `900 32px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.fillText('Review posted', 0, 2); ctx.restore(); }
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    studio(t); title(t); card(t); contestant(t); phoneDemo(t);
+    const bz = seg(t, TL.buzz, TL.buzz + .25) * (1 - seg(t, TL.buzz + .6, TL.buzz + .9));
+    if (bz > 0) { ctx.fillStyle = `rgba(255,40,70,${.25 * bz})`; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.globalAlpha = bz; ctx.translate(W / 2, 620); ctx.strokeStyle = C.red; ctx.lineWidth = 40; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-200, -200); ctx.lineTo(200, 200); ctx.moveTo(200, -200); ctx.lineTo(-200, 200); ctx.stroke(); ctx.restore(); }
+    confetti(t, TL.posted, 760, 1350, 60, 4);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment “MYTH” for 3 more  →', footer: 'Review requests on autopilot. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1610 : 1580 });
+  post(t, flash, .2);
+}
+FP.init(render);
+</script></body></html>

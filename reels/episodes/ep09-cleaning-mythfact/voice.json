@@ -1,0 +1,10 @@
+{
+  "duck_db": -10,
+  "pa_chime": [20.9],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.4, "who": "host", "text": "Welcome to MYTH or FACT! Today's myth: happy clients leave reviews... on their own!"},
+    {"file": "vo/02.mp3", "at": 7.0, "who": "oldtimer", "text": "Fact! Back in my day, good work spoke for itself."},
+    {"file": "vo/03.mp3", "at": 11.6, "who": "host", "text": "Ooh, so close... but that's a MYTH! Happy clients usually just forget. A friendly text right after the job is what gets the review."},
+    {"file": "vo/04.mp3", "at": 21.4, "who": "pilot", "text": "This is your FlowPilot speaking. Our review-request bot sends that text for you, right after every job. Comment MYTH for three more. You're still the captain."}
+  ]
+}
