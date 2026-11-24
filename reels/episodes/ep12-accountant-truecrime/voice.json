@@ -1,0 +1,10 @@
+{
+  "duck_db": -12,
+  "pa_chime": [25.05],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.6, "who": "narrator", "text": "March. Tax season. And the receipts... were gone."},
+    {"file": "vo/02.mp3", "at": 5.9, "who": "narrator", "text": "For weeks, the accountant chased the same clients. Emails. Calls. Sticky notes. Nothing came back."},
+    {"file": "vo/03.mp3", "at": 14.9, "who": "narrator", "text": "Then a new detective took the case. A bot that asks for every document, sends polite reminders, and files it all in one folder. Case closed."},
+    {"file": "vo/04.mp3", "at": 25.55, "who": "pilot", "text": "This is your FlowPilot speaking. Document collection on autopilot. DM us DOCS for the free checklist. You're still the captain."}
+  ]
+}

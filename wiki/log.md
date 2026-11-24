@@ -90,3 +90,6 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 ## [2026-11-23] edit | Reel producer run (agent run, 7:37 PM)
 - Skipped the Instagram reconcile (per the playbook)
 - + ep11-groomer-tower ("Waitlist Control Tower": radar town map, Pilot as air-traffic control fills a cancelled 2:00 PM slot, local-pride CTA "MAP", 100 BPM E minor), voiced, `ready`
+- + ep12-accountant-truecrime ("The Case of the Missing Receipts": noir true-crime parody narrated by Grav, clock spin through 4 weeks, detective document bot, DM "DOCS", 84 BPM C minor), voiced, `ready`
+- Voices used without problems: Brian (Pilot, incl. air-traffic style), Laura, Grav. ElevenLabs hit a concurrency limit briefly and retried by itself
+- Queue: ep04–ep12 marked `ready` (several have likely posted; the poster dedupes by caption) + 1 reserve

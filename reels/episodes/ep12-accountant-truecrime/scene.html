@@ -1,0 +1,115 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep12 · Accountant · Document collection bot · F6 clock spin · true-crime parody · DM "DOCS"
+WHO.narrator = ['CASE FILE', '#E8D9B0'];
+const PAPER = '#E8D9B0', INK = '#2A2118', NOIR = C.red;
+const MONO = '"DejaVu Sans Mono", ui-monospace, monospace';
+function capT(word, dflt) { const c = (TL.captions || []).find(c => c.text.includes(word)); return c ? c.t0 : dflt; }
+
+function room(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#120E0B'); g.addColorStop(1, '#060403'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // venetian-blind light falling across the wall
+  ctx.save(); ctx.translate(W * .6, -100); ctx.rotate(.35);
+  for (let i = 0; i < 9; i++) { ctx.fillStyle = `rgba(255,214,150,${.05 + .015 * Math.sin(t * .7 + i)})`; ctx.fillRect(-700, i * 120, 1400, 55); }
+  ctx.restore();
+  // desk edge
+  ctx.fillStyle = '#2A1B10'; ctx.fillRect(0, 1560, W, 360); ctx.fillStyle = '#3C2817'; ctx.fillRect(0, 1560, W, 12);
+}
+
+function title(t) {
+  const s = 'CASE #0314: THE MISSING RECEIPTS', n = Math.floor(seg(t, TL.title, TL.title + 1.6) * s.length);
+  ctx.save(); ctx.font = `800 40px ${MONO}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = PAPER; ctx.shadowColor = 'rgba(255,200,120,.5)'; ctx.shadowBlur = 12;
+  ctx.fillText(s.slice(0, n).padEnd(s.length, ' '), W / 2, 190);
+  const tk = seg(t, 2.0, 2.4); if (tk > 0) { ctx.globalAlpha = tk; ctx.font = `700 30px ${MONO}`; const solved = t > capT('Case closed', 23.8); ctx.fillStyle = solved ? C.mint : C.grey; ctx.fillText(solved ? 'STATUS: SOLVED' : 'STATUS: UNSOLVED', W / 2, 250); }
+  ctx.restore();
+}
+
+function clock(t, cx, cy, R, alpha) {
+  if (alpha <= 0) return;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy);
+  ctx.beginPath(); ctx.arc(0, 0, R + 18, 0, 7); ctx.fillStyle = '#3C2817'; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.fillStyle = '#F1E6CC'; ctx.fill();
+  ctx.strokeStyle = INK; for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; ctx.lineWidth = i % 3 ? 4 : 9; ctx.beginPath(); ctx.moveTo(Math.cos(a) * R * .82, Math.sin(a) * R * .82); ctx.lineTo(Math.cos(a) * R * .94, Math.sin(a) * R * .94); ctx.stroke(); }
+  // hours elapsed: slow before the spin, very fast during it (4 weeks of days), slow after
+  const sp = seg(t, TL.spin[0], TL.spin[1]); const hours = 9 + t * .02 + eIO(sp) * 24 * 28;
+  const ha = (hours % 12) / 12 * Math.PI * 2 - Math.PI / 2, ma = (hours % 1) * Math.PI * 2 - Math.PI / 2;
+  ctx.lineCap = 'round'; ctx.strokeStyle = INK; ctx.lineWidth = 14; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ha) * R * .5, Math.sin(ha) * R * .5); ctx.stroke();
+  ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ma) * R * .78, Math.sin(ma) * R * .78); ctx.stroke();
+  if (sp > 0 && sp < 1) { ctx.strokeStyle = 'rgba(42,33,24,.25)'; ctx.lineWidth = 50; ctx.beginPath(); ctx.arc(0, 0, R * .55, ma - 1.2, ma); ctx.stroke(); }
+  ctx.beginPath(); ctx.arc(0, 0, 14, 0, 7); ctx.fillStyle = NOIR; ctx.fill();
+  ctx.restore();
+  // week counter
+  if (sp > 0) { const wk = Math.min(4, 1 + Math.floor(eIO(sp) * 4)); ctx.save(); ctx.globalAlpha = alpha; ctx.font = `900 64px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = PAPER; ctx.fillText(`WEEK ${wk}`, cx, cy + R + 90); ctx.restore(); }
+}
+
+function evidence(t, alpha) {
+  if (alpha <= 0) return;
+  const items = [['mail', 'Emails', capT('Emails', 9.7)], ['phone', 'Calls', capT('Calls', 9.9) + .6], ['note', 'Sticky notes', capT('Sticky', 11.3)]];
+  items.forEach(([ic, label, t0], i) => {
+    const k = eBack(seg(t, t0 - .15, t0 + .2)); if (k <= 0) return;
+    const x = 200 + i * 340, y = 1230;
+    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, y); ctx.rotate((i - 1) * .06); ctx.scale(k, k);
+    ctx.fillStyle = PAPER; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 20; ctx.fillRect(-140, -150, 280, 300); ctx.shadowBlur = 0;
+    ctx.fillStyle = '#B89A60'; ctx.fillRect(-30, -165, 60, 30); // tape
+    if (ic === 'note') { ctx.fillStyle = '#FFE066'; ctx.fillRect(-60, -90, 120, 110); ctx.fillStyle = INK; ctx.fillRect(-40, -60, 80, 6); ctx.fillRect(-40, -38, 60, 6); }
+    else icon(ic, 0, -40, 110, INK);
+    ctx.font = `800 34px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, 0, 80);
+    const sk = seg(t, t0 + .35, t0 + .5);
+    if (sk > 0) { ctx.save(); ctx.translate(0, -40); ctx.rotate(-.25); ctx.scale(2 - sk, 2 - sk); ctx.globalAlpha *= sk; ctx.strokeStyle = NOIR; ctx.lineWidth = 7; rr(-125, -40, 250, 80, 10); ctx.stroke(); ctx.font = `900 38px ${FONT}`; ctx.fillStyle = NOIR; ctx.fillText('NO REPLY', 0, 3); ctx.restore(); }
+    ctx.restore();
+  });
+}
+
+function detective(t) {
+  const k = eOut(seg(t, TL.bot, TL.bot + .7)); if (k <= 0) return;
+  // spotlight
+  ctx.save(); ctx.globalAlpha = k; const sg = ctx.createRadialGradient(W / 2, 560, 40, W / 2, 560, 520); sg.addColorStop(0, 'rgba(255,226,170,.32)'); sg.addColorStop(1, 'rgba(255,226,170,0)'); ctx.fillStyle = sg; ctx.fillRect(0, 0, W, 1200); ctx.restore();
+  const y = 600 + (1 - k) * 200; ctx.save(); ctx.globalAlpha = k; robot(W / 2, y, 300, t, C.cyan);
+  // fedora
+  ctx.fillStyle = '#1C1C22'; ctx.beginPath(); ctx.ellipse(W / 2, y - 170, 230, 34, 0, 0, 7); ctx.fill();
+  rr(W / 2 - 130, y - 300, 260, 140, 40); ctx.fill(); ctx.fillStyle = NOIR; ctx.fillRect(W / 2 - 130, y - 200, 260, 28);
+  ctx.font = `800 30px ${MONO}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.cyan; ctx.fillText('DETECTIVE: DOCUMENT BOT', W / 2, y + 230);
+  ctx.restore();
+}
+
+function checklist(t) {
+  const t0 = capT('every', 17.2), k = eBack(seg(t, t0 - .3, t0)); if (k <= 0) return;
+  const rows = [['T4 slips', capT('every', 17.4) + .3], ['Receipts', capT('polite', 19.0)], ['Bank statements', capT('polite', 19.0) + .8]];
+  ctx.save(); ctx.translate(W / 2, 1180); ctx.scale(k, k); ctx.rotate(-.02);
+  ctx.fillStyle = PAPER; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 24; ctx.fillRect(-400, -200, 800, 400); ctx.shadowBlur = 0;
+  ctx.font = `800 30px ${MONO}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('EVIDENCE COLLECTED', -360, -150);
+  rows.forEach(([s, tc], i) => {
+    const y = -70 + i * 85; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.strokeRect(-360, y - 26, 52, 52);
+    ctx.font = `800 44px ${FONT}`; ctx.fillStyle = INK; ctx.fillText(s, -280, y + 2);
+    const ck = seg(t, tc, tc + .25); if (ck > 0) { ctx.save(); ctx.globalAlpha = ck; icon('check', -334, y, 56, '#1E8A50'); ctx.restore(); }
+  });
+  // one folder
+  const fk = eBack(seg(t, capT('folder', 22.4), capT('folder', 22.4) + .3));
+  if (fk > 0) { ctx.save(); ctx.translate(250, 120); ctx.scale(fk, fk); ctx.fillStyle = '#E0A23A'; rr(-110, -60, 220, 140, 14); ctx.fill(); rr(-110, -80, 90, 40, 10); ctx.fill(); ctx.font = `900 24px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('ALL IN', 0, 0); ctx.fillText('ONE FOLDER', 0, 34); ctx.restore(); }
+  ctx.restore();
+  // CASE CLOSED stamp
+  const ct = capT('Case closed', 23.8), sk = seg(t, ct, ct + .18);
+  if (sk > 0) { ctx.save(); ctx.translate(W / 2, 1180); ctx.rotate(-.18); ctx.scale(2.2 - 1.2 * sk, 2.2 - 1.2 * sk); ctx.globalAlpha = sk; ctx.strokeStyle = NOIR; ctx.lineWidth = 12; rr(-330, -80, 660, 160, 18); ctx.stroke(); ctx.font = `900 100px ${FONT}`; ctx.fillStyle = NOIR; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CASE CLOSED', 0, 6); ctx.restore(); }
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    room(t); title(t);
+    const a1 = 1 - seg(t, TL.bot - .3, TL.bot + .2);
+    clock(t, W / 2, 620, 230, a1); evidence(t, a1);
+    detective(t); checklist(t);
+    const ct = capT('Case closed', 23.8); if (t > ct && t < ct + .25) flash = .15;
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'DM us “DOCS” for the checklist  →', footer: 'Document collection on autopilot. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1720 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>
