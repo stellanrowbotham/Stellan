@@ -86,3 +86,7 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - Skipped the Instagram reconcile (per the playbook; Composio prompts in this session)
 - + ep09-cleaning-mythfact ("Myth or Fact" game show, Old-School Owner loses, 120 BPM Bb) and ep10-restaurant-terminal (retro green terminal, deadpan computer voice, 96 BPM D minor), both voiced, both `ready`
 - Voices used without problems: Ian, Bill, Adam (robotic), Melissa, Brian (Pilot)
+
+## [2026-11-23] edit | Reel producer run (agent run, 7:37 PM)
+- Skipped the Instagram reconcile (per the playbook)
+- + ep11-groomer-tower ("Waitlist Control Tower": radar town map, Pilot as air-traffic control fills a cancelled 2:00 PM slot, local-pride CTA "MAP", 100 BPM E minor), voiced, `ready`

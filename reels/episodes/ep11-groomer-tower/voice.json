@@ -1,0 +1,10 @@
+{
+  "duck_db": -11,
+  "pa_chime": [20.25],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.6, "who": "tower", "text": "Tower to all units. We have a cancellation. Two o'clock slot, grooming table one. Slot is now open."},
+    {"file": "vo/02.mp3", "at": 7.8, "who": "tower", "text": "Scanning the waitlist. Biscuit, the golden doodle, three blocks out. Biscuit, you are cleared for the two o'clock. Text sent."},
+    {"file": "vo/03.mp3", "at": 15.9, "who": "customer", "text": "A spot opened up? Biscuit, get your leash! We'll be there in ten!"},
+    {"file": "vo/04.mp3", "at": 20.75, "who": "pilot", "text": "This is your FlowPilot speaking. Cancellations get filled from your waitlist in about a minute. Built right here in Southwestern Ontario. Comment MAP and I'll show you how. You're still the captain."}
+  ]
+}

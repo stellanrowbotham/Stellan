@@ -1,98 +1,106 @@
 {
- "_about": "Posting queue for @flowpilot2026. The PRODUCER (agents/flowpilot-reels.md) appends 'ready' items; the POSTER (agents/flowpilot-poster.md) publishes the first 'ready' item whose caption's first line is not already on Instagram, at most one per Toronto day. 'reserve' is only used if no ready item is left.",
- "items": [
-  {
-   "id": "ep01-plumber-race",
-   "video": "reels/out/ep01-plumber-race.mp4",
-   "thumb_ms": 28500,
-   "status": "posted",
-   "posted_at": "2026-11-17",
-   "permalink": "https://www.instagram.com/reel/Df2nZLWiDyC/",
-   "caption": "You missed this call… because you were literally under a sink. 🔧📞"
-  },
-  {
-   "id": "ep02-salon-midnight",
-   "video": "reels/out/ep02-salon-midnight.mp4",
-   "thumb_ms": 23500,
-   "status": "posted",
-   "posted_at": "2026-11-17",
-   "permalink": "https://www.instagram.com/reel/Df2nlAUnK7A/",
-   "caption": "11:52 PM. \"hiii do u have anything saturday??\" 💬"
-  },
-  {
-   "id": "ep03-dental-noshow",
-   "video": "reels/out/ep03-dental-noshow.mp4",
-   "thumb_ms": 28000,
-   "status": "posted",
-   "made": "2026-11-17",
-   "caption": "Empty chair at 9 AM. Again. 🦷👻\n\nThe No-Show strikes when reminders get forgotten and nobody has time to chase reschedules.\n\nOur no-show reducer texts a reminder the day before, lets patients confirm or reschedule by text, and offers the open slot to your waitlist. You stay in control of your schedule.\n\n🔖 Save this for later.\n\n#dentist #dentaloffice #dentalpractice #smallbusiness #automation #AIagents",
-   "posted_at": "2026-11-18",
-   "permalink": "https://www.instagram.com/reel/Df4c5y2lm1x/"
-  },
-  {
-   "id": "ep04-landscape-kitchen",
-   "video": "reels/out/ep04-landscape-kitchen.mp4",
-   "thumb_ms": 27500,
-   "status": "ready",
-   "made": "2026-11-17",
-   "caption": "Welcome back to Bot Kitchen 👨‍🍳 Today's recipe: a quote bot for landscapers.\n\nQuote requests coming in by text, DM, email and voicemail, all missing the details you need to price the job?\n\nThis bot asks the right questions (yard size, the job, when), collects photos, and drops one tidy, sorted request in your inbox, ready for you to quote. You stay in control of every price.\n\n📤 Send this to a business owner who's buried in quote requests.\n\n#landscaping #lawncare #landscaper #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep05-bakery-documentary",
-   "video": "reels/out/ep05-bakery-documentary.mp4",
-   "thumb_ms": 29500,
-   "status": "ready",
-   "made": "2026-11-18",
-   "caption": "Here we observe the baker, in her natural habitat… rising before the bread itself. 🥐🎥\n\nBut the orders arrive at night: texts, DMs and an endless flock of \"can I get a dozen?\"\n\nOur pre-order bot takes each order, prints a tidy ticket with the pickup time, and sends the pickup reminder. You stay in control of what you bake and when.\n\n👉 DM us \"PLAN\" and we'll map out your first automation for free.\n\n#bakery #bakeryowner #smallbakery #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep06-gym-levelup",
-   "video": "reels/out/ep06-gym-levelup.mp4",
-   "thumb_ms": 24500,
-   "status": "ready",
-   "made": "2026-11-18",
-   "caption": "A new lead has entered the gym! 🎮💪 Free trial class… REQUESTED.\n\nMost trial leads go cold because nobody follows up in time. Ours never stopped getting messages.\n\nOur lead follow-up bot sends the welcome text, the class reminder and the \"see you Tuesday?\", so the lead stays warm until they book. You stay in control of every message.\n\n💬 Comment your type of business and we'll reply with a bot idea for you.\n\n#gymowner #fitnessstudio #personaltrainer #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep07-autoshop-kanban",
-   "video": "reels/out/ep07-autoshop-kanban.mp4",
-   "thumb_ms": 30000,
-   "status": "ready",
-   "made": "2026-11-21",
-   "caption": "\"Hiii, just checking… is my car done yet?\" 🚗📞 (Call #6. It's 10 AM.)\n\nYour techs are fixing cars, but your phone keeps ringing with the same question.\n\nOur job-status bot texts customers at every step: diagnosed, parts ordered, ready for pickup. They stop wondering, and you stop answering the same call. You stay in control of every update.\n\n🗳️ Quick poll: A) 6 calls a day or B) zero? Vote in the comments.\n\n#autorepair #mechanic #autoshop #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep08-realtor-pov",
-   "video": "reels/out/ep08-realtor-pov.mp4",
-   "thumb_ms": 25500,
-   "status": "ready",
-   "made": "2026-11-21",
-   "caption": "POV: it's 10 PM and a buyer just found their dream house… and texted you. 🏡📲\n\nMost agents reply tomorrow morning. By then, the buyer has often called someone else.\n\nOur inquiry bot replies right away, answers the basics, and offers showing times. You wake up to a booked showing, and you stay in control of every client conversation.\n\n👉 DM us \"TOUR\" and we'll show you how it works.\n\n#realtor #realestateagent #realestate #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep09-cleaning-mythfact",
-   "video": "reels/out/ep09-cleaning-mythfact.mp4",
-   "thumb_ms": 27000,
-   "status": "ready",
-   "made": "2026-11-22",
-   "caption": "MYTH or FACT? 🎤 \"Happy clients leave reviews on their own.\"\n\nMyth! Happy clients mean well, but they forget. The review usually comes from a friendly nudge right after the job.\n\nOur review-request bot sends that text automatically after every completed job, with a link straight to your review page. You stay in control of what it says and when.\n\n💬 Comment \"MYTH\" and we'll send you three more small-business myths.\n\n#cleaningbusiness #cleaningservice #housecleaning #smallbusiness #automation #AIagents"
-  },
-  {
-   "id": "ep10-restaurant-terminal",
-   "video": "reels/out/ep10-restaurant-terminal.mp4",
-   "thumb_ms": 26000,
-   "status": "ready",
-   "made": "2026-11-22",
-   "caption": "> how many times did you answer \"are you open Sunday?\" this week 🖥️🍝\n\nRESULT: too many. Plus \"do you have parking?\", \"is the patio open?\" and \"do you take reservations?\"\n\nOur FAQ bot answers the same questions all day by text, DM and your website, so your team can focus on the food. You stay in control of every answer it gives.\n\n🔖 Save this one for later.\n\n#restaurantowner #restaurant #restaurantlife #smallbusiness #automation #AIagents"
-  }
- ],
- "reserve": [
-  {
-   "id": "ep00-second-shift-voiced",
-   "video": "reels/out/ep00-second-shift-voiced.mp4",
-   "thumb_ms": 50000,
-   "status": "ready",
-   "caption": "\"Good evening. This is your FlowPilot speaking.\" ✈️\n\nIt's 11:47 PM and the messages haven't stopped: inquiries, missed calls, booking requests, reminders you forgot to send.\n\nSo we let the Pilot take the night shift. Inquiries answered, leads sorted, confirmations and reminders sent, and you're still the captain of every decision.\n\n👉 DM us the word PLAN and we'll map out your first automation for free.\n\n#smallbusiness #smallbusinessowner #automation #AIagents #entrepreneur"
-  }
- ]
+  "_about": "Posting queue for @flowpilot2026. The PRODUCER (agents/flowpilot-reels.md) appends 'ready' items; the POSTER (agents/flowpilot-poster.md) publishes the first 'ready' item whose caption's first line is not already on Instagram, at most one per Toronto day. 'reserve' is only used if no ready item is left.",
+  "items": [
+    {
+      "id": "ep01-plumber-race",
+      "video": "reels/out/ep01-plumber-race.mp4",
+      "thumb_ms": 28500,
+      "status": "posted",
+      "posted_at": "2026-11-17",
+      "permalink": "https://www.instagram.com/reel/Df2nZLWiDyC/",
+      "caption": "You missed this call… because you were literally under a sink. 🔧📞"
+    },
+    {
+      "id": "ep02-salon-midnight",
+      "video": "reels/out/ep02-salon-midnight.mp4",
+      "thumb_ms": 23500,
+      "status": "posted",
+      "posted_at": "2026-11-17",
+      "permalink": "https://www.instagram.com/reel/Df2nlAUnK7A/",
+      "caption": "11:52 PM. \"hiii do u have anything saturday??\" 💬"
+    },
+    {
+      "id": "ep03-dental-noshow",
+      "video": "reels/out/ep03-dental-noshow.mp4",
+      "thumb_ms": 28000,
+      "status": "posted",
+      "made": "2026-11-17",
+      "caption": "Empty chair at 9 AM. Again. 🦷👻\n\nThe No-Show strikes when reminders get forgotten and nobody has time to chase reschedules.\n\nOur no-show reducer texts a reminder the day before, lets patients confirm or reschedule by text, and offers the open slot to your waitlist. You stay in control of your schedule.\n\n🔖 Save this for later.\n\n#dentist #dentaloffice #dentalpractice #smallbusiness #automation #AIagents",
+      "posted_at": "2026-11-18",
+      "permalink": "https://www.instagram.com/reel/Df4c5y2lm1x/"
+    },
+    {
+      "id": "ep04-landscape-kitchen",
+      "video": "reels/out/ep04-landscape-kitchen.mp4",
+      "thumb_ms": 27500,
+      "status": "ready",
+      "made": "2026-11-17",
+      "caption": "Welcome back to Bot Kitchen 👨‍🍳 Today's recipe: a quote bot for landscapers.\n\nQuote requests coming in by text, DM, email and voicemail, all missing the details you need to price the job?\n\nThis bot asks the right questions (yard size, the job, when), collects photos, and drops one tidy, sorted request in your inbox, ready for you to quote. You stay in control of every price.\n\n📤 Send this to a business owner who's buried in quote requests.\n\n#landscaping #lawncare #landscaper #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep05-bakery-documentary",
+      "video": "reels/out/ep05-bakery-documentary.mp4",
+      "thumb_ms": 29500,
+      "status": "ready",
+      "made": "2026-11-18",
+      "caption": "Here we observe the baker, in her natural habitat… rising before the bread itself. 🥐🎥\n\nBut the orders arrive at night: texts, DMs and an endless flock of \"can I get a dozen?\"\n\nOur pre-order bot takes each order, prints a tidy ticket with the pickup time, and sends the pickup reminder. You stay in control of what you bake and when.\n\n👉 DM us \"PLAN\" and we'll map out your first automation for free.\n\n#bakery #bakeryowner #smallbakery #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep06-gym-levelup",
+      "video": "reels/out/ep06-gym-levelup.mp4",
+      "thumb_ms": 24500,
+      "status": "ready",
+      "made": "2026-11-18",
+      "caption": "A new lead has entered the gym! 🎮💪 Free trial class… REQUESTED.\n\nMost trial leads go cold because nobody follows up in time. Ours never stopped getting messages.\n\nOur lead follow-up bot sends the welcome text, the class reminder and the \"see you Tuesday?\", so the lead stays warm until they book. You stay in control of every message.\n\n💬 Comment your type of business and we'll reply with a bot idea for you.\n\n#gymowner #fitnessstudio #personaltrainer #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep07-autoshop-kanban",
+      "video": "reels/out/ep07-autoshop-kanban.mp4",
+      "thumb_ms": 30000,
+      "status": "ready",
+      "made": "2026-11-21",
+      "caption": "\"Hiii, just checking… is my car done yet?\" 🚗📞 (Call #6. It's 10 AM.)\n\nYour techs are fixing cars, but your phone keeps ringing with the same question.\n\nOur job-status bot texts customers at every step: diagnosed, parts ordered, ready for pickup. They stop wondering, and you stop answering the same call. You stay in control of every update.\n\n🗳️ Quick poll: A) 6 calls a day or B) zero? Vote in the comments.\n\n#autorepair #mechanic #autoshop #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep08-realtor-pov",
+      "video": "reels/out/ep08-realtor-pov.mp4",
+      "thumb_ms": 25500,
+      "status": "ready",
+      "made": "2026-11-21",
+      "caption": "POV: it's 10 PM and a buyer just found their dream house… and texted you. 🏡📲\n\nMost agents reply tomorrow morning. By then, the buyer has often called someone else.\n\nOur inquiry bot replies right away, answers the basics, and offers showing times. You wake up to a booked showing, and you stay in control of every client conversation.\n\n👉 DM us \"TOUR\" and we'll show you how it works.\n\n#realtor #realestateagent #realestate #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep09-cleaning-mythfact",
+      "video": "reels/out/ep09-cleaning-mythfact.mp4",
+      "thumb_ms": 27000,
+      "status": "ready",
+      "made": "2026-11-22",
+      "caption": "MYTH or FACT? 🎤 \"Happy clients leave reviews on their own.\"\n\nMyth! Happy clients mean well, but they forget. The review usually comes from a friendly nudge right after the job.\n\nOur review-request bot sends that text automatically after every completed job, with a link straight to your review page. You stay in control of what it says and when.\n\n💬 Comment \"MYTH\" and we'll send you three more small-business myths.\n\n#cleaningbusiness #cleaningservice #housecleaning #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep10-restaurant-terminal",
+      "video": "reels/out/ep10-restaurant-terminal.mp4",
+      "thumb_ms": 26000,
+      "status": "ready",
+      "made": "2026-11-22",
+      "caption": "> how many times did you answer \"are you open Sunday?\" this week 🖥️🍝\n\nRESULT: too many. Plus \"do you have parking?\", \"is the patio open?\" and \"do you take reservations?\"\n\nOur FAQ bot answers the same questions all day by text, DM and your website, so your team can focus on the food. You stay in control of every answer it gives.\n\n🔖 Save this one for later.\n\n#restaurantowner #restaurant #restaurantlife #smallbusiness #automation #AIagents"
+    },
+    {
+      "id": "ep11-groomer-tower",
+      "video": "reels/out/ep11-groomer-tower.mp4",
+      "thumb_ms": 15200,
+      "status": "ready",
+      "made": "2026-11-23",
+      "caption": "🗼 Tower to all units: a 2:00 PM grooming slot just cancelled.\n\nOur waitlist bot scans your list, texts the next dog in line, and books them in as soon as they reply. The empty slot gets filled in about a minute, without anyone picking up the phone.\n\nBuilt right here in Southwestern Ontario 🍁 for local shops like yours. You stay in control of who gets offered the spot.\n\n💬 Comment MAP and we'll show you how it works.\n\n#doggroomer #petgrooming #ontariobusiness #smallbusiness #automation #AIagents"
+    }
+  ],
+  "reserve": [
+    {
+      "id": "ep00-second-shift-voiced",
+      "video": "reels/out/ep00-second-shift-voiced.mp4",
+      "thumb_ms": 50000,
+      "status": "ready",
+      "caption": "\"Good evening. This is your FlowPilot speaking.\" ✈️\n\nIt's 11:47 PM and the messages haven't stopped: inquiries, missed calls, booking requests, reminders you forgot to send.\n\nSo we let the Pilot take the night shift. Inquiries answered, leads sorted, confirmations and reminders sent, and you're still the captain of every decision.\n\n👉 DM us the word PLAN and we'll map out your first automation for free.\n\n#smallbusiness #smallbusinessowner #automation #AIagents #entrepreneur"
+    }
+  ]
 }
