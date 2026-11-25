@@ -97,3 +97,6 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 ## [2026-11-24] edit | Reel producer run (agent run, 7:37 PM)
 - Skipped the Instagram reconcile (per the playbook)
 - + ep13-barber-comic (4-panel comic strip "Barber vs the Gremlin": Cedric narrates, Callum is the Missed Call gremlin, Adam is the rebooking bot, CTA "CUT", 112 BPM F major swing), voiced, `ready`
+- + ep14-physio-quiz ("Which bot do you need? Physio edition": 3-question quiz with countdown rings, Ian hosts, Pilot reveals the intake + reminder bot, score-in-comments CTA, 124 BPM A major), voiced, `ready`
+- Voices used without problems: Cedric, Callum, Adam, Ian, Brian. ElevenLabs hit a brief concurrency limit and retried by itself
+- Queue: ep04–ep14 marked `ready` (several likely posted; the poster dedupes by caption) + 1 reserve

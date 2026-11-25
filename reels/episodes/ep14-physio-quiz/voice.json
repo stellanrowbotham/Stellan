@@ -1,0 +1,12 @@
+{
+  "duck_db": -11,
+  "pa_chime": [32.55],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "host", "text": "It's quiz time! Three questions. Find the bot your clinic needs!"},
+    {"file": "vo/02.mp3", "at": 6.0, "who": "host", "text": "Question one! Do new patients still fill out paper forms in the waiting room?"},
+    {"file": "vo/03.mp3", "at": 12.0, "who": "host", "text": "Question two! Do patients forget their follow-up appointments?"},
+    {"file": "vo/04.mp3", "at": 17.2, "who": "host", "text": "Question three! Does your front desk type the same information in twice?"},
+    {"file": "vo/05.mp3", "at": 23.6, "who": "pilot", "text": "Said yes even once? Your bot is the intake and reminder bot. Forms done before patients arrive, and reminders sent for you."},
+    {"file": "vo/06.mp3", "at": 33.0, "who": "pilot", "text": "This is your FlowPilot speaking. Drop your score in the comments. You're still the captain."}
+  ]
+}

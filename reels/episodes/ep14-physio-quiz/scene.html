@@ -1,0 +1,92 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep14 · Physiotherapy · Intake form + reminder bot · F10 quiz "which bot do you need?" · score in comments
+WHO.host = ['QUIZ HOST', C.amber];
+const QS = [['Do new patients still fill out', 'paper forms in the waiting room?', 'clip'], ['Do patients forget their', 'follow-up appointments?', 'cal'], ['Does your front desk type the', 'same info in twice?', 'keys']];
+const TEAL = '#12B5A5';
+
+function studio(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#062B33'); g.addColorStop(1, '#03141A'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + t * .15; ctx.fillStyle = i % 2 ? 'rgba(18,181,165,.07)' : 'rgba(0,0,0,0)'; ctx.beginPath(); ctx.moveTo(W / 2, 760); ctx.arc(W / 2, 760, 1400, a, a + Math.PI / 12); ctx.fill(); }
+  for (let i = 0; i < 24; i++) { const on = (Math.floor(t * 5) + i) % 4 === 0; ctx.fillStyle = on ? '#FFE27A' : '#3A4A3A'; ctx.beginPath(); ctx.arc(45 + i * 43, 60, 8, 0, 7); ctx.fill(); }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `900 64px ${FONT}`; ctx.fillStyle = '#fff'; ctx.shadowColor = TEAL; ctx.shadowBlur = 25; ctx.fillText('WHICH BOT DO YOU NEED?', W / 2, 170); ctx.shadowBlur = 0;
+  ctx.font = `800 32px ${FONT}`; ctx.fillStyle = TEAL; ctx.fillText('PHYSIO CLINIC EDITION', W / 2, 235);
+}
+
+function dots(t) { // progress: 3 question dots
+  const cur = TL.q.filter(q => t >= q).length;
+  for (let i = 0; i < 3; i++) { const x = W / 2 + (i - 1) * 90, on = i < cur; ctx.beginPath(); ctx.arc(x, 310, 22, 0, 7); ctx.fillStyle = on ? C.amber : 'rgba(255,255,255,.15)'; ctx.fill(); ctx.font = `900 24px ${FONT}`; ctx.fillStyle = on ? '#2A1800' : '#9AA'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(i + 1), x, 312); }
+}
+
+function intro(t) {
+  const k = eElastic(seg(t, .3, 1.3)), out = seg(t, 5.4, 5.9); if (out >= 1) return;
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(W / 2, 760); ctx.scale(k, k); ctx.rotate(-.05 + Math.sin(t * 3) * .02);
+  ctx.font = `900 170px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 22; ctx.strokeStyle = '#03141A'; ctx.strokeText('QUIZ', 0, -90); ctx.strokeText('TIME!', 0, 90);
+  ctx.fillStyle = C.amber; ctx.fillText('QUIZ', 0, -90); ctx.fillStyle = '#fff'; ctx.fillText('TIME!', 0, 90); ctx.restore();
+  const sk = seg(t, 2.6, 3.0); if (sk > 0) { ctx.save(); ctx.globalAlpha = sk * (1 - out); ctx.font = `800 44px ${FONT}`; ctx.fillStyle = TEAL; ctx.textAlign = 'center'; ctx.fillText('3 questions · keep score: 1 point per YES', W / 2, 1100); ctx.restore(); }
+}
+
+function qIcon(kind, x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.strokeStyle = '#fff'; ctx.fillStyle = '#fff'; ctx.lineWidth = 8; ctx.lineJoin = 'round';
+  if (kind === 'clip') { rr(-s * .4, -s * .5, s * .8, s, 14); ctx.stroke(); rr(-s * .18, -s * .6, s * .36, s * .2, 8); ctx.fill(); for (let i = 0; i < 3; i++) { ctx.fillRect(-s * .25, -s * .2 + i * s * .22, s * .5, 7); } }
+  else if (kind === 'cal') icon('cal', 0, 0, s, '#fff');
+  else { rr(-s * .6, -s * .3, s * 1.2, s * .6, 12); ctx.stroke(); for (let r = 0; r < 3; r++) for (let c = 0; c < 6; c++) ctx.fillRect(-s * .5 + c * s * .17, -s * .2 + r * s * .15, s * .1, s * .09); }
+  ctx.restore();
+}
+
+function question(i, t) {
+  const q0 = TL.q[i], q1 = TL.qend[i], nxt = i < 2 ? TL.q[i + 1] : TL.reveal;
+  if (t < q0 - .2 || t > nxt) return;
+  const k = eBack(seg(t, q0 - .2, q0 + .25)), out = seg(t, nxt - .4, nxt);
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(W / 2 + out * -600, 0);
+  ctx.translate(0, 700); ctx.scale(k, k); ctx.translate(0, -700);
+  ctx.font = `900 40px ${FONT}`; ctx.fillStyle = C.amber; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`QUESTION ${i + 1} OF 3`, 0, 410);
+  rr(-470, 460, 940, 300, 40); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = TEAL; ctx.stroke();
+  ctx.font = `900 50px ${FONT}`; ctx.fillStyle = '#0B2A30'; ctx.fillText(QS[i][0], 0, 570); ctx.fillText(QS[i][1], 0, 640);
+  // icon + countdown ring
+  const cd = seg(t, q0 + .5, q1); ctx.beginPath(); ctx.arc(0, 900, 95, 0, 7); ctx.fillStyle = 'rgba(18,181,165,.25)'; ctx.fill();
+  ctx.strokeStyle = cd < 1 ? C.amber : C.mint; ctx.lineWidth = 12; ctx.beginPath(); ctx.arc(0, 900, 95, -Math.PI / 2, -Math.PI / 2 + (1 - cd) * Math.PI * 2 + (cd >= 1 ? Math.PI * 2 : 0)); ctx.stroke();
+  qIcon(QS[i][2], 0, 900, 100);
+  // YES / NO buttons
+  const flash = t > q1 ? (Math.floor((t - q1) * 6) % 2 ? 1 : .7) : 1;
+  [['YES', C.mint, -230], ['NO', C.red, 230]].forEach(([s, c, x]) => { const bk = eBack(seg(t, q0 + .3 + (x > 0 ? .1 : 0), q0 + .6 + (x > 0 ? .1 : 0))); ctx.save(); ctx.translate(x, 1150); ctx.scale(bk, bk); rr(-200, -80, 400, 160, 80); ctx.fillStyle = c; ctx.globalAlpha *= (s === 'YES' ? flash : 1); ctx.fill(); ctx.font = `900 80px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); });
+  if (t > q1) { const pk = eBack(seg(t, q1, q1 + .3)); ctx.save(); ctx.translate(-230, 1290); ctx.scale(pk, pk); ctx.font = `900 40px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'center'; ctx.fillText('+1 point', 0, 0); ctx.restore(); }
+  ctx.restore();
+}
+
+function reveal(t) {
+  if (t < TL.reveal) return;
+  const k = eOut(seg(t, TL.reveal, TL.reveal + .4));
+  ctx.save(); ctx.globalAlpha = k;
+  ctx.font = `900 60px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText('1+ POINTS? YOUR BOT IS...', W / 2, 420);
+  // flip card
+  const f = seg(t, TL.flip - .3, TL.flip + .3), sx = Math.abs(Math.cos(f * Math.PI)), back = f > .5;
+  const shake = t < TL.flip - .3 ? Math.sin(t * 40) * 6 : 0;
+  ctx.translate(W / 2 + shake, 820); ctx.scale(sx, 1);
+  rr(-380, -300, 760, 600, 50); ctx.fillStyle = back ? '#0B2A3A' : C.amber; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = back ? C.cyan : '#fff'; ctx.stroke();
+  if (!back) { ctx.font = `900 260px ${FONT}`; ctx.fillStyle = '#2A1800'; ctx.fillText('?', 0, 20); }
+  else { robot(0, -60, 250, t, C.cyan); ctx.font = `900 54px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('INTAKE + REMINDER', 0, 170); ctx.fillStyle = C.cyan; ctx.fillText('BOT', 0, 235); }
+  ctx.restore();
+  confetti(t, TL.flip, W / 2, 820, 80, 14);
+  [['Forms done before patients arrive', 0], ['Reminders sent for you', 1]].forEach(([s, i]) => { const ck = eBack(seg(t, TL.chips[i], TL.chips[i] + .3)); if (ck <= 0) return; ctx.save(); ctx.translate(W / 2, 1220 + i * 130); ctx.scale(ck, ck); ctx.font = `800 40px ${FONT}`; const w = ctx.measureText(s).width + 120; rr(-w / 2, -50, w, 100, 50); ctx.fillStyle = 'rgba(61,255,168,.15)'; ctx.fill(); ctx.strokeStyle = C.mint; ctx.lineWidth = 4; ctx.stroke(); icon('check', -w / 2 + 50, 0, 40, C.mint); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(s, -w / 2 + 85, 2); ctx.restore(); });
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    studio(t); if (t > TL.q[0] - .3 && t < TL.reveal) dots(t);
+    intro(t); question(0, t); question(1, t); question(2, t); reveal(t);
+    if (t > TL.flip && t < TL.flip + .2) flash = .3;
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Drop your score in the comments  →', footer: 'Intake + reminders on autopilot. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1720 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>
