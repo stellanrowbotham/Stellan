@@ -1,0 +1,157 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep13 · Barber · Rebooking reminder bot · F16 comic panels · Barber vs The Missed Call gremlin · comment "CUT"
+WHO.narrator = ['NARRATOR', '#FFE27A']; WHO.gremlin = ['THE MISSED CALL GREMLIN', '#C38BFF']; WHO.bot = ['REBOOKING BOT', C.cyan];
+const PW = 485, PH = 645, PX = [40, 555, 40, 555], PY = [180, 180, 855, 855];
+const INK = '#14121C', PAPER = '#FFF8E7';
+
+function page(t) {
+  ctx.fillStyle = '#F4E9CF'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = 'rgba(200,170,120,.25)'; for (let y = 0; y < H; y += 18) for (let x = (y / 18) % 2 ? 9 : 0; x < W; x += 18) { ctx.beginPath(); ctx.arc(x, y, 2.2, 0, 7); ctx.fill(); }
+  ctx.fillStyle = INK; ctx.fillRect(0, 1560, W, H - 1560); ctx.fillStyle = '#FFE27A'; ctx.fillRect(0, 1560, W, 8);
+  ctx.save(); ctx.font = `900 64px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.strokeText('BARBER vs THE GREMLIN', W / 2, 105); ctx.fillStyle = '#FF5A3C'; ctx.fillText('BARBER vs THE GREMLIN', W / 2, 105); ctx.restore();
+}
+
+function panel(i, t, draw) {
+  const k = eBack(seg(t, TL.p[i], TL.p[i] + .4)); if (k <= 0) return;
+  const active = (i === 3 ? t >= TL.p[3] : t >= TL.p[i] && t < TL.p[i + 1]);
+  const x = PX[i], y = PY[i];
+  ctx.save(); ctx.translate(x + PW / 2, y + PH / 2); ctx.scale(k, k); ctx.rotate((1 - k) * .2 * (i % 2 ? 1 : -1)); ctx.translate(-PW / 2, -PH / 2);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(10, 12, PW, PH);
+  ctx.fillStyle = PAPER; ctx.fillRect(0, 0, PW, PH);
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, PW, PH); ctx.clip(); draw(t, PW, PH); ctx.restore();
+  ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.strokeRect(0, 0, PW, PH);
+  // panel number tag
+  ctx.fillStyle = '#FFE27A'; ctx.fillRect(0, 0, 150, 52); ctx.lineWidth = 6; ctx.strokeRect(0, 0, 150, 52);
+  ctx.font = `900 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('PANEL ' + (i + 1), 75, 28);
+  if (!active) { ctx.fillStyle = 'rgba(244,233,207,.35)'; ctx.fillRect(0, 0, PW, PH); }
+  ctx.restore();
+}
+
+function hero(x, y, s, mop, t, happy = true) {
+  ctx.save(); ctx.translate(x, y); ctx.lineWidth = 6; ctx.strokeStyle = INK;
+  // body
+  ctx.fillStyle = '#3C7BE0'; rr(-s * .45, s * .55, s * .9, s * .9, s * .2); ctx.fill(); ctx.stroke();
+  // face
+  ctx.fillStyle = '#F2C29B'; ctx.beginPath(); ctx.arc(0, 0, s * .5, 0, 7); ctx.fill(); ctx.stroke();
+  // hair
+  ctx.fillStyle = '#3A2414';
+  if (!mop) { ctx.beginPath(); ctx.arc(0, -s * .12, s * .5, Math.PI * 1.08, Math.PI * 1.92); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+  else { for (let i = 0; i < 11; i++) { const a = Math.PI + i * Math.PI / 10, w = Math.sin(t * 6 + i) * 4; ctx.beginPath(); ctx.arc(Math.cos(a) * s * .5, Math.sin(a) * s * .45 - s * .05, s * .26 + w, 0, 7); ctx.fill(); } ctx.fillRect(-s * .62, -s * .2, s * .2, s * .7); ctx.fillRect(s * .42, -s * .2, s * .2, s * .7); }
+  ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(-s * .17, s * .02, s * .06, 0, 7); ctx.arc(s * .17, s * .02, s * .06, 0, 7); ctx.fill();
+  ctx.beginPath(); if (happy) ctx.arc(0, s * .16, s * .18, .15 * Math.PI, .85 * Math.PI); else ctx.arc(0, s * .36, s * .16, 1.2 * Math.PI, 1.8 * Math.PI); ctx.stroke();
+  ctx.restore();
+}
+
+function gremlin(x, y, s, t, sad = false) {
+  ctx.save(); ctx.translate(x + Math.sin(t * 20) * (sad ? 0 : 3), y); ctx.lineWidth = 7; ctx.strokeStyle = INK;
+  // phone-receiver horns
+  ctx.fillStyle = '#2A2A33'; [-1, 1].forEach(d => { ctx.save(); ctx.translate(d * s * .45, -s * .55); ctx.rotate(d * .5); rr(-s * .12, -s * .3, s * .24, s * .5, s * .1); ctx.fill(); ctx.stroke(); ctx.restore(); });
+  // blob
+  ctx.fillStyle = '#8A4BE0'; ctx.beginPath(); for (let i = 0; i <= 24; i++) { const a = i / 24 * Math.PI * 2, r = s * (.62 + .05 * Math.sin(a * 5 + t * 4)); ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r * .9); } ctx.closePath(); ctx.fill(); ctx.stroke();
+  // eyes
+  ctx.fillStyle = '#FFE24A'; ctx.beginPath(); ctx.ellipse(-s * .22, -s * .12, s * .13, s * .16, 0, 0, 7); ctx.ellipse(s * .22, -s * .12, s * .13, s * .16, 0, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(-s * .2, -s * .1, s * .05, 0, 7); ctx.arc(s * .24, -s * .1, s * .05, 0, 7); ctx.fill();
+  // mouth
+  if (!sad) { ctx.fillStyle = '#3A0A2A'; ctx.beginPath(); ctx.arc(0, s * .14, s * .3, .1 * Math.PI, .9 * Math.PI); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#fff'; for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(i * s * .1 - s * .04, s * .2); ctx.lineTo(i * s * .1 + s * .04, s * .2); ctx.lineTo(i * s * .1, s * .3); ctx.fill(); } }
+  else { ctx.beginPath(); ctx.arc(0, s * .4, s * .2, 1.2 * Math.PI, 1.8 * Math.PI); ctx.stroke(); }
+  ctx.restore();
+}
+
+function bubble(x, y, w, h, txt, size, tail, k = 1, fill = '#fff', col = INK) {
+  if (k <= 0) return; ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.scale(eBack(k), eBack(k)); ctx.translate(-w / 2, -h / 2);
+  ctx.fillStyle = fill; ctx.strokeStyle = INK; ctx.lineWidth = 5; rr(0, 0, w, h, h / 2.4); ctx.fill(); ctx.stroke();
+  if (tail) { ctx.beginPath(); ctx.moveTo(tail[0] - 18, h - 3); ctx.lineTo(tail[1], tail[2]); ctx.lineTo(tail[0] + 18, h - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(tail[0] - 15, h - 8, 30, 8); }
+  ctx.font = `900 ${size}px ${FONT}`; ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const lines = txt.split('\n'); lines.forEach((l, i) => ctx.fillText(l, w / 2, h / 2 + (i - (lines.length - 1) / 2) * size * 1.15));
+  ctx.restore();
+}
+
+function burst(x, y, r, txt, size, col, t, t0) {
+  const k = eBack(seg(t, t0, t0 + .25)); if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.rotate(Math.sin(t * 8) * .04);
+  ctx.beginPath(); for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2, rr2 = i % 2 ? r * .62 : r; ctx.lineTo(Math.cos(a) * rr2, Math.sin(a) * rr2); } ctx.closePath();
+  ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.stroke();
+  ctx.font = `900 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 8; ctx.strokeText(txt, 0, 4); ctx.fillStyle = '#fff'; ctx.fillText(txt, 0, 4);
+  ctx.restore();
+}
+
+function p1(t, w, h) {
+  ctx.fillStyle = '#BFE3F5'; ctx.fillRect(0, 0, w, h); ctx.fillStyle = '#D9D2C4'; ctx.fillRect(0, h * .72, w, h);
+  // shop front
+  ctx.fillStyle = '#A84432'; ctx.fillRect(30, 110, 230, 360); ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.strokeRect(30, 110, 230, 360);
+  ctx.fillStyle = '#5A3A2A'; ctx.fillRect(90, 260, 110, 210); ctx.strokeRect(90, 260, 110, 210);
+  ctx.fillStyle = '#FFF8E7'; ctx.fillRect(45, 130, 200, 60); ctx.strokeRect(45, 130, 200, 60); ctx.font = `900 40px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('BARBER', 145, 162);
+  // barber pole
+  ctx.save(); ctx.beginPath(); rr(10, 230, 36, 200, 18); ctx.clip(); ctx.fillStyle = '#fff'; ctx.fillRect(10, 230, 36, 200);
+  for (let k = -4; k < 12; k++) { const yy = 230 + k * 36 + (t * 60) % 36; ctx.fillStyle = k % 2 ? '#E2463C' : '#2F5DA8'; ctx.beginPath(); ctx.moveTo(10, yy); ctx.lineTo(46, yy - 26); ctx.lineTo(46, yy - 12); ctx.lineTo(10, yy + 14); ctx.fill(); }
+  ctx.restore(); ctx.lineWidth = 5; ctx.strokeStyle = INK; rr(10, 230, 36, 200, 18); ctx.stroke();
+  // hero walks out
+  const hx = lerp(150, 360, eOut(seg(t, .8, 3.2))); hero(hx, 360 + Math.abs(Math.sin(t * 6)) * -10, 120, false, t);
+  // sparkle "looking sharp"
+  if (t > 2.2) { for (let i = 0; i < 3; i++) { const a = t * 3 + i * 2.1; ctx.fillStyle = '#FFD34E'; ctx.save(); ctx.translate(hx + Math.cos(a) * 110, 300 + Math.sin(a) * 60); ctx.rotate(a); ctx.fillRect(-10, -3, 20, 6); ctx.fillRect(-3, -10, 6, 20); ctx.restore(); } }
+  // forgot-to-rebook calendar
+  const ck = seg(t, 4.0, 4.3); if (ck > 0) { ctx.save(); ctx.translate(250, 560); ctx.scale(eBack(ck), eBack(ck)); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 5; rr(-170, -48, 340, 96, 16); ctx.fill(); ctx.stroke(); ctx.font = `900 36px ${FONT}`; ctx.fillStyle = '#E2463C'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('NEXT CUT: ???', 0, 4); ctx.restore(); }
+}
+
+function p2(t, w, h) {
+  ctx.fillStyle = '#2A1A44'; ctx.fillRect(0, 0, w, h);
+  for (let i = 0; i < 14; i++) { const a = i / 14 * Math.PI * 2 + t * .3; ctx.fillStyle = i % 2 ? 'rgba(195,139,255,.18)' : 'rgba(0,0,0,0)'; ctx.beginPath(); ctx.moveTo(w / 2, h * .42); ctx.arc(w / 2, h * .42, 700, a, a + Math.PI / 14); ctx.fill(); }
+  gremlin(w / 2, h * .38, 150, t);
+  burst(110, 130, 80, 'HEH!', 34, '#C38BFF', t, TL.p[1] + .3);
+  // calendar flipping weeks
+  const fk = seg(t, TL.flip[0], TL.flip[1]); const wk = Math.max(1, Math.min(8, 1 + Math.floor(fk * 8)));
+  if (t > TL.flip[0] - .3) { ctx.save(); ctx.translate(360, 120); ctx.rotate(.08); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 5; rr(-80, -55, 160, 120, 12); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#E2463C'; ctx.fillRect(-80, -55, 160, 30); ctx.font = `900 22px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('WEEK', 0, -40); ctx.font = `900 56px ${FONT}`; ctx.fillStyle = INK; ctx.fillText(String(wk), 0, 20); ctx.restore(); }
+  // mop-haired hero heads to the other shop
+  const mk = eOut(seg(t, TL.mop, TL.mop + .5)); if (mk > 0) { hero(lerp(-80, 120, mk), 520, 70, true, t, false); ctx.save(); ctx.globalAlpha = mk; ctx.fillStyle = '#FFF8E7'; ctx.strokeStyle = INK; ctx.lineWidth = 4; rr(220, 470, 240, 90, 12); ctx.fill(); ctx.stroke(); ctx.font = `900 26px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('OTHER SHOP', 340, 500); ctx.fillText('DOWN THE ST. →', 340, 532); ctx.restore(); }
+}
+
+function p3(t, w, h) {
+  ctx.fillStyle = '#0E1A3A'; ctx.fillRect(0, 0, w, h);
+  const zk = seg(t, TL.zap, TL.zap + .3);
+  for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2; ctx.strokeStyle = `rgba(60,242,255,${.12 + .3 * zk})`; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(w / 2 + Math.cos(a) * 140, h * .5 + Math.sin(a) * 140); ctx.lineTo(w / 2 + Math.cos(a) * 600, h * .5 + Math.sin(a) * 600); ctx.stroke(); }
+  // big red button pressed by the barber's hand
+  const press = t > TL.zap - .5 && t < TL.zap ? 1 : 0;
+  ctx.fillStyle = '#555'; rr(w / 2 - 110, 120, 220, 70, 14); ctx.fill(); ctx.fillStyle = '#E2463C'; ctx.beginPath(); ctx.ellipse(w / 2, 120 - (press ? 0 : 14), 80, 30, 0, 0, 7); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = INK; ctx.stroke();
+  if (t < TL.zap) { const hy = lerp(-60, 60, eIO(seg(t, TL.p[2] + .6, TL.zap - .4))); ctx.fillStyle = '#F2C29B'; rr(w / 2 - 40, hy - 120, 80, 140, 30); ctx.fill(); ctx.stroke(); }
+  if (zk > 0) { robot(w / 2, h * .55 + (1 - eBack(zk)) * 200, 230 * eBack(zk), t, C.cyan); ctx.font = `900 40px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = C.cyan; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.strokeText('REBOOKING BOT', w / 2, h - 60); ctx.fillText('REBOOKING BOT', w / 2, h - 60); }
+  burst(380, 200, 95, 'ZAP!', 44, '#FFB547', t, TL.zap);
+}
+
+function p4(t, w, h) {
+  ctx.fillStyle = '#DFF6EA'; ctx.fillRect(0, 0, w, h);
+  // phone
+  ctx.fillStyle = '#1B1E2C'; rr(40, 80, 300, 470, 36); ctx.fill(); ctx.fillStyle = '#F7F9FF'; rr(56, 110, 268, 410, 20); ctx.fill();
+  const mk = seg(t, TL.msg, TL.msg + .3);
+  if (mk > 0) { ctx.save(); ctx.translate(70, 130); ctx.scale(eBack(mk), eBack(mk)); ctx.fillStyle = '#2F80ED'; rr(0, 0, 240, 190, 20); ctx.fill(); ctx.font = `700 24px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ["It's been 3 weeks!", 'Want your usual,', 'Sat at 10 AM?', 'Reply YES'].forEach((l, i) => ctx.fillText(l, 16, 32 + i * 40)); ctx.restore(); }
+  const yk = seg(t, TL.yes, TL.yes + .3);
+  if (yk > 0) { ctx.save(); ctx.translate(200, 350); ctx.scale(eBack(yk), eBack(yk)); ctx.fillStyle = '#3A3F55'; rr(0, 0, 110, 64, 20); ctx.fill(); ctx.font = `900 32px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('YES', 55, 34); ctx.restore(); }
+  const bk = seg(t, TL.booked, TL.booked + .3);
+  if (bk > 0) { ctx.save(); ctx.translate(190, 470); ctx.scale(eBack(bk), eBack(bk)); ctx.fillStyle = '#2B8A57'; rr(-120, -30, 240, 60, 30); ctx.fill(); ctx.font = `900 28px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('BOOKED ✓', 0, 2); ctx.restore(); }
+  // gremlin gets foiled: shrinks into a puff
+  const fk = seg(t, TL.foiled, TL.foiled + .6);
+  if (fk < 1) { ctx.save(); ctx.globalAlpha = 1 - fk; gremlin(400, 500, 75 * (1 - .6 * fk), t, t > TL.yes); ctx.restore(); }
+  if (fk > 0) { for (let i = 0; i < 7; i++) { const a = i / 7 * Math.PI * 2; ctx.fillStyle = `rgba(160,160,170,${.8 * (1 - seg(t, TL.foiled + .4, TL.foiled + 1.4))})`; ctx.beginPath(); ctx.arc(400 + Math.cos(a) * 60 * fk, 500 + Math.sin(a) * 40 * fk, 34, 0, 7); ctx.fill(); } }
+  burst(350, 600, 90, 'FOILED!', 32, '#C38BFF', t, TL.foiled);
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    page(t);
+    panel(0, t, p1); panel(1, t, p2); panel(2, t, p3); panel(3, t, p4);
+    if (t > TL.zap && t < TL.zap + .2) flash = .25;
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment “CUT” to see how  →', footer: 'Rebooking reminders on autopilot. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1740 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>

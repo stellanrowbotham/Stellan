@@ -1,0 +1,12 @@
+{
+  "duck_db": -11,
+  "pa_chime": [29.45],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.6, "who": "narrator", "text": "Panel one. Our hero leaves the barber shop looking sharp... and forgets to rebook."},
+    {"file": "vo/02.mp3", "at": 6.8, "who": "gremlin", "text": "Heh heh heh. No reminder? He'll wait two months, look like a mop, and walk into the shop down the street!"},
+    {"file": "vo/03.mp3", "at": 16.0, "who": "narrator", "text": "Panel three. The barber unleashes... the rebooking bot!"},
+    {"file": "vo/04.mp3", "at": 20.6, "who": "bot", "text": "Beep. It has been three weeks. Want your usual, Saturday at ten? Reply YES."},
+    {"file": "vo/05.mp3", "at": 26.8, "who": "gremlin", "text": "Nooo! Foiled again!"},
+    {"file": "vo/06.mp3", "at": 29.95, "who": "pilot", "text": "This is your FlowPilot speaking. Rebooking reminders that keep your chair full. Comment CUT and we'll show you how. You're still the captain."}
+  ]
+}
