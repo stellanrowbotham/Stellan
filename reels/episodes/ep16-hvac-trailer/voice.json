@@ -1,0 +1,11 @@
+{
+  "duck_db": -10,
+  "pa_chime": [27.75],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 1.2, "who": "trailer", "text": "This winter... the furnace died... at two A.M."},
+    {"file": "vo/02.mp3", "at": 6.4, "who": "customer", "text": "It's freezing in here. Is anyone there? Please... pick up."},
+    {"file": "vo/03.mp3", "at": 12.4, "who": "trailer", "text": "Voicemail. Silence. The longest night of the year."},
+    {"file": "vo/04.mp3", "at": 18.3, "who": "pilot", "text": "Hi, you've reached the after-hours line. No heat at all? Okay. I've marked this urgent and alerted the on-call tech. They'll text you shortly."},
+    {"file": "vo/05.mp3", "at": 28.25, "who": "pilot", "text": "This is your FlowPilot speaking. Never miss a 2 A.M. emergency again. DM us PLAN. You're still the captain."}
+  ]
+}

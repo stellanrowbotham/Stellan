@@ -104,3 +104,5 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 ## [2026-11-25] edit | Reel producer run (agent run, 7:37 PM)
 - Skipped the Instagram reconcile (per the playbook)
 - + ep15-florist-asmr (whispered "calm count" of holiday messages, labeled-example time calculator 30 × 3 min = 90 min, breathing florist, CTA "ROSES", music-box 70 BPM D major), voiced, `ready`
+- + ep16-hvac-trailer (horror-trailer parody "the furnace died at 2 AM": title cards, frost creeping in, voicemail, then the after-hours line answers and the window turns warm; CTA DM "PLAN"), voiced, `ready`
+- Voices used without problems: Lip (whisper), Harry (trailer), Laura, Brian. ElevenLabs hit a brief concurrency limit and retried by itself

@@ -1,0 +1,89 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep16 · HVAC · Emergency triage + after-hours reply · night scene · horror-trailer parody · DM "PLAN"
+WHO.trailer = ['', '#E8EEF8']; WHO.customer = ['THE CUSTOMER', '#9FD0FF'];
+const SERIF = 'Georgia, "DejaVu Serif", serif';
+const SNOW = (() => { const r = mulberry(9); return Array.from({ length: 140 }, () => ({ x: r() * W, s: r() * 1.5 + .5, p: r() * 10, z: r() * 3 + 1 })); })();
+
+function card(t, txt, t0, t1, size = 96) {
+  const a = seg(t, t0, t0 + .4) * (1 - seg(t, t1 - .3, t1)); if (a <= 0) return;
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.globalAlpha = a; ctx.font = `700 ${size}px ${SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.letterSpacing = '4px';
+  ctx.fillStyle = '#E8EEF8'; ctx.shadowColor = 'rgba(160,200,255,.6)'; ctx.shadowBlur = 30; const sc = 1 + (t - t0) * .02; ctx.translate(W / 2, 820); ctx.scale(sc, sc); ctx.fillText(txt, 0, 0); ctx.restore();
+}
+
+function night(t, warm) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#02040C'); g.addColorStop(1, '#0A1426'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#E8EEF8'; ctx.beginPath(); ctx.arc(820, 260, 70, 0, 7); ctx.fill(); ctx.fillStyle = '#02040C'; ctx.beginPath(); ctx.arc(850, 240, 64, 0, 7); ctx.fill();
+  // snowy ground + house silhouette
+  ctx.fillStyle = '#C9D6E8'; ctx.beginPath(); ctx.moveTo(0, 1300); ctx.quadraticCurveTo(540, 1240, W, 1300); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
+  ctx.fillStyle = '#05070F'; ctx.beginPath(); ctx.moveTo(240, 1290); ctx.lineTo(240, 900); ctx.lineTo(540, 660); ctx.lineTo(840, 900); ctx.lineTo(840, 1290); ctx.fill(); ctx.fillRect(700, 700, 60, 160);
+  ctx.fillStyle = '#E8EEF8'; ctx.beginPath(); ctx.moveTo(220, 905); ctx.lineTo(540, 645); ctx.lineTo(860, 905); ctx.lineTo(840, 915); ctx.lineTo(540, 670); ctx.lineTo(240, 915); ctx.fill();
+  // window: cold blue, turns warm
+  const wc = warm > 0 ? `rgba(${Math.round(lerp(120, 255, warm))},${Math.round(lerp(170, 180, warm))},${Math.round(lerp(255, 90, warm))},1)` : (Math.floor(t * 9) % 7 === 0 ? '#3A5A8A' : '#78AAFF');
+  ctx.fillStyle = wc; ctx.shadowColor = wc; ctx.shadowBlur = 50; ctx.fillRect(450, 960, 180, 160); ctx.shadowBlur = 0; ctx.fillStyle = '#05070F'; ctx.fillRect(536, 960, 8, 160); ctx.fillRect(450, 1036, 180, 8);
+  const bb = ctx.createLinearGradient(0, 1560, 0, H); bb.addColorStop(0, 'rgba(2,4,12,0)'); bb.addColorStop(.3, 'rgba(2,4,12,.9)'); bb.addColorStop(1, '#02040C'); ctx.fillStyle = bb; ctx.fillRect(0, 1560, W, H - 1560);
+  SNOW.forEach(s => { const y = (s.p * 200 + t * 80 * s.s) % H, x = (s.x + Math.sin(t + s.p) * 30 + t * 20 * s.s) % W; ctx.fillStyle = 'rgba(232,238,248,.8)'; ctx.beginPath(); ctx.arc(x, y, s.z, 0, 7); ctx.fill(); });
+}
+
+function frost(k) { // ice creeping from the edges
+  if (k <= 0) return; ctx.save(); const g = ctx.createRadialGradient(W / 2, H / 2, lerp(H, 380, k), W / 2, H / 2, H * .9); g.addColorStop(0, 'rgba(200,230,255,0)'); g.addColorStop(1, `rgba(200,230,255,${.55 * k})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = `rgba(230,245,255,${.5 * k})`; ctx.lineWidth = 3; const r = mulberry(4);
+  for (let i = 0; i < 24; i++) { const side = i % 4, p = r(); let x = side === 0 ? p * W : side === 1 ? W : side === 2 ? p * W : 0, y = side === 0 ? 0 : side === 1 ? p * H : side === 2 ? H : p * H; ctx.beginPath(); ctx.moveTo(x, y); for (let j = 0; j < 6; j++) { x += (W / 2 - x) * .06 * k + (r() - .5) * 60; y += (H / 2 - y) * .06 * k + (r() - .5) * 60; ctx.lineTo(x, y); } ctx.stroke(); }
+  ctx.restore();
+}
+
+function thermo(t, warm) {
+  const temp = warm > 0 ? lerp(12, 14, warm) : lerp(21, 12, seg(t, TL.house, 17));
+  ctx.save(); ctx.translate(150, 520); rr(-34, -230, 68, 400, 34); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 4; ctx.stroke();
+  const h = (temp - 5) / 20 * 340; ctx.fillStyle = warm > 0 ? '#FF8A3D' : '#6FB6FF'; rr(-18, 150 - h, 36, h, 18); ctx.fill(); ctx.beginPath(); ctx.arc(0, 170, 48, 0, 7); ctx.fill();
+  ctx.font = `800 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(Math.round(temp) + '°C', 0, 270); ctx.restore();
+  ctx.font = `800 44px ${FONT}`; ctx.fillStyle = '#E8EEF8'; ctx.textAlign = 'right'; ctx.fillText('2:0' + Math.min(9, Math.floor(seg(t, TL.house, TL.answer) * 9)) + ' AM', 1020, 470);
+}
+
+function callUI(t) {
+  if (t < TL.rings[0] - .3 || t > TL.title) return;
+  const k = eOut(seg(t, TL.rings[0] - .3, TL.rings[0])), vm = t > TL.vm;
+  ctx.save(); ctx.globalAlpha = k * (1 - seg(t, TL.title - .4, TL.title)); ctx.translate(W / 2, 1460);
+  rr(-400, -110, 800, 220, 40); ctx.fillStyle = 'rgba(10,16,32,.92)'; ctx.fill(); ctx.strokeStyle = vm ? '#FF4D6D' : '#6FB6FF'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.font = `700 34px ${FONT}`; ctx.fillStyle = '#9FB0D0'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Calling: Heating & Cooling', 0, -50);
+  ctx.font = `900 56px ${FONT}`; ctx.fillStyle = vm ? '#FF4D6D' : '#fff'; ctx.fillText(vm ? 'VOICEMAIL. CLOSED.' : 'Ringing' + '.'.repeat(1 + Math.floor(t * 2) % 3), 0, 30);
+  ctx.restore();
+  TL.rings.forEach(r => { const p = seg(t, r, r + 1.2); if (p > 0 && p < 1 && !vm) { ctx.beginPath(); ctx.arc(W / 2, 1460, 420 + p * 200, Math.PI * 1.15, Math.PI * 1.85); ctx.strokeStyle = `rgba(111,182,255,${1 - p})`; ctx.lineWidth = 6; ctx.stroke(); } });
+}
+
+function answered(t) {
+  const k = eOut(seg(t, TL.answer, TL.answer + .5)); if (k <= 0) return;
+  ctx.save(); ctx.globalAlpha = k;
+  rr(90, 1340, 900, 360 - 40, 40); ctx.fillStyle = 'rgba(10,16,32,.94)'; ctx.fill(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 4; ctx.stroke();
+  ctx.font = `800 30px ${FONT}`; ctx.fillStyle = C.mint; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('● After-hours line · answered', 130, 1385);
+  const items = [['No heat at all? Got it.', '#fff'], ['Marked URGENT', '#FF8A3D'], ['On-call tech alerted ✓', C.mint], ["They'll text you shortly", '#fff']];
+  items.forEach(([s, c], i) => { const bk = eBack(seg(t, TL.bubbles[i], TL.bubbles[i] + .3)); if (bk <= 0) return; ctx.save(); ctx.translate(130 + (i % 2) * 420, 1450 + Math.floor(i / 2) * 90); ctx.scale(bk, bk); ctx.font = `800 34px ${FONT}`; const w = ctx.measureText(s).width + 50; rr(0, -34, w, 68, 34); ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.stroke(); ctx.fillStyle = c; ctx.fillText(s, 25, 2); ctx.restore(); });
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    const warm = seg(t, TL.answer, TL.answer + 3);
+    if (t < TL.house) { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); card(t, 'THIS WINTER', TL.cards[0], TL.cards[1]); card(t, 'THE FURNACE DIED', TL.cards[1], TL.cards[2], 64); card(t, 'AT 2:00 AM', TL.cards[2], TL.house, 120); }
+    else if (t > TL.title && t < TL.answer) { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.globalAlpha = seg(t, TL.title, TL.title + .5) * (1 - seg(t, TL.answer - .4, TL.answer)); ctx.font = `700 70px ${SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#E8EEF8'; ctx.letterSpacing = '10px'; ctx.fillText('THE LONGEST', W / 2, 760); ctx.fillText('NIGHT', W / 2, 860); ctx.fillText('OF THE YEAR', W / 2, 960); ctx.restore(); }
+    else {
+      night(t, warm); frost(seg(t, TL.house, 14) * (1 - warm)); thermo(t, warm); callUI(t); answered(t);
+      if (warm > 0) { ctx.fillStyle = `rgba(255,150,60,${.12 * warm})`; ctx.fillRect(0, 0, W, H); }
+    }
+    // flicker + lightning-style hits on the braams
+    TL.cards.concat([TL.title]).forEach(c => { if (t > c && t < c + .08) flash = .35; });
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'DM us “PLAN”  →', footer: 'After-hours calls answered. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.answer ? 1740 : t < TL.logo ? 1780 : 1580 });
+  post(t, flash, 0);
+}
+FP.init(render);
+</script></body></html>
