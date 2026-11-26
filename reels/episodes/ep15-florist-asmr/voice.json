@@ -1,0 +1,10 @@
+{
+  "duck_db": -9,
+  "pa_chime": [23.35],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.6, "who": "asmr", "text": "Holiday rush at the flower shop. Let's count the messages together. One... two... three..."},
+    {"file": "vo/02.mp3", "at": 8.6, "who": "asmr", "text": "Just an example. Thirty messages a day... three minutes each... that's ninety minutes. Every single day."},
+    {"file": "vo/03.mp3", "at": 17.8, "who": "asmr", "text": "Now the bot answers the order questions... and the florist... can finally breathe."},
+    {"file": "vo/04.mp3", "at": 23.85, "who": "pilot", "text": "This is your FlowPilot speaking. Get ready for the holiday rush before it starts. Comment ROSES and we'll send you the plan. You're still the captain."}
+  ]
+}

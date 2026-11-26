@@ -100,3 +100,7 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + ep14-physio-quiz ("Which bot do you need? Physio edition": 3-question quiz with countdown rings, Ian hosts, Pilot reveals the intake + reminder bot, score-in-comments CTA, 124 BPM A major), voiced, `ready`
 - Voices used without problems: Cedric, Callum, Adam, Ian, Brian. ElevenLabs hit a brief concurrency limit and retried by itself
 - Queue: ep04–ep14 marked `ready` (several likely posted; the poster dedupes by caption) + 1 reserve
+
+## [2026-11-25] edit | Reel producer run (agent run, 7:37 PM)
+- Skipped the Instagram reconcile (per the playbook)
+- + ep15-florist-asmr (whispered "calm count" of holiday messages, labeled-example time calculator 30 × 3 min = 90 min, breathing florist, CTA "ROSES", music-box 70 BPM D major), voiced, `ready`
