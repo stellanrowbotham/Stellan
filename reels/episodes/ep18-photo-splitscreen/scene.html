@@ -1,0 +1,66 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep18 · Photographer · Inquiry qualifier + package sender · F3 split screen · "send to a friend"
+WHO.slowbot = ['THE OLD AUTO-REPLY', '#9AA3B5']; WHO.narrator = ['', C.white];
+const HALF = W / 2;
+
+function side(t, left) {
+  const x0 = left ? 0 : HALF, cx = x0 + HALF / 2;
+  const g = ctx.createLinearGradient(0, 0, 0, H); if (left) { g.addColorStop(0, '#2A2D36'); g.addColorStop(1, '#16181E'); } else { g.addColorStop(0, '#0B1A3A'); g.addColorStop(1, '#060C22'); }
+  ctx.fillStyle = g; ctx.fillRect(x0, 0, HALF, H);
+  ctx.font = `900 44px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = left ? '#9AA3B5' : C.cyan; ctx.fillText(left ? 'THE OLD WAY' : 'WITH A BOT', cx, 170);
+  // camera icon
+  ctx.save(); ctx.translate(cx, 270); ctx.strokeStyle = left ? '#9AA3B5' : C.cyan; ctx.lineWidth = 6; rr(-50, -30, 100, 66, 14); ctx.stroke(); ctx.beginPath(); ctx.arc(0, 3, 18, 0, 7); ctx.stroke(); ctx.fillStyle = ctx.strokeStyle; ctx.fillRect(-24, -42, 30, 12); ctx.restore();
+  // phone
+  const px = x0 + 40, pw = HALF - 80, py = 360, ph = 1120;
+  rr(px, py, pw, ph, 40); ctx.fillStyle = left ? '#E9EAEE' : '#F5F8FF'; ctx.fill();
+  // inquiry bubble (same on both sides)
+  const ak = eBack(seg(t, TL.ask, TL.ask + .3)); if (ak > 0) bubble(px + 24, py + 60, 360, ['Hi! Are you free on', 'June 14th for our', 'wedding?'], '#E3E5EA', '#111', ak, false);
+  if (left) {
+    if (t > TL.slow) { const words = 'Thank you for your inquiry. We will respond in 3-5 business days.'.split(' '); const n = Math.min(words.length, Math.floor(seg(t, TL.slow, TL.slow + 7.8) * words.length) + 1); const lines = wrapWords(words.slice(0, n), 330, 28); bubble(px + pw - 24 - 370, py + 300, 370, lines, '#B8BCC6', '#2A2D36', 1, true, 28); }
+    const wait = t > TL.slow ? Math.min(5, Math.floor(seg(t, TL.slow + 8, TL.verdict) * 5) + (t > TL.slow + 8 ? 1 : 0)) : 0;
+    ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#9AA3B5'; ctx.textAlign = 'center'; ctx.fillText('reply time: 3-5 days', cx, py + ph + 70);
+  } else {
+    if (t > TL.slow && t < TL.fast) { for (let i = 0; i < 3; i++) { const b = Math.abs(Math.sin(t * 6 + i)); ctx.fillStyle = `rgba(60,90,160,${.4 + .5 * b})`; ctx.beginPath(); ctx.arc(px + pw - 120 + i * 30, py + 340 - b * 8, 10, 0, 7); ctx.fill(); } }
+    const fk = eBack(seg(t, TL.fast, TL.fast + .3)); if (fk > 0) {
+      bubble(px + pw - 24 - 380, py + 300, 380, ['Congratulations!', 'June 14th is open.'], C.cyan, '#06102A', fk, true, 30);
+      const ck = eBack(seg(t, TL.fast + 1.6, TL.fast + 1.9)); if (ck > 0) { ['Package A', 'Package B', 'Package C'].forEach((s, i) => { ctx.save(); ctx.translate(px + pw - 24 - 380 + 10, py + 470 + i * 88); ctx.scale(ck, ck); rr(0, 0, 360, 72, 20); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#C7D3F0'; ctx.lineWidth = 3; ctx.stroke(); ctx.font = `700 28px ${FONT}`; ctx.fillStyle = '#1B2A50'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('▣ ' + s + ' (PDF)', 20, 37); ctx.restore(); }); }
+      const lk = eBack(seg(t, TL.fast + 3.6, TL.fast + 3.9)); if (lk > 0) { ctx.save(); ctx.translate(px + pw - 24 - 380, py + 760); ctx.scale(lk, lk); rr(0, 0, 380, 80, 40); ctx.fillStyle = C.mint; ctx.fill(); ctx.font = `800 30px ${FONT}`; ctx.fillStyle = '#06102A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Book a quick call →', 190, 42); ctx.restore(); }
+    }
+    ctx.font = `800 34px ${FONT}`; ctx.fillStyle = C.cyan; ctx.textAlign = 'center'; ctx.fillText('reply time: 1 min', cx, py + ph + 70);
+  }
+  // results stamp
+  const rk = eBack(seg(t, TL.results, TL.results + .3)); if (rk > 0) { ctx.save(); ctx.translate(cx, py + ph - 150); ctx.rotate(left ? .06 : -.06); ctx.scale(rk, rk); rr(-200, -50, 400, 100, 20); ctx.fillStyle = left ? 'rgba(154,163,181,.95)' : C.mint; ctx.fill(); ctx.font = `900 38px ${FONT}`; ctx.fillStyle = '#0B0E18'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(left ? 'Still waiting...' : 'Call booked ✓', 0, 3); ctx.restore(); }
+  // dim the left during the verdict
+  if (left && t > TL.verdict) { ctx.fillStyle = `rgba(0,0,0,${.35 * seg(t, TL.verdict, TL.verdict + .6)})`; ctx.fillRect(x0, 0, HALF, H); }
+}
+
+function wrapWords(words, maxW, size) { ctx.font = `600 ${size}px ${FONT}`; const out = ['']; for (const w of words) { const s = out[out.length - 1] ? out[out.length - 1] + ' ' + w : w; if (ctx.measureText(s).width > maxW && out[out.length - 1]) out.push(w); else out[out.length - 1] = s; } return out; }
+function bubble(x, y, w, lines, fill, col, k, right, size = 30) {
+  ctx.save(); const h = lines.length * (size + 12) + 36; ctx.translate(x + (right ? w : 0), y); ctx.scale(k, k); ctx.translate(-(right ? w : 0), 0);
+  rr(0, 0, w, h, 28); ctx.fillStyle = fill; ctx.fill(); ctx.font = `600 ${size}px ${FONT}`; ctx.fillStyle = col; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  lines.forEach((l, i) => ctx.fillText(l, 24, 18 + (size + 12) * (i + .5))); ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    side(t, true); side(t, false);
+    ctx.fillStyle = '#fff'; ctx.fillRect(HALF - 3, 0, 6, 1580); const bb = ctx.createLinearGradient(0, 1580, 0, H); bb.addColorStop(0, 'rgba(6,8,16,.6)'); bb.addColorStop(.3, '#06081A'); ctx.fillStyle = bb; ctx.fillRect(0, 1580, W, H - 1580);
+    // VS badge
+    ctx.save(); ctx.translate(HALF, 1000); ctx.beginPath(); ctx.arc(0, 0, 56, 0, 7); ctx.fillStyle = '#fff'; ctx.fill(); ctx.font = `900 44px ${FONT}`; ctx.fillStyle = '#0B0E18'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('VS', 0, 3); ctx.restore();
+    if (t > TL.verdict) { const vk = eOut(seg(t, TL.verdict, TL.verdict + .4)); ctx.save(); ctx.globalAlpha = vk; rr(110, 40, 860, 90, 45); ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.fill(); ctx.font = `900 42px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Same inquiry. Which one gets booked?', W / 2, 86); ctx.restore(); }
+    confetti(t, TL.results, W * .75, 1300, 60, 21);
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Send this to a photographer friend  →', footer: 'Inquiries answered in minutes. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1740 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>

@@ -1,0 +1,11 @@
+{
+  "duck_db": -11,
+  "pa_chime": [26.3],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "customer", "text": "Hi! Are you free on June 14th for our wedding?"},
+    {"file": "vo/02.mp3", "at": 4.6, "who": "slowbot", "text": "Thank you. For. Your. Inquiry. We will respond. In three. To five. Business days."},
+    {"file": "vo/03.mp3", "at": 13.4, "who": "pilot", "text": "Congratulations! June 14th is open. Here are our wedding packages, and a link to book a quick call this week."},
+    {"file": "vo/04.mp3", "at": 20.6, "who": "narrator", "text": "Same inquiry. Two very different replies. Which one gets booked?"},
+    {"file": "vo/05.mp3", "at": 26.8, "who": "pilot", "text": "This is your FlowPilot speaking. Send this to a photographer friend. You're still the captain."}
+  ]
+}
