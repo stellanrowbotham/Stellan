@@ -1,4 +1,4 @@
-# Strategy lab results (2026-11-26)
+# Strategy lab results (2026-11-27)
 
 Every number below comes from test years the rule was **not** tuned on, after trading costs.
 
