@@ -1,0 +1,11 @@
+{
+  "duck_db": -11,
+  "pa_chime": [27.15],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "owner", "text": "6 A.M. Espresso machine's warming up, the line's out the door... and I still haven't posted today's special."},
+    {"file": "vo/02.mp3", "at": 8.6, "who": "customer", "text": "Hey! I saw your post. Is the maple oat latte still on today?"},
+    {"file": "vo/03.mp3", "at": 13.4, "who": "owner", "text": "Wait... it already posted? Photo, caption and all?"},
+    {"file": "vo/04.mp3", "at": 18.2, "who": "pilot", "text": "Behind the scenes: every morning the bot takes the special from your menu sheet, writes the post, and lines it up. You tap approve."},
+    {"file": "vo/05.mp3", "at": 27.65, "who": "pilot", "text": "This is your FlowPilot speaking. Comment BREW and we'll show you how we build it. You're still the captain."}
+  ]
+}

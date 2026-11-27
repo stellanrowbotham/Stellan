@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep17 · Coffee shop · Social auto-poster (daily special) · F2 phone chat (DM look) · behind the scenes · comment "BREW"
+WHO.owner = ['THE OWNER', '#FFB547'];
+const CREAM = '#F6EBDD', BROWN = '#4A2C1D', LATTE = '#C99A6B', IG = ['#F58529', '#DD2A7B', '#8134AF'];
+
+function cafe(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#2B1A12'); g.addColorStop(1, '#170D08'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // chalkboard menu
+  rr(110, 160, 860, 300, 24); ctx.fillStyle = '#1E2A22'; ctx.fill(); ctx.lineWidth = 14; ctx.strokeStyle = '#6B4A30'; ctx.stroke();
+  ctx.font = `800 54px ${FONT}`; ctx.fillStyle = '#EDE6D6'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText("TODAY'S SPECIAL", W / 2, 240);
+  ctx.font = `700 60px ${FONT}`; ctx.fillStyle = '#FFD9A0'; ctx.fillText('Maple Oat Latte', W / 2, 330);
+  ctx.font = `600 32px ${FONT}`; ctx.fillStyle = '#9FB0A4'; ctx.fillText('6:00 AM · doors open', W / 2, 405);
+}
+
+function counter(t) {
+  const out = seg(t, TL.dm - .4, TL.dm); if (out >= 1) return;
+  ctx.save(); ctx.globalAlpha = 1 - out;
+  // the line of customers
+  for (let i = 0; i < 6; i++) { const x = 160 + i * 150, bob = Math.sin(t * 3 + i) * 6; ctx.fillStyle = ['#6FB6FF', '#FF8FB1', '#9BE7A0', '#FFD36E', '#C3A6FF', '#7FD6E8'][i]; ctx.beginPath(); ctx.arc(x, 640 + bob, 44, 0, 7); ctx.fill(); rr(x - 50, 690 + bob, 100, 130, 40); ctx.fill(); }
+  ctx.font = `700 34px ${FONT}`; ctx.fillStyle = '#EDE6D6'; ctx.textAlign = 'center'; ctx.fillText('the line is out the door', W / 2, 880);
+  // espresso machine
+  rr(330, 960, 420, 300, 30); ctx.fillStyle = '#B9B9C4'; ctx.fill(); rr(370, 1000, 340, 90, 16); ctx.fillStyle = '#2A2A30'; ctx.fill();
+  for (let i = 0; i < 5; i++) { const s = (t * .8 + i * .2) % 1; ctx.fillStyle = `rgba(255,255,255,${.35 * (1 - s)})`; ctx.beginPath(); ctx.arc(540 + Math.sin(t * 3 + i) * 30, 950 - s * 200, 30 + s * 30, 0, 7); ctx.fill(); }
+  // posting status
+  const pk = eBack(seg(t, 4.6, 5.0)); if (pk > 0) { ctx.save(); ctx.translate(W / 2, 1400); ctx.scale(pk, pk); rr(-380, -60, 760, 120, 60); ctx.fillStyle = 'rgba(255,77,109,.15)'; ctx.fill(); ctx.strokeStyle = C.red; ctx.lineWidth = 4; ctx.stroke(); ctx.font = `800 42px ${FONT}`; ctx.fillStyle = C.red; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText("Today's post: not done ✗", 0, 3); ctx.restore(); }
+  ctx.restore();
+}
+
+function phone(t) {
+  const k = eOut(seg(t, TL.dm - .3, TL.dm + .3)), out = seg(t, TL.bts - .4, TL.bts); if (k <= 0 || out >= 1) return;
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(0, (1 - k) * 600);
+  const x0 = 200, y0 = 500, w = 680, h = 1040;
+  rr(x0 - 16, y0 - 16, w + 32, h + 32, 70); ctx.fillStyle = '#0D0D10'; ctx.fill(); rr(x0, y0, w, h, 56); ctx.fillStyle = '#fff'; ctx.fill();
+  const flip = t > TL.post;
+  if (!flip) {
+    // DM thread header
+    const ag = ctx.createLinearGradient(x0 + 40, 0, x0 + 110, 0); IG.forEach((c, i) => ag.addColorStop(i / 2, c)); ctx.beginPath(); ctx.arc(x0 + 75, y0 + 75, 34, 0, 7); ctx.fillStyle = ag; ctx.fill();
+    ctx.font = `800 32px ${FONT}`; ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('a.regular.customer', x0 + 125, y0 + 64); ctx.font = `500 24px ${FONT}`; ctx.fillStyle = '#888'; ctx.fillText('Active now', x0 + 125, y0 + 96);
+    ctx.fillStyle = '#EEE'; ctx.fillRect(x0, y0 + 140, w, 2);
+    const bk = eBack(seg(t, TL.dm, TL.dm + .3)); if (bk > 0) { ctx.save(); ctx.translate(x0 + 40, y0 + 200); ctx.scale(bk, bk); rr(0, 0, 520, 150, 36); ctx.fillStyle = '#EFEFEF'; ctx.fill(); ctx.font = `500 32px ${FONT}`; ctx.fillStyle = '#111'; ctx.fillText('Hey! I saw your post.', 30, 50); ctx.fillText('Is the maple oat latte', 30, 92); ctx.fillText('still on today?', 30, 132); ctx.restore(); }
+    const sk = eBack(seg(t, TL.shock, TL.shock + .3)); if (sk > 0) { ctx.save(); ctx.translate(x0 + w - 40, y0 + 420); ctx.scale(sk, sk); ctx.font = `600 32px ${FONT}`; const s = 'Wait... it already posted?'; const bw = ctx.measureText(s).width + 60; rr(-bw, 0, bw, 76, 38); const bg = ctx.createLinearGradient(-bw, 0, 0, 0); bg.addColorStop(0, '#6A5CFF'); bg.addColorStop(1, '#A23BE0'); ctx.fillStyle = bg; ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText(s, -bw + 30, 40); ctx.restore(); }
+  } else {
+    // the feed post that posted itself
+    const fk = eOut(seg(t, TL.post, TL.post + .4)); ctx.save(); ctx.globalAlpha *= fk;
+    ctx.font = `800 30px ${FONT}`; ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('your.cafe', x0 + 110, y0 + 70); ctx.beginPath(); ctx.arc(x0 + 65, y0 + 70, 28, 0, 7); ctx.fillStyle = BROWN; ctx.fill();
+    ctx.font = `500 24px ${FONT}`; ctx.fillStyle = '#888'; ctx.fillText('Posted 5:45 AM', x0 + 110, y0 + 102);
+    ctx.fillStyle = '#F3E3CF'; ctx.fillRect(x0, y0 + 140, w, 560);
+    // latte art illustration
+    const cx = x0 + w / 2, cy = y0 + 420; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 200, 0, 7); ctx.fill(); ctx.fillStyle = LATTE; ctx.beginPath(); ctx.arc(cx, cy, 170, 0, 7); ctx.fill();
+    ctx.fillStyle = '#FFF4E4'; ctx.beginPath(); ctx.moveTo(cx, cy + 90); ctx.bezierCurveTo(cx - 140, cy - 10, cx - 60, cy - 120, cx, cy - 50); ctx.bezierCurveTo(cx + 60, cy - 120, cx + 140, cy - 10, cx, cy + 90); ctx.fill();
+    for (let i = 0; i < 3; i++) { ctx.strokeStyle = `rgba(255,255,255,${.5})`; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(cx - 40 + i * 40, cy - 230); ctx.quadraticCurveTo(cx - 60 + i * 40 + Math.sin(t * 3 + i) * 15, cy - 280, cx - 40 + i * 40, cy - 320); ctx.stroke(); }
+    ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#111'; ctx.fillText("Today's special: Maple Oat Latte", x0 + 40, y0 + 760);
+    ctx.font = `500 28px ${FONT}`; ctx.fillStyle = '#555'; ctx.fillText('Warm, cozy, and here until 2 PM.', x0 + 40, y0 + 810);
+    ctx.fillStyle = '#E0457B'; ctx.font = `700 30px ${FONT}`; ctx.fillText('♥', x0 + 40, y0 + 880); ctx.fillStyle = '#111'; ctx.font = `600 26px ${FONT}`; ctx.fillText('liked by your regulars', x0 + 80, y0 + 880);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function pipeline(t) {
+  const k = eOut(seg(t, TL.bts, TL.bts + .5)); if (k <= 0) return;
+  ctx.save(); ctx.globalAlpha = k;
+  ctx.font = `900 64px ${FONT}`; ctx.fillStyle = '#FFD9A0'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('BEHIND THE SCENES', W / 2, 560);
+  const nodes = [['Menu sheet', '#9FB0A4'], ['Bot writes the post', C.cyan], ['You tap approve', C.amber], ['Posted at 5:45 AM', C.mint]];
+  nodes.forEach(([s, c], i) => {
+    const nk = eBack(seg(t, TL.nodes[i], TL.nodes[i] + .35)); if (nk <= 0) return;
+    const y = 700 + i * 200;
+    if (i > 0) { const lk = seg(t, TL.nodes[i] - .3, TL.nodes[i]); ctx.strokeStyle = c; ctx.lineWidth = 6; ctx.setLineDash([14, 12]); ctx.lineDashOffset = -t * 40; ctx.beginPath(); ctx.moveTo(W / 2, y - 140); ctx.lineTo(W / 2, y - 140 + 80 * lk); ctx.stroke(); ctx.setLineDash([]); }
+    ctx.save(); ctx.translate(W / 2, y); ctx.scale(nk, nk); rr(-340, -55, 680, 110, 55); ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = 4; ctx.stroke();
+    ctx.beginPath(); ctx.arc(-280, 0, 30, 0, 7); ctx.fillStyle = c; ctx.fill(); ctx.font = `900 30px ${FONT}`; ctx.fillStyle = '#170D08'; ctx.fillText(String(i + 1), -280, 2);
+    ctx.font = `800 44px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(s, -220, 2); ctx.restore();
+  });
+  ctx.restore();
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    cafe(t); counter(t); phone(t); pipeline(t);
+    if (t > TL.post && t < TL.post + .15) flash = .25;
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment “BREW” to see how  →', footer: 'Your daily special, posted. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1740 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>
