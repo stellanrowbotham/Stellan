@@ -1,0 +1,11 @@
+{
+  "duck_db": -11,
+  "pa_chime": [27.0],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "anchor", "text": "Good evening! A big storm is rolling in tonight, with leads arriving at 90 km/h."},
+    {"file": "vo/02.mp3", "at": 7.2, "who": "anchor", "text": "Here comes a roof leak inquiry. Roofer A is up on a ladder. Roofer B has a bot."},
+    {"file": "vo/03.mp3", "at": 14.0, "who": "pilot", "text": "Sorry about the leak! Can you send a photo? We have an inspection slot tomorrow at 9."},
+    {"file": "vo/04.mp3", "at": 19.6, "who": "anchor", "text": "And Roofer B gets the booking! Tonight's forecast: the first to reply often gets the job."},
+    {"file": "vo/05.mp3", "at": 27.5, "who": "pilot", "text": "This is your FlowPilot speaking. Get storm-season ready. Comment ROOF and we'll show you how. You're still the captain."}
+  ]
+}

@@ -116,3 +116,5 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 ## [2026-11-27] edit | Reel producer run (agent run, 7:37 PM)
 - Skipped the Instagram reconcile (per the playbook)
 - + ep19-tutor-textspiral (9 texts to move one session swirl into a spiral, the bot sucks them up and offers tap-to-pick slots; CTA "SCHEDULE" instead of the calendar's "PLAN", already used by ep16; 96 BPM C major), voiced, `ready`
+- + ep20-roofer-forecast (TV storm-watch parody: radar map with "leads at 90 km/h", then a reply race, ladder vs bot, BOOKED stamp and "tonight's forecast" card; CTA "ROOF"; 118 BPM A major), voiced, `ready`
+- Voices used without problems: Laura, Melissa, Brian, Caliph. ElevenLabs hit a brief concurrency limit and retried by itself
