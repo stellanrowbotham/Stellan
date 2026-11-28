@@ -112,3 +112,7 @@ The log from the earlier LLM Wiki demo (2026-10-01 to 2026-10-02) is in git hist
 - + ep17-coffee-autopost (6 AM cafe rush, DM from a regular, the daily special already posted itself, behind-the-scenes pipeline, CTA "BREW", lo-fi 88 BPM Bb), voiced, `ready`
 - + ep18-photo-splitscreen (split screen "the old way vs with a bot": slow robotic auto-reply vs instant reply with packages and a booking link, send-to-a-friend CTA, 104 BPM E major), voiced, `ready`
 - Voices used without problems: Melissa, Laura, Brian, Adam, Cedric. ElevenLabs hit a brief concurrency limit and retried by itself
+
+## [2026-11-27] edit | Reel producer run (agent run, 7:37 PM)
+- Skipped the Instagram reconcile (per the playbook)
+- + ep19-tutor-textspiral (9 texts to move one session swirl into a spiral, the bot sucks them up and offers tap-to-pick slots; CTA "SCHEDULE" instead of the calendar's "PLAN", already used by ep16; 96 BPM C major), voiced, `ready`

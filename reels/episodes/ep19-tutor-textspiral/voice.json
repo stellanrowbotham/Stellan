@@ -1,0 +1,11 @@
+{
+  "duck_db": -11,
+  "pa_chime": [24.9],
+  "lines": [
+    {"file": "vo/01.mp3", "at": 0.5, "who": "parent", "text": "Hi! Can we move Maya's Tuesday session? Soccer ran late."},
+    {"file": "vo/02.mp3", "at": 4.6, "who": "tutor", "text": "Sure! Wednesday at 4? Or Thursday at 5?"},
+    {"file": "vo/03.mp3", "at": 8.9, "who": "parent", "text": "Wednesday's piano... Thursday works! Wait, this Thursday or next Thursday?"},
+    {"file": "vo/04.mp3", "at": 15.8, "who": "pilot", "text": "Nine texts later... here's the fix. The bot sends parents the open slots, they tap one, and everyone gets the update."},
+    {"file": "vo/05.mp3", "at": 25.4, "who": "pilot", "text": "This is your FlowPilot speaking. Comment SCHEDULE and we'll show you how. You're still the captain."}
+  ]
+}

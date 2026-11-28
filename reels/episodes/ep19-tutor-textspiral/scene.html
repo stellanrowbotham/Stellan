@@ -1,0 +1,80 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../engine/lib.js"></script>
+<script>
+// ep19 · Tutor / learning centre · Parent update + scheduling bot · text spiral untangled · comment "SCHEDULE"
+WHO.parent = ['THE PARENT', C.pink]; WHO.tutor = ['THE TUTOR', C.amber];
+const MSGS = [['p', "Hi! Can we move Maya's Tuesday session?"], ['p', 'Soccer ran late'], ['t', 'Sure! Wed at 4? Or Thu at 5?'], ['p', "Wednesday's piano..."], ['p', 'Thursday works!'], ['p', 'Wait, this Thu or next Thu?'], ['t', 'This Thursday!'], ['p', 'Ok, 5:00?'], ['t', 'Yes, 5:00. See you then!']];
+const CX = 540, CY = 860;
+
+function bg(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#141032'); g.addColorStop(1, '#0A0820'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `900 62px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('Moving ONE tutoring session', W / 2, 170);
+  const n = TL.msg.filter(m => t >= m).length;
+  if (t < TL.suck[1]) { ctx.font = `800 44px ${FONT}`; ctx.fillStyle = n >= 9 ? C.red : C.amber; ctx.fillText(`texts so far: ${n}`, W / 2, 245); }
+}
+
+function bubbles(t) {
+  const sw = eIO(seg(t, TL.swirl[0], TL.swirl[1])), sk = eIn(seg(t, TL.suck[0], TL.suck[1]));
+  if (sk >= 1) return;
+  MSGS.forEach(([who, s], i) => {
+    const t0 = TL.msg[i]; if (t < t0) return;
+    const k = eBack(seg(t, t0, t0 + .25));
+    const n = TL.msg.filter(m => t >= m).length;
+    // stacked chat position (scrolls up as more arrive)
+    const sx = who === 'p' ? 90 : 990, sy = 400 + (i - Math.max(0, n - 9)) * 118;
+    // spiral position
+    const a = i * .8 + t * 1.8 * sw, r = 140 + i * 42;
+    const px = lerp(sx, CX + Math.cos(a) * r * (1 - sk), sw), py = lerp(sy, CY + Math.sin(a) * r * .9 * (1 - sk), sw);
+    ctx.save(); ctx.translate(px, py); ctx.rotate(sw * Math.sin(a) * .35); const sc = k * (1 - sk); ctx.scale(sc, sc);
+    ctx.font = `600 34px ${FONT}`; const w = ctx.measureText(s).width + 56;
+    const ox = sw > .5 ? -w / 2 : (who === 'p' ? 0 : -w);
+    rr(ox, -40, w, 80, 34); ctx.fillStyle = who === 'p' ? '#3A3F55' : '#2F80ED'; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(s, ox + 28, 2); ctx.restore();
+  });
+}
+
+function fix(t) {
+  if (t < TL.suck[0]) return;
+  const rk = eBack(seg(t, TL.suck[0], TL.suck[0] + .5)), ry = lerp(CY, 470, eIO(seg(t, TL.card - .4, TL.card + .2)));
+  ctx.save(); ctx.globalAlpha = 1; robot(CX, ry, 220 * rk * lerp(1, .7, seg(t, TL.card - .4, TL.card + .2)), t, C.cyan); ctx.restore();
+  if (t < TL.card) return;
+  const k = eOut(seg(t, TL.card, TL.card + .5));
+  ctx.save(); ctx.globalAlpha = k; ctx.translate(0, (1 - k) * 80);
+  rr(120, 660, 840, 760, 44); ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.font = `800 40px ${FONT}`; ctx.fillStyle = '#1B1B2E'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Pick a new time for Maya', 170, 730);
+  ctx.font = `500 30px ${FONT}`; ctx.fillStyle = '#6B7090'; ctx.fillText('Open slots this week, tap one', 170, 785);
+  const slots = [['Wed 4:00 PM', 'piano day?'], ['Thu 5:00 PM', ''], ['Fri 4:30 PM', '']];
+  slots.forEach(([s, note], i) => {
+    const sk = eBack(seg(t, TL.slots[i], TL.slots[i] + .3)); if (sk <= 0) return;
+    const chosen = i === 1 && t > TL.tap, y = 870 + i * 130;
+    ctx.save(); ctx.translate(540, y); ctx.scale(sk * (chosen ? 1 + .04 * Math.sin(seg(t, TL.tap, TL.tap + .3) * Math.PI) : 1), sk);
+    rr(-370, -50, 740, 100, 50); ctx.fillStyle = chosen ? C.mint : '#EEF1FA'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = chosen ? '#1E8A50' : '#D5DAEA'; ctx.stroke();
+    ctx.font = `800 42px ${FONT}`; ctx.fillStyle = '#1B1B2E'; ctx.textAlign = 'left'; ctx.fillText(s, -320, 3);
+    if (note) { ctx.font = `600 28px ${FONT}`; ctx.fillStyle = '#9AA0B8'; ctx.textAlign = 'right'; ctx.fillText(note, 330, 3); }
+    if (chosen) icon('check', 300, 0, 48, '#06102A');
+    ctx.restore();
+  });
+  // finger tap
+  const fk = seg(t, TL.tap - .6, TL.tap); if (fk > 0 && t < TL.tap + .6) { const fx = lerp(820, 700, fk), fy = lerp(1300, 1010, eOut(fk)); ctx.fillStyle = 'rgba(255,214,170,.95)'; ctx.beginPath(); ctx.ellipse(fx, fy, 34, 46, -.3, 0, 7); ctx.fill(); if (t > TL.tap) { ctx.strokeStyle = 'rgba(61,255,168,.8)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(700, 1010, 40 + (t - TL.tap) * 120, 0, 7); ctx.stroke(); } }
+  const bk = eBack(seg(t, TL.booked, TL.booked + .35)); if (bk > 0) { ctx.save(); ctx.translate(540, 1330); ctx.scale(bk, bk); ctx.font = `800 34px ${FONT}`; ctx.fillStyle = '#1E8A50'; ctx.textAlign = 'center'; ctx.fillText('✓ Booked · tutor, parent and calendar updated', 0, 0); ctx.restore(); }
+  ctx.restore();
+  confetti(t, TL.booked, 540, 1000, 60, 31);
+}
+
+function render(t) {
+  let flash = 0;
+  if (t < TL.logo) {
+    bg(t); bubbles(t); fix(t);
+    if (t > TL.suck[1] - .1 && t < TL.suck[1] + .1) flash = .25;
+    if (t > TL.logo - .35) { ctx.fillStyle = `rgba(0,0,0,${seg(t, TL.logo - .35, TL.logo)})`; ctx.fillRect(0, 0, W, H); }
+  } else {
+    logoEnding(t, TL.logo, { cy: 600, cta: 'Comment “SCHEDULE” to see how  →', footer: 'Rescheduling in one tap. You stay in control.' });
+    flash = .6 * (1 - seg(t, TL.logo, TL.logo + .4));
+  }
+  captions(t, { y: t => t < TL.logo ? 1700 : 1580 });
+  post(t, flash, .3);
+}
+FP.init(render);
+</script></body></html>
